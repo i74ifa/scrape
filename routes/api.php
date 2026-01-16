@@ -12,12 +12,16 @@ Route::apiResource('addresses', Api\AddressController::class);
 Route::apiResource('products', Api\ProductController::class)->except(['update']);
 
 Route::group(['prefix' => 'auth'], function () {
-    Route::post('otp/send', [Api\AuthController::class, 'sendOtp']);
-    Route::post('otp/verify', [Api\AuthController::class, 'verifyOtp']);
+    Route::post('/', [Api\AuthController::class, 'sendOtp']);
+    Route::post('/verify', [Api\AuthController::class, 'verifyOtp']);
 });
 
-Route::get('platforms/{platform}/code', [Api\PlatformController::class, 'getCode']);
-Route::apiResource('platforms', Api\PlatformController::class);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('platforms/{platform}/code', [Api\PlatformController::class, 'getCode']);
+    Route::apiResource('platforms', Api\PlatformController::class);
+});
+
 
 
 Route::fallback(function () {

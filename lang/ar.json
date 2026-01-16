@@ -1,0 +1,7 @@
+{
+    "Invalid phone number": "رقم الهاتف غير صحيح",
+    "Invalid country code": "كود الدولة غير صحيح",
+    "OTP sent successfully": "تم إرسال رمز التحقق بنجاح",
+    "Invalid or expired OTP": "رمز التحقق غير صحيح أو انتهت صلاحيته",
+    "Authenticated successfully": "تم التحقق بنجاح"
+}
