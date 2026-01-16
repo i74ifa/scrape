@@ -2,13 +2,23 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
+use App\Models\Platform;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class PlatformController extends Controller
 {
     public function index()
     {
-        return \App\Models\Platform::all();
+        return Platform::all();
+    }
+
+    public function getPlatformsCode(Platform $platform)
+    {
+        $code = $platform->getCode();
+
+        return response($code, 200, [
+            'Content-Type' => 'application/javascript',
+        ]);
     }
 }

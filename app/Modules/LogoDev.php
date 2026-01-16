@@ -15,7 +15,7 @@ class LogoDev
 
     public static function make($name): self
     {
-        return new LogoDevModule($name);
+        return new self($name);
     }
 
 

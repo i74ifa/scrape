@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Modules\Scraper as ScraperModule;
 use Illuminate\Database\Eloquent\Model;
 
 class Platform extends Model
@@ -18,9 +19,8 @@ class Platform extends Model
         'sis_active',
     ];
 
-
     public function getCode()
     {
-        //
+        return (new ScraperModule(null, [], $this))->getCode();
     }
 }

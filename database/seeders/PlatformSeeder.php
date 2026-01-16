@@ -19,8 +19,8 @@ class PlatformSeeder extends Seeder
                 'url' => 'https://www.amazon.sa',
                 'script_file' => 'amazon',
                 'currency' => 'SAR',
-                'country_code' => 'SA',
-                'object' => 'HtmlDom',
+                'currency_symbol' => 'ر.س',
+                'country' => 'SA',
             ],
             [
                 'id' => 2,
@@ -28,8 +28,8 @@ class PlatformSeeder extends Seeder
                 'url' => 'https://ar.aliexpress.com?_randl_shipto=SA&gatewayAdaptuae',
                 'script_file' => 'ali_express',
                 'currency' => 'SAR',
-                'country_code' => 'SA',
-                'object' => 'HtmlDom',
+                'currency_symbol' => 'ر.س',
+                'country' => 'SA',
             ],
             [
                 'id' => 3,
@@ -37,8 +37,8 @@ class PlatformSeeder extends Seeder
                 'url' => 'https://www.trendyol.com/ar',
                 'script_file' => 'trendyol',
                 'currency' => 'SAR',
-                'country_code' => 'SA',
-                'object' => 'HtmlDom',
+                'currency_symbol' => 'ر.س',
+                'country' => 'SA',
             ],
             [
                 'id' => 4,
@@ -46,8 +46,8 @@ class PlatformSeeder extends Seeder
                 'url' => 'https://www.ebay.com',
                 'script_file' => 'ebay',
                 'currency' => 'USD',
-                'country_code' => 'US',
-                'object' => 'HtmlDom',
+                'currency_symbol' => '$',
+                'country' => 'US',
             ],
             [
                 'id' => 5,
@@ -55,8 +55,8 @@ class PlatformSeeder extends Seeder
                 'url' => 'https://ar.shein.com',
                 'script_file' => 'shein',
                 'currency' => 'SAR',
-                'country_code' => 'SA',
-                'object' => 'HtmlDom',
+                'currency_symbol' => 'ر.س',
+                'country' => 'SA',
             ],
             [
                 'id' => 6,
@@ -64,8 +64,8 @@ class PlatformSeeder extends Seeder
                 'url' => 'https://www.zara.com/sa/ar',
                 'script_file' => 'zara',
                 'currency' => 'SAR',
-                'country_code' => 'SA',
-                'object' => 'HtmlDom',
+                'currency_symbol' => 'ر.س',
+                'country' => 'SA',
             ],
             [
                 'id' => 7,
@@ -73,8 +73,8 @@ class PlatformSeeder extends Seeder
                 'url' => 'https://www.sephora.me/sa-ar',
                 'script_file' => 'sephora',
                 'currency' => 'SAR',
-                'country_code' => 'SA',
-                'object' => 'HtmlDom',
+                'currency_symbol' => 'ر.س',
+                'country' => 'SA',
             ],
             [
                 'id' => 8,
@@ -82,8 +82,8 @@ class PlatformSeeder extends Seeder
                 'url' => 'https://sa.gissah.com/ar',
                 'script_file' => 'gissah',
                 'currency' => 'SAR',
-                'country_code' => 'SA',
-                'object' => 'HtmlDom',
+                'currency_symbol' => 'ر.س',
+                'country' => 'SA',
                 'logo' => 'https://gissah.com/web/image/website/2/logo/Kuwait?unique=31ed69a',
             ],
             [
@@ -92,8 +92,8 @@ class PlatformSeeder extends Seeder
                 'url' => 'https://sa.puma.com',
                 'script_file' => 'puma',
                 'currency' => 'SAR',
-                'country_code' => 'SA',
-                'object' => 'HtmlDom',
+                'currency_symbol' => 'ر.س',
+                'country' => 'SA',
             ],
             [
                 'id' => 10,
@@ -101,8 +101,8 @@ class PlatformSeeder extends Seeder
                 'url' => 'https://www.nike.sa/ar/home',
                 'script_file' => 'nike',
                 'currency' => 'SAR',
-                'country_code' => 'SA',
-                'object' => 'HtmlDom',
+                'currency_symbol' => 'ر.س',
+                'country' => 'SA',
             ],
             [
                 'id' => 11,
@@ -110,8 +110,8 @@ class PlatformSeeder extends Seeder
                 'url' => 'https://www.adidas.sa/ar',
                 'script_file' => 'adidas',
                 'currency' => 'SAR',
-                'country_code' => 'SA',
-                'object' => 'HtmlDom',
+                'currency_symbol' => 'ر.س',
+                'country' => 'SA',
             ],
             [
                 'id' => 12,
@@ -119,8 +119,8 @@ class PlatformSeeder extends Seeder
                 'url' => 'https://www.fashionnova.com',
                 'script_file' => 'fashion-nova',
                 'currency' => 'USD',
-                'country_code' => 'US',
-                'object' => 'HtmlDom',
+                'currency_symbol' => '$',
+                'country' => 'US',
             ],
             [
                 'id' => 13,
@@ -128,8 +128,8 @@ class PlatformSeeder extends Seeder
                 'url' => 'https://www.lightinthebox.com',
                 'script_file' => 'light-in-the-box',
                 'currency' => 'USD',
-                'country_code' => 'US',
-                'object' => 'HtmlDom',
+                'currency_symbol' => '$',
+                'country' => 'US',
             ],
             [
                 'id' => 14,
@@ -137,8 +137,8 @@ class PlatformSeeder extends Seeder
                 'url' => 'https://www.flo.com.tr',
                 'script_file' => 'flo',
                 'currency' => 'TRY',
-                'country_code' => 'TR',
-                'object' => 'HtmlDom',
+                'currency_symbol' => '₺',
+                'country' => 'TR',
             ],
             [
                 'id' => 15,
@@ -146,15 +146,15 @@ class PlatformSeeder extends Seeder
                 'url' => 'https://www.noon.com/saudi-ar',
                 'script_file' => 'noon',
                 'currency' => 'SAR',
-                'country_code' => 'SA',
-                'object' => 'HtmlDom',
+                'currency_symbol' => 'ر.س',
+                'country' => 'SA',
             ]
         ];
 
         foreach ($data as $scraper) {
 
             // check if exists by name
-            if (DB::table('scrapers')->where('id', $scraper['id'])->exists()) {
+            if (DB::table('platforms')->where('id', $scraper['id'])->exists()) {
                 continue;
             }
 
@@ -166,7 +166,7 @@ class PlatformSeeder extends Seeder
             }
 
 
-            DB::table('scrapers')->insert($scraper);
+            DB::table('platforms')->insert($scraper);
         }
     }
 
@@ -190,7 +190,10 @@ class PlatformSeeder extends Seeder
 
         /** @var \Illuminate\Contracts\Filesystem\Cloud $disk */
         $disk = Storage::put($fileName, $imageData, 'public');
+        if (!$disk) {
+            throw new \Exception('Failed to upload logo');
+        }
 
-        return $disk->url($fileName);
+        return $fileName;
     }
 }
