@@ -13,7 +13,7 @@ class PlatformController extends Controller
         return Platform::all();
     }
 
-    public function getPlatformsCode(Platform $platform)
+    public function getCode(Platform $platform)
     {
         $code = $platform->getCode();
 

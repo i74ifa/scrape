@@ -11,6 +11,7 @@ Route::get('/user', function (Request $request) {
 Route::apiResource('addresses', Api\AddressController::class);
 Route::apiResource('products', Api\ProductController::class)->except(['update']);
 
+Route::get('platforms/{platform}/code', [Api\PlatformController::class, 'getCode']);
 Route::apiResource('platforms', Api\PlatformController::class);
 
 
