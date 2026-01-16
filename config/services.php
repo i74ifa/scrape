@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+
+    'logo_dev' => [
+        'token' => env('LOGO_DEV_TOKEN'),
+        'url' => env('LOGO_DEV_URL')
+    ],
+
 ];
