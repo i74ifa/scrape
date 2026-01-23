@@ -8,7 +8,7 @@ class RegexCode
 
     public const YEMEN_NUMBERS = '/^(\+967\s*0?|\+9670?|0?)?\s*7\s*(0|1|2|3|4|5|7|8|9)(?:\s*\d){7}$/';
 
-    public static function getCounrtyRegexUsingCode(string $code): ?string
+    public static function getCountryRegexUsingCode(string $code): ?string
     {
         switch ($code) {
             case '964':

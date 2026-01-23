@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\RegexCode;
 use App\Models\Otp;
 use App\Models\User;
+use App\Modules\M365Dialog;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -23,7 +24,7 @@ class AuthController extends Controller
         $countryCode = $request->input('country_code', '+967');
         $countryCode = str_replace('+', '', $countryCode);
 
-        $regex = RegexCode::getCounrtyRegexUsingCode($countryCode);
+        $regex = RegexCode::getCountryRegexUsingCode($countryCode);
         $identifier = sprintf('%s%s', $countryCode, $phone);
 
         if ($regex === null) {
@@ -48,6 +49,8 @@ class AuthController extends Controller
             'expires_at' => now()->addMinutes(10),
             'valid' => true,
         ]);
+
+        M365Dialog::send(to: $phone, text: $token, countryCode: $countryCode);
 
         return response()->json([
             'message' => trans('OTP sent successfully'),
