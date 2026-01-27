@@ -20,13 +20,9 @@ services:
       DB_DATABASE: laravel
       DB_USERNAME: root
       DB_PASSWORD: secret
-      CACHE_DRIVER: valkey
-      VALKEY_HOST: valkey
-      VALKEY_PORT: 6378
-      VALKEY_PASSWORD: your_valkey_password
+      CACHE_DRIVER: file
     depends_on:
       - mysql
-      - valkey
 
   mysql:
     image: mysql:8.0
@@ -41,17 +37,5 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql
 
-  valkey:
-    image: valkey/valkey:latest
-    container_name: laravel-valkey
-    ports:
-      - "6378:6379"
-    volumes:
-      - valkey-data:/data
-      - ./valkey.conf:/usr/local/etc/valkey/valkey.conf
-    command: ["valkey-server", "/usr/local/etc/valkey/valkey.conf"]
-    restart: unless-stopped
-
 volumes:
   mysql-data:
-  valkey-data:
