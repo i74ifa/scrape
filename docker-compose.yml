@@ -14,17 +14,19 @@ services:
     environment:
       APP_ENV: local
       APP_DEBUG: "true"
-      APP_KEY: base64:Sa86RzaulCuGMTZmMafwEZAHRXOcVeZ00fGIRhdq/qM=
+      APP_KEY: base64:YOUR_APP_KEY
       DB_HOST: mysql
       DB_PORT: 3306
       DB_DATABASE: laravel
       DB_USERNAME: root
       DB_PASSWORD: secret
-      REDIS_HOST: redis
-      REDIS_PORT: 6375
+      CACHE_DRIVER: valkey
+      VALKEY_HOST: valkey
+      VALKEY_PORT: 6379
+      VALKEY_PASSWORD: your_valkey_password
     depends_on:
       - mysql
-      - redis
+      - valkey
 
   mysql:
     image: mysql:8.0
@@ -39,14 +41,17 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql
 
-  redis:
-    image: redis:7
-    container_name: laravel-redis
+  valkey:
+    image: valkey/valkey:latest
+    container_name: laravel-valkey
     ports:
-      - "6375:6379"
+      - "6379:6379"
     volumes:
-      - redis-data:/data
+      - valkey-data:/data
+      - ./valkey.conf:/usr/local/etc/valkey/valkey.conf
+    command: ["valkey-server", "/usr/local/etc/valkey/valkey.conf"]
+    restart: unless-stopped
 
 volumes:
   mysql-data:
-  redis-data:
+  valkey-data:
