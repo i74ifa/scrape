@@ -22,7 +22,7 @@ class AuthController extends Controller
 
         $phone = $request->input('phone');
         $countryCode = $request->input('country_code', '+967');
-        $countryCode = str_replace('+', '', $countryCode);
+        $countryCode = RegexCode::getPhoneCountryCode($countryCode);
 
         $regex = RegexCode::getCountryRegexUsingCode($countryCode);
         $identifier = sprintf('%s%s', $countryCode, $phone);
@@ -74,7 +74,8 @@ class AuthController extends Controller
         $phone = $request->input('phone');
         $otp = $request->input('otp');
         $countryCode = $request->input('country_code', '967');
-        $countryCode = str_replace('+', '', $countryCode);
+        $countryCode = RegexCode::getPhoneCountryCode($countryCode);
+
         $identifier = sprintf('%s%s', $countryCode, $phone);
         $otpRecord = Otp::where('identifier', $identifier)
             ->where('token', $otp)

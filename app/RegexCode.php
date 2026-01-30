@@ -19,4 +19,13 @@ class RegexCode
                 return null;
         }
     }
+
+    public static function getPhoneCountryCode(?string $countryCode = null): string
+    {
+        if (!$countryCode || strlen($countryCode) < 2) {
+            $countryCode = '967';
+        }
+
+        return str_replace('+', '', $countryCode);
+    }
 }
