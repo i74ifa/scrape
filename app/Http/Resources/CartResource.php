@@ -26,6 +26,7 @@ class CartResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'items' => $this->whenLoaded('items', fn() => CartItemResource::collection($this->items)),
+            'platform' => $this->whenLoaded('platform', fn() => new PlatformResource($this->platform)),
         ];
     }
 }

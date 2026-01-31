@@ -58,4 +58,9 @@ class Cart extends Model
         $this->total = $this->subtotal + $this->tax + $this->shipping + $this->local_shipping;
         $this->save();
     }
+
+    public function platform()
+    {
+        return $this->belongsTo(Platform::class);
+    }
 }
