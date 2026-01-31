@@ -21,6 +21,11 @@ class Platform extends Model
 
     public function getCode()
     {
-        return (new ScraperModule(null, [], $this))->getCode();
+        return $this->scraping()->getCode();
+    }
+
+    public function scraping($data = [])
+    {
+        return new ScraperModule($data, $this);
     }
 }

@@ -19,7 +19,7 @@
 {{-- on page started --}}
 @include('scrapers-scripts.partials.helpers')
 
-<script id="shopini-script">
+<script id="tlaboo-script">
     const selectorTypes = {
         text: 'text',
         src: 'src',
@@ -28,10 +28,10 @@
         attr: 'getAttribute',
     };
 
-    const shopini_html = `{!! $html !!}`;
+    const tlaboo_html = `{!! $html !!}`;
 
     try {
-        shopiniRemoveDoms([
+        tlabooRemoveDoms([
             '#add-to-cart-button',
             '.product-add-btn',
             '.product-card__add-btn',

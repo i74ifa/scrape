@@ -8,7 +8,7 @@
 {{-- on page started --}}
 @include('scrapers-scripts.partials.helpers')
 
-<script id="shopini-script">
+<script id="tlaboo-script">
     // ==UserScript==
     // @name        New script ebay.com
     // @namespace   Violentmonkey Scripts
@@ -41,16 +41,16 @@
             if (input) return input;
 
             // click ignored → retry
-            await shopini_sleep(300);
+            await tlaboo_sleep(300);
         }
 
         throw 'Failed to open ZIP modal';
     };
 
-    const shopini_html = `{!! $html !!}`;
+    const tlaboo_html = `{!! $html !!}`;
 
     try {
-        shopiniRemoveDoms([
+        tlabooRemoveDoms([
             '.gh-module-with-target',
             'a[data-testid="ux-call-to-action"]',
             '.ux-call-to-action',

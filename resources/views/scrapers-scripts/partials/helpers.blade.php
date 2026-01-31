@@ -1,11 +1,11 @@
 <script>
-    const SHOPINI_USER_ID = "{{ auth('sanctum')?->id() ?? '' }}";
-    const SHOPINI_BASE_URL = "{{ url('/api/v2') }}";
-    const shopini_sleep = (ms = 1000) => new Promise(resolve => setTimeout(resolve, ms));
+    const TLABOO_USER_ID = "{{ auth('sanctum')?->id() ?? '' }}";
+    const TLABOO_BASE_URL = "{{ url('/api/v2') }}";
+    const tlaboo_sleep = (ms = 1000) => new Promise(resolve => setTimeout(resolve, ms));
 
 
-    const addToCartAppendCode = window.shopiniAppendCode?.addToCart || {};
-    const initialCode = window.shopiniAppendCode?.initial || {};
+    const addToCartAppendCode = window.tlabooAppendCode?.addToCart || {};
+    const initialCode = window.tlabooAppendCode?.initial || {};
 
     class Watcher {
         constructor(selector, {
@@ -52,11 +52,11 @@
 
     window.storeUserSearch = async (keyword) => {
         const body = {
-            route: SHOPINI_BASE_URL + '/sites/user-search',
+            route: TLABOO_BASE_URL + '/sites/user-search',
             method: 'PUT',
             body: {
                 keyword: keyword,
-                user_id: SHOPINI_USER_ID || '',
+                user_id: TLABOO_USER_ID || '',
             }
         }
         const res = await window.flutter_inappwebview.callHandler('sendRequest', body);
@@ -72,9 +72,9 @@
             console.log(e);
         }
 
-        wrapper.querySelector('.shopini-loader').style.display = "block";
-        wrapper.querySelector('#shopini-add-to-cart').setAttribute('disabled', 'disabled');
-        wrapper.querySelector('#shopini-add-to-cart svg').style.display = "none";
+        const btn = wrapper.querySelector('#tlaboo-add-to-cart');
+        btn.classList.add('tlaboo-loading');
+        btn.setAttribute('disabled', 'disabled');
 
         let data = scrapeData();
 
@@ -93,9 +93,8 @@
             console.log(e);
         }
 
-        wrapper.querySelector('.shopini-loader').style.display = "none";
-        wrapper.querySelector('#shopini-add-to-cart').removeAttribute('disabled');
-        wrapper.querySelector('#shopini-add-to-cart svg').style.display = "inline-block";
+        btn.classList.remove('tlaboo-loading');
+        btn.removeAttribute('disabled');
 
     }
 
@@ -105,14 +104,14 @@
         while (Date.now() - start < timeout) {
             const el = document.querySelector(selector);
             if (el) return el;
-            await shopini_sleep(50);
+            await tlaboo_sleep(50);
         }
         return null;
     };
 
 
 
-    function shopiniRemoveDoms(selectors) {
+    function tlabooRemoveDoms(selectors) {
         if (window.__DOMS_REMOVED__) return;
         window.__DOMS_REMOVED__ = true;
 
@@ -159,13 +158,32 @@
 
     const initialButton = {
         onExists: (e) => {
-            const btn = document.querySelector('#shopini-add-to-cart');
+            const btn = document.querySelector('#tlaboo-add-to-cart');
+            const priceEl = document.querySelector('#tlaboo-price');
+
+            // hide button and price initially
+            btn.style.display = 'none';
+            priceEl.style.display = 'none';
+
+            try {
+                const data = scrapeData();
+                const priceMatch = data.find(i => i.name === 'price');
+                if (priceMatch && priceMatch.data && priceMatch.data !== "") {
+                    priceEl.textContent = priceMatch.data;
+                    priceEl.style.display = 'flex';
+                }
+            } catch (e) {
+                console.log('failed to get price', e);
+            }
+
             btn.style.display = 'inline-flex';
             btn.removeAttribute('disabled');
         },
         onRemoved: (e) => {
-            const btn = document.querySelector('#shopini-add-to-cart');
+            const btn = document.querySelector('#tlaboo-add-to-cart');
+            const priceEl = document.querySelector('#tlaboo-price');
             btn.style.display = 'none';
+            priceEl.style.display = 'none';
             btn.setAttribute('disabled', 'disabled');
         }
     }
@@ -182,8 +200,8 @@
         el.innerHTML = `{!! $html !!}`;
         document.body.appendChild(el);
 
-        const wrapper = el.querySelector('#shopini-add-to-cart-wrapper');
-        const button = wrapper.querySelector('#shopini-add-to-cart');
+        const wrapper = el.querySelector('#tlaboo-add-to-cart-wrapper');
+        const button = wrapper.querySelector('#tlaboo-add-to-cart');
 
 
 

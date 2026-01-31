@@ -17,7 +17,7 @@
     ];
 
     // if you want append before and after initial
-    window.shopiniAppendCode = {
+    window.tlabooAppendCode = {
         initial: {
             before: () => {},
             after: () => {}
@@ -35,11 +35,11 @@
 {{-- on page started --}}
 @include('scrapers-scripts.partials.helpers')
 
-<script id="shopini-script">
-    const shopini_html = `{!! $html !!}`;
+<script id="tlaboo-script">
+    const tlaboo_html = `{!! $html !!}`;
 
     try {
-        shopiniRemoveDoms([
+        tlabooRemoveDoms([
             '.header__minibasket-icon',
             '[data-test="mobile-open-to-wishlist"]',
             '[data-test="mobile-open-to-login-form"]',

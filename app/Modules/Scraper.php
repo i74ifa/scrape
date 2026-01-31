@@ -36,14 +36,14 @@ final class Scraper implements JsonSerializable
     public ?string $product_url = null;
     public ?string $weight = null;
 
-    public function __construct($url, ?array $data = null, protected Platform $platform)
+    public function __construct(?array $data = null, protected Platform $platform)
     {
         foreach ($data as $key => $value) {
             $key = $value['name'];
             if (is_null($value['data'])) {
                 continue;
             }
-            $this->{$key} = $value['data'];
+            $this->{$key} = is_string($value['data']) ? trim($value['data']) : $value['data'];
         }
 
         $this->original_price = self::toFloat($this->price, $this->platform->currency);
@@ -58,7 +58,6 @@ final class Scraper implements JsonSerializable
 
         $this->price =  $this->original_price;
     }
-
 
     public function getCode(): ?string
     {

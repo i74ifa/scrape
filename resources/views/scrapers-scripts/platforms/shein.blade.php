@@ -89,7 +89,7 @@
         }
     }
 
-    window.shopiniAppendCode = {
+    window.tlabooAppendCode = {
         initial: {
             before: async () => {
                 const shippingContainer = await waitFor('.shippingNewContent');
@@ -140,11 +140,11 @@
 {{-- on page started --}}
 @include('scrapers-scripts.partials.helpers')
 
-<script id="shopini-script">
-    const shopini_html = `{!! $html !!}`;
+<script id="tlaboo-script">
+    const tlaboo_html = `{!! $html !!}`;
 
     try {
-        shopiniRemoveDoms([
+        tlabooRemoveDoms([
             '#add-to-cart-button',
             '.product-add-btn',
             '.product-card__add-btn',

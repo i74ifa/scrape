@@ -70,20 +70,20 @@
         return '.' + host;
     }
 
-    function shopiniAppendScript() {
+    function tlabooAppendScript() {
         const dom = document.createElement('script');
         dom.src = 'https://cdn.jsdelivr.net/npm/dom-regex@0.0.3/lib/dom-regex.js';
         document.body.appendChild(dom);
     }
 
     // if you want append before and after initial
-    window.shopiniAppendCode = {
+    window.tlabooAppendCode = {
         initial: {
             before: () => {
 
             },
             after: () => {
-                shopiniAppendScript();
+                tlabooAppendScript();
 
                 if (!isAepCookieMatch('c_tp', 'AED')) {
                     const cookieValue = updateAepCookie({
@@ -103,11 +103,11 @@
 {{-- on page started --}}
 @include('scrapers-scripts.partials.helpers')
 
-<script id="shopini-script">
-    const shopini_html = `{!! $html !!}`;
+<script id="tlaboo-script">
+    const tlaboo_html = `{!! $html !!}`;
 
     try {
-        shopiniRemoveDoms([
+        tlabooRemoveDoms([
             'a:has(.comet-icon-locationanchor)',
             'a:has(.comet-icon-account)',
             'a:has(.comet-icon-shoppingcart)',

@@ -9,7 +9,7 @@
 
 {{-- on page started --}}
 @include('scrapers-scripts.partials.helpers')
-<script id="shopini-script">
+<script id="tlaboo-script">
     // ==UserScript==
     // @name        New script puma.com
     // @namespace   Violentmonkey Scripts
@@ -28,11 +28,11 @@
         attr: 'getAttribute',
     };
 
-    const shopini_html = `{!! $html !!}`;
+    const tlaboo_html = `{!! $html !!}`;
 
 
     try {
-        shopiniRemoveDoms([
+        tlabooRemoveDoms([
             "#branch-banner-iframe", // for install app popup
             '[data-test-id="newsletter-sign-up-form-button"]',
             '[data-uds-child="container"]:has([data-test-id="add-to-cart-sticky-button"])',

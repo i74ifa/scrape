@@ -1,8 +1,9 @@
 <?php
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\Api;
+use Illuminate\Support\Facades\Route;
+
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -17,9 +18,14 @@ Route::group(['prefix' => 'auth'], function () {
 });
 
 
+Route::get('platforms/{platform}/code', [Api\PlatformController::class, 'getCode']);
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('platforms/{platform}/code', [Api\PlatformController::class, 'getCode']);
     Route::apiResource('platforms', Api\PlatformController::class);
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('carts', [Api\CartController::class, 'index']);
+    Route::post('carts/{platform}', [Api\CartController::class, 'store']);
 });
 
 

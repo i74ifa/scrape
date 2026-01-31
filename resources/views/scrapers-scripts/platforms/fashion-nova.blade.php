@@ -21,18 +21,18 @@
     // append script before initial
     // https://cdn.jsdelivr.net/npm/dom-regex@0.0.3/lib/dom-regex.js 
 
-    function shopiniAppendScript() {
+    function tlabooAppendScript() {
         const dom = document.createElement('script');
         dom.src = 'https://cdn.jsdelivr.net/npm/dom-regex@0.0.3/lib/dom-regex.js';
         document.body.appendChild(dom);
     }
 
     // if you want append before and after initial
-    window.shopiniAppendCode = {
+    window.tlabooAppendCode = {
         initial: {
             before: () => {},
             after: () => {
-                shopiniAppendScript();
+                tlabooAppendScript();
             }
         }
     }
@@ -41,11 +41,11 @@
 {{-- on page started --}}
 @include('scrapers-scripts.partials.helpers')
 
-<script id="shopini-script">
-    const shopini_html = `{!! $html !!}`;
+<script id="tlaboo-script">
+    const tlaboo_html = `{!! $html !!}`;
 
     try {
-        shopiniRemoveDoms([
+        tlabooRemoveDoms([
             '[data-testid="add-to-bag-button"]',
             '[data-testid="pdp-wishlist-button-inactive"]',
             '[data-testid="add-to-bag-sticky"]',

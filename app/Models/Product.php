@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
+    public const DEFAULT_WEIGHT_GRAMS = 250;
+
     //
     protected $fillable = [
         'name',
@@ -19,6 +21,7 @@ class Product extends Model
         'category',
         'platform_id',
         'user_id',
+        'product_id',
     ];
 
     public function casts()

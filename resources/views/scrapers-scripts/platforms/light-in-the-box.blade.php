@@ -16,7 +16,7 @@
         '#product-main'
     ];
 
-    window.shopiniAppendCode = {
+    window.tlabooAppendCode = {
         addToCart: {
             before: () => {
 
@@ -48,11 +48,11 @@
 {{-- on page started --}}
 @include('scrapers-scripts.partials.helpers')
 
-<script id="shopini-script">
-    const shopini_html = `{!! $html !!}`;
+<script id="tlaboo-script">
+    const tlaboo_html = `{!! $html !!}`;
 
     try {
-        shopiniRemoveDoms([
+        tlabooRemoveDoms([
             '.btnwrap .add-to-cart',
             '.top_open_app',
             '.header-cart-icon',

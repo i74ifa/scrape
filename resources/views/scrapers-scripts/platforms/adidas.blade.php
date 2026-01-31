@@ -17,7 +17,7 @@
     ];
 
     // if you want append before and after initial
-    // window.shopiniAppendInitial = {
+    // window.tlabooAppendInitial = {
     //     before: () => {},
     //     after: () => {}
     // }
@@ -26,12 +26,12 @@
 {{-- on page started --}}
 @include('scrapers-scripts.partials.helpers')
 
-<script id="shopini-script">
+<script id="tlaboo-script">
 
-    const shopini_html = `{!! $html !!}`;
+    const tlaboo_html = `{!! $html !!}`;
 
         try {
-        shopiniRemoveDoms([])
+        tlabooRemoveDoms([])
     } catch (error) {
         console.info(error);
     }

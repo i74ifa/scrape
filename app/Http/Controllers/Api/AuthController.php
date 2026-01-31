@@ -39,7 +39,7 @@ class AuthController extends Controller
             ], 422);
         }
 
-        $token = (string) random_int(1000, 9999);
+        $token = User::generateOtpToken();
 
         Otp::where('identifier', $identifier)->update(['valid' => false]);
 
@@ -50,7 +50,9 @@ class AuthController extends Controller
             'valid' => true,
         ]);
 
-        M365Dialog::send(to: $phone, text: $token, countryCode: $countryCode);
+        if (app()->environment('production')) {
+            M365Dialog::send(to: $phone, text: $token, countryCode: $countryCode);
+        }
 
         return response()->json([
             'message' => trans('OTP sent successfully'),

@@ -3,7 +3,7 @@
     // ==UserScript==
     // @name        New script amazon.com
     // @namespace   Violentmonkey Scripts
-    // @match *://*.amazon.com/*
+    // @match *://*.amazon.sa/*
     // @run-at      document-body
     // @grant       none
     // @version     1.0
@@ -64,13 +64,13 @@
         while (Date.now() - start < timeout) {
             const el = doc.querySelector(selector);
             if (el) return el;
-            await shopini_sleep(50);
+            await tlaboo_sleep(50);
         }
         return null;
     };
 
 
-    window.shopiniAppendCode = {
+    window.tlabooAppendCode = {
         addToCart: {
             before: () => {
                 new Watcher('#icdp-iFrame', {
@@ -125,7 +125,7 @@
 
 {{-- on page started --}}
 @include('scrapers-scripts.partials.helpers')
-<script id="shopini-script">
+<script id="tlaboo-script">
     const selectorTypes = {
         text: 'text',
         src: 'src',
@@ -149,14 +149,14 @@
             if (input) return input;
 
             // click ignored → retry
-            await shopini_sleep(300);
+            await tlaboo_sleep(300);
         }
 
         throw 'Failed to open ZIP modal';
     };
 
     /* main */
-    const shopini_changeZipCode = async () => {
+    const tlaboo_changeZipCode = async () => {
         const nav = await waitFor('#nav-subnav-container', 25000);
         if (!nav) return;
 
@@ -180,18 +180,18 @@
             bubbles: true
         }));
 
-        await shopini_sleep(100);
+        await tlaboo_sleep(100);
         submit.click();
     };
 
     /* run */
-    shopini_changeZipCode().catch(console.error);
+    // tlaboo_changeZipCode().catch(console.error);
 
-    const shopini_html = `{!! $html !!}`;
+    const tlaboo_html = `{!! $html !!}`;
 
 
     try {
-        shopiniRemoveDoms([
+        tlabooRemoveDoms([
             '#add-to-cart-button',
             '#buy-now-button',
 
@@ -220,6 +220,7 @@
             '#heart',
             '.nav-a',
             '#buyBoxAccordion #snsAccordionRowMobileMiddle',
+            '#nav-subnav-container'
         ])
     } catch (error) {
         console.info(error);

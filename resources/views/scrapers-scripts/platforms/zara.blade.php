@@ -1,4 +1,4 @@
-<script id="shopini-script">
+<script id="tlaboo-script">
     // ==UserScript==
     // @name        New script zara.com
     // @namespace   Violentmonkey Scripts
@@ -9,7 +9,7 @@
     // @author      -
     // @description 12/14/2025, 9:13:36 PM
     // ==/UserScript==
-    const shopini_sleep = (ms = 1000) => new Promise(resolve => setTimeout(resolve, ms));
+    const tlaboo_sleep = (ms = 1000) => new Promise(resolve => setTimeout(resolve, ms));
 
     const selectorTypes = {
         text: 'text',
@@ -65,7 +65,7 @@
 
 
 
-    const shopini_html = `{!! $html !!}`;
+    const tlaboo_html = `{!! $html !!}`;
 
 
     const removedSelectors = [
@@ -365,8 +365,8 @@
     async function addToCart(wrapper) {
 
         //add loading
-        wrapper.querySelector('.shopini-loader').style.display = "block";
-        wrapper.querySelector('#shopini-add-to-cart').setAttribute('disabled', 'disabled');
+        wrapper.querySelector('.tlaboo-loader').style.display = "block";
+        wrapper.querySelector('#tlaboo-add-to-cart').setAttribute('disabled', 'disabled');
 
         const data = scrapeData();
 
@@ -380,8 +380,8 @@
 
 
 
-        wrapper.querySelector('.shopini-loader').style.display = "none";
-        wrapper.querySelector('#shopini-add-to-cart').removeAttribute('disabled');
+        wrapper.querySelector('.tlaboo-loader').style.display = "none";
+        wrapper.querySelector('#tlaboo-add-to-cart').removeAttribute('disabled');
 
     }
 
@@ -401,8 +401,8 @@
         el.innerHTML = `{!! $html !!}`;
         document.body.appendChild(el);
 
-        const wrapper = el.querySelector('#shopini-add-to-cart-wrapper');
-        const button = wrapper.querySelector('#shopini-add-to-cart');
+        const wrapper = el.querySelector('#tlaboo-add-to-cart-wrapper');
+        const button = wrapper.querySelector('#tlaboo-add-to-cart');
 
 
 
@@ -412,12 +412,12 @@
 
         new Watcher('.product-detail-card-info-size-selector-buttons__add-to-cart, [data-qa-action="direct-add-to-cart"]', {
             onExists: () => {
-                const btn = document.querySelector('#shopini-add-to-cart');
+                const btn = document.querySelector('#tlaboo-add-to-cart');
                 btn.style.display = 'inline-flex';
                 btn.removeAttribute('disabled');
             },
             onRemoved: () => {
-                const btn = document.querySelector('#shopini-add-to-cart');
+                const btn = document.querySelector('#tlaboo-add-to-cart');
                 btn.style.display = 'none';
                 btn.setAttribute('disabled', 'disabled');
             }

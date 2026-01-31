@@ -19,12 +19,12 @@
 {{-- on page started --}}
 @include('scrapers-scripts.partials.helpers')
 
-<script id="shopini-script">
-    const shopini_html = `{!! $html !!}`;
+<script id="tlaboo-script">
+    const tlaboo_html = `{!! $html !!}`;
 
 
     try {
-        shopiniRemoveDoms([
+        tlabooRemoveDoms([
             ".pi__bottom-wrapper:has(.pi__quick-add)",
             "#cartCloseBtn",
             ".nav__button:has(.icon--account)",

@@ -41,7 +41,7 @@
     }
 
 
-    window.shopiniAppendCode = {
+    window.tlabooAppendCode = {
         initial: {
             before: () => {
                 initialCountry();
@@ -53,7 +53,7 @@
 {{-- on page started --}}
 @include('scrapers-scripts.partials.helpers')
 
-<script id="shopini-script">
+<script id="tlaboo-script">
     const selectorTypes = {
         text: 'text',
         src: 'src',
@@ -71,12 +71,12 @@
             ?.split('=')[1];
     }
 
-    const shopini_html = `{!! $html !!}`;
+    const tlaboo_html = `{!! $html !!}`;
 
 
 
     try {
-        shopiniRemoveDoms([
+        tlabooRemoveDoms([
             '.add-to-basket',
             '.add-to-basket-button',
             'button.add-to-basket',

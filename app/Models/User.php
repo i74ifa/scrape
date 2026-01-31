@@ -58,4 +58,13 @@ class User extends Authenticatable
     {
         return $this->hasMany(Address::class);
     }
+
+    public static function generateOtpToken(): string
+    {
+        if (app()->environment('production')) {
+            return random_int(1000, 9999);
+        }
+
+        return '0000';
+    }
 }

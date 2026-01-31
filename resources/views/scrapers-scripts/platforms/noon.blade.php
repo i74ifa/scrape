@@ -16,20 +16,20 @@
         '[data-app-install-product-url^="product/"]'
     ];
 
-    function shopiniAppendScript() {
+    function tlabooAppendScript() {
         const dom = document.createElement('script');
         dom.src = 'https://cdn.jsdelivr.net/npm/dom-regex@0.0.3/lib/dom-regex.js';
         document.body.appendChild(dom);
     }
 
     // if you want append before and after initial
-    window.shopiniAppendCode = {
+    window.tlabooAppendCode = {
         initial: {
             before: () => {
-                shopiniAppendScript()
+                tlabooAppendScript()
             },
             after: (data) => {
-                new Watcher('#shopini-add-to-cart-wrapper', {
+                new Watcher('#tlaboo-add-to-cart-wrapper', {
                     onExists: () => {
                         //
                     },
@@ -53,11 +53,11 @@
 {{-- on page started --}}
 @include('scrapers-scripts.partials.helpers')
 
-<script id="shopini-script">
-    const shopini_html = `{!! $html !!}`;
+<script id="tlaboo-script">
+    const tlaboo_html = `{!! $html !!}`;
 
     try {
-        shopiniRemoveDoms([
+        tlabooRemoveDoms([
             ".AppInstallBanner-module-scss-module__BSeqdG__container",
             "#catalog-page-container > div.ProductDetailsMobile-module-scss-module__rPhIAG__pdpContainer > div.AddToCartCtaMobile-module-scss-module__CV4wca__ctaFixedWrapper > div.AddToCartCtaMobile-module-scss-module__CV4wca__atcCtaCtr",
             "#bottom-tabs > a:nth-child(5)",

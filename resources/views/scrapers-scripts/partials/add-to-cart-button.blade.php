@@ -1,16 +1,8 @@
-<div id="shopini-add-to-cart-wrapper">
+<div id="tlaboo-add-to-cart-wrapper">
+    <div id="tlaboo-price" style="display: none;"></div>
 
-    <!-- price aria -->
-     <!-- <div style="display: flex; justify-content: center;">
-         <div id="shopini-price">
-             $100
-         </div>
-     </div> -->
-
-
-    <button class="btn btn-primary" id="shopini-add-to-cart">
-        <span class="shopini-add-to-cart">{{ __('Add To Cart') }}</span>
-        <div class="shopini-loader"></div>
+    <button class="btn btn-primary" id="tlaboo-add-to-cart">
+        <div class="tlaboo-loader"></div>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
             <path fill="currentColor" fill-rule="evenodd" d="M3.04 2.292a.75.75 0 0 0-.497 1.416l.261.091c.668.235 1.107.39 1.43.549c.303.149.436.27.524.398c.09.132.16.314.2.677c.04.38.042.875.042 1.615V9.64c0 2.942.063 3.912.93 4.826c.866.914 2.26.914 5.05.914h5.302c1.561 0 2.342 0 2.893-.45c.552-.45.71-1.214 1.025-2.742l.5-2.425c.347-1.74.52-2.609.076-3.186S18.816 6 17.131 6H6.492a9 9 0 0 0-.043-.738c-.054-.497-.17-.95-.452-1.362c-.284-.416-.662-.682-1.103-.899c-.412-.202-.936-.386-1.552-.603zM13 8.25a.75.75 0 0 1 .75.75v1.25H15a.75.75 0 0 1 0 1.5h-1.25V13a.75.75 0 0 1-1.5 0v-1.25H11a.75.75 0 0 1 0-1.5h1.25V9a.75.75 0 0 1 .75-.75" clip-rule="evenodd" />
             <path fill="currentColor" d="M7.5 18a1.5 1.5 0 1 1 0 3a1.5 1.5 0 0 1 0-3m9 0a1.5 1.5 0 1 1 0 3a1.5 1.5 0 0 1 0-3" />
@@ -23,13 +15,14 @@
     @import url('https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@100..900&display=swap');
 
     :root {
-        --icon-size: 35px;
-        --add-to-cart-size: 60px;
-        --add-to-cart-bg: #000000c9;
-        --add-to-cart-bg-hover: #000000e1;
+        --icon-size: 28px;
+        --add-to-cart-size: 54px;
+        --add-to-cart-bg: rgba(255, 255, 255, 0.15);
+        --add-to-cart-bg-hover: rgba(255, 255, 255, 0.85);
+        --add-to-cart-text-color: rgba(0, 0, 0, 0.9);
     }
 
-    #shopini-add-to-cart-wrapper button {
+    #tlaboo-add-to-cart-wrapper button {
         all: unset;
         /* reset everything */
         box-sizing: border-box;
@@ -42,68 +35,65 @@
         user-select: none;
     }
 
-    #shopini-add-to-cart-wrapper button:hover {
+    #tlaboo-add-to-cart-wrapper button:hover {
         all: unset;
     }
 
-    #shopini-add-to-cart-wrapper button:active {
+    #tlaboo-add-to-cart-wrapper button:active {
         all: unset;
     }
 
-    #shopini-add-to-cart-wrapper button:focus-visible {
-        all: unset;
-
-    }
-
-    #shopini-add-to-cart-wrapper button:disabled {
+    #tlaboo-add-to-cart-wrapper button:focus-visible {
         all: unset;
 
     }
 
+    #tlaboo-add-to-cart-wrapper button:disabled {
+        all: unset;
 
-    #shopini-add-to-cart-wrapper {
-        display: grid;
-        gap: 10px;
-        transform: translate(50%, 50%);
-        white-space: nowrap;
+    }
+
+
+    #tlaboo-add-to-cart-wrapper {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        justify-content: center;
         position: fixed;
         bottom: 99px;
-        right: 51%;
-        z-index: 9999;
-
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 9999999;
+        white-space: nowrap;
+        font-family: "Noto Kufi Arabic", sans-serif;
     }
 
-    #shopini-add-to-cart-wrapper #shopini-add-to-cart {
+    #tlaboo-add-to-cart-wrapper #tlaboo-add-to-cart {
         display: none;
-        gap: 10px;
+        width: var(--add-to-cart-size);
+        height: var(--add-to-cart-size);
         align-items: center;
         justify-content: center;
         background: var(--add-to-cart-bg);
         position: relative;
-        font-size: 16px;
-        font-weight: 600;
-        color: white;
+        color: var(--add-to-cart-text-color);
         border: 1px solid rgba(255, 255, 255, 0.3);
-        border-radius: 37px;
+        border-radius: 50%;
         cursor: pointer;
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.4);
         transition: all 0.3s ease;
         overflow: hidden;
-        font-family: "Noto Kufi Arabic", sans-serif;
-        /* width: var(--add-to-cart-size); */
-        /* height: var(--add-to-cart-size); */
-        padding: 5px 14px;
     }
 
-    #shopini-add-to-cart-wrapper #shopini-add-to-cart svg {
+    #tlaboo-add-to-cart-wrapper #tlaboo-add-to-cart svg {
         display: inline-block;
         width: var(--icon-size);
         height: var(--icon-size);
     }
 
-    #shopini-add-to-cart-wrapper #shopini-add-to-cart:hover {
+    #tlaboo-add-to-cart-wrapper #tlaboo-add-to-cart:hover {
         background: var(--add-to-cart-bg-hover);
         border-color: rgba(255, 255, 255, 0.5);
         box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15),
@@ -112,20 +102,24 @@
     }
 
 
-    #shopini-add-to-cart-wrapper #shopini-add-to-cart:active {
-        scale: 0.98;
+    #tlaboo-add-to-cart-wrapper #tlaboo-add-to-cart:active {
+        scale: 0.95;
         transition: transform 0.2s ease;
     }
 
-    #shopini-add-to-cart-wrapper #shopini-add-to-cart.shopini-loading {
+    #tlaboo-add-to-cart-wrapper #tlaboo-add-to-cart.tlaboo-loading {
         pointer-events: none;
         cursor: default;
         color: transparent !important;
     }
 
-    #shopini-add-to-cart-wrapper #shopini-add-to-cart .shopini-loader {
+    #tlaboo-add-to-cart-wrapper #tlaboo-add-to-cart.tlaboo-loading svg {
         display: none;
-        width: var(--icon-size);
+    }
+
+    #tlaboo-add-to-cart-wrapper #tlaboo-add-to-cart .tlaboo-loader {
+        display: none;
+        width: calc(var(--icon-size) + 4px);
         aspect-ratio: 1;
         border-radius: 50%;
         background:
@@ -135,22 +129,39 @@
         animation: l13 1s infinite linear;
     }
 
-    #shopini-add-to-cart-wrapper #shopini-add-to-cart.shopini-loading .shopini-loader {
+    #tlaboo-add-to-cart-wrapper #tlaboo-add-to-cart.tlaboo-loading .tlaboo-loader {
         display: block;
     }
 
 
-    #shopini-price {
+    #tlaboo-price {
         display: flex;
         align-items: center;
-        color: white;
-        font-size: 18px;
-        font-weight: 600;
+
+        color: var(--add-to-cart-text-color);
+        font-size: 16px;
+        font-weight: 700;
+
         z-index: 9999;
+
+        /* White glass background */
         background: var(--add-to-cart-bg);
-        border: 1px solid rgba(255, 255, 255, 0.3);
+
+        /* Soft glass border */
+        border: 1px solid rgba(255, 255, 255, 0.5);
         border-radius: 37px;
-        padding: 8px 12px;
+
+        padding: 5px 15px;
+        height: var(--add-to-cart-size);
+
+        /* Glass blur */
+        backdrop-filter: blur(14px) saturate(180%);
+        -webkit-backdrop-filter: blur(14px) saturate(180%);
+
+        /* Glassy depth */
+        box-shadow:
+            0 8px 32px rgba(0, 0, 0, 0.12),
+            inset 0 1px 0 rgba(255, 255, 255, 0.8);
     }
 
     @keyframes l13 {

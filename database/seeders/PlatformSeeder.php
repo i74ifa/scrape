@@ -113,42 +113,42 @@ class PlatformSeeder extends Seeder
                 'currency_symbol' => 'ر.س',
                 'country' => 'SA',
             ],
-            [
-                'id' => 12,
-                'name' => 'Fashion Nova',
-                'url' => 'https://www.fashionnova.com',
-                'script_file' => 'fashion-nova',
-                'currency' => 'USD',
-                'currency_symbol' => '$',
-                'country' => 'US',
-            ],
-            [
-                'id' => 13,
-                'name' => 'Light In The Box',
-                'url' => 'https://www.lightinthebox.com',
-                'script_file' => 'light-in-the-box',
-                'currency' => 'USD',
-                'currency_symbol' => '$',
-                'country' => 'US',
-            ],
-            [
-                'id' => 14,
-                'name' => 'Flo',
-                'url' => 'https://www.flo.com.tr',
-                'script_file' => 'flo',
-                'currency' => 'TRY',
-                'currency_symbol' => '₺',
-                'country' => 'TR',
-            ],
-            [
-                'id' => 15,
-                'name' => 'Noon SA',
-                'url' => 'https://www.noon.com/saudi-ar',
-                'script_file' => 'noon',
-                'currency' => 'SAR',
-                'currency_symbol' => 'ر.س',
-                'country' => 'SA',
-            ]
+            // [
+            //     'id' => 12,
+            //     'name' => 'Fashion Nova',
+            //     'url' => 'https://www.fashionnova.com',
+            //     'script_file' => 'fashion-nova',
+            //     'currency' => 'USD',
+            //     'currency_symbol' => '$',
+            //     'country' => 'US',
+            // ],
+            // [
+            //     'id' => 13,
+            //     'name' => 'Light In The Box',
+            //     'url' => 'https://www.lightinthebox.com',
+            //     'script_file' => 'light-in-the-box',
+            //     'currency' => 'USD',
+            //     'currency_symbol' => '$',
+            //     'country' => 'US',
+            // ],
+            // [
+            //     'id' => 14,
+            //     'name' => 'Flo',
+            //     'url' => 'https://www.flo.com.tr',
+            //     'script_file' => 'flo',
+            //     'currency' => 'TRY',
+            //     'currency_symbol' => '₺',
+            //     'country' => 'TR',
+            // ],
+            // [
+            //     'id' => 15,
+            //     'name' => 'Noon SA',
+            //     'url' => 'https://www.noon.com/saudi-ar',
+            //     'script_file' => 'noon',
+            //     'currency' => 'SAR',
+            //     'currency_symbol' => 'ر.س',
+            //     'country' => 'SA',
+            // ]
         ];
 
         foreach ($data as $scraper) {
@@ -189,7 +189,7 @@ class PlatformSeeder extends Seeder
         $fileName = $path . '/' . Str::uuid() . '.' . $extension;
 
         /** @var \Illuminate\Contracts\Filesystem\Cloud $disk */
-        $disk = Storage::put($fileName, $imageData, 'public');
+        $disk = Storage::disk('r2')->put($fileName, $imageData);
         if (!$disk) {
             throw new \Exception('Failed to upload logo');
         }

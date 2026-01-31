@@ -5,7 +5,7 @@
     ];
 </script>
 
-<script id="shopini-script">
+<script id="tlaboo-script">
     // ==UserScript==
     // @name        New script gissah.com
     // @namespace   Violentmonkey Scripts
@@ -24,12 +24,12 @@
         outer: 'outerHTML',
         attr: 'getAttribute',
     };
-    const shopini_html = `{!! $html !!}`;
+    const tlaboo_html = `{!! $html !!}`;
 
 
 
     try {
-        shopiniRemoveDoms([
+        tlabooRemoveDoms([
             ".open-cart-sidebar",
             "#add_to_cart_wrap",
             ".o_we_buy_now",
