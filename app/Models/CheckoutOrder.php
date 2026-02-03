@@ -2,31 +2,29 @@
 
 namespace App\Models;
 
+use App\Enums;
 use Illuminate\Database\Eloquent\Model;
 
-class Order extends Model
+class CheckoutOrder extends Model
 {
     protected $fillable = [
-        'identifier',
-        'local_shipping',
+        'user_id',
+        'address_id',
+        'sub_total',
         'tax',
+        'local_shipping',
         'discount',
         'shipping',
-        'sub_total',
         'grand_total',
-        'status',
         'payment_method',
         'payment_status',
         'payment_reference',
-        'user_id',
-        'platform_id',
-        'checkout_order_id',
     ];
 
-    public function items()
-    {
-        return $this->hasMany(OrderItem::class);
-    }
+    protected $casts = [
+        'payment_method' => Enums\PaymentMethod::class,
+        'payment_status' => Enums\PaymentStatus::class,
+    ];
 
     public function user()
     {
@@ -36,5 +34,10 @@ class Order extends Model
     public function address()
     {
         return $this->belongsTo(Address::class);
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
     }
 }

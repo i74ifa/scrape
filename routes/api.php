@@ -28,6 +28,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('carts/{platform}', [Api\CartController::class, 'store']);
 });
 
+Route::prefix('orders')->middleware('auth:sanctum')->group(function () {
+    Route::get('', [Api\OrderController::class, 'index']);
+    Route::post('checkout', [Api\OrderController::class, 'checkout']);
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('payments', Api\PaymentController::class);
+});
+
 
 
 Route::fallback(function () {

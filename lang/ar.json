@@ -3,5 +3,19 @@
     "Invalid country code": "كود الدولة غير صحيح",
     "OTP sent successfully": "تم إرسال رمز التحقق بنجاح",
     "Invalid or expired OTP": "رمز التحقق غير صحيح أو انتهت صلاحيته",
-    "Authenticated successfully": "تم التحقق بنجاح"
+    "Authenticated successfully": "تم التحقق بنجاح",
+    "Pending": "قيد الانتظار",
+    "Approved": "تم الموافقة",
+    "Paid": "تم الدفع",
+    "Shipped": "تم الشحن",
+    "Delivered": "تم التوصيل",
+    "Cancelled": "تم الإلغاء",
+    "Returned": "تم الإرجاع",
+    "Waiting for payment": "في انتظار الدفع",
+    "Pending payment": "في انتظار الدفع",
+    "Partially refunded": "تم الإرجاع جزئياً",
+    "Refunded": "تم الإرجاع",
+    "Failed": "فشل",
+    "Bank transfer": "تحويل بنكي",
+    "Cash on delivery": "الدفع عند الاستلام"
 }

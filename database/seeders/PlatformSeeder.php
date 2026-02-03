@@ -158,11 +158,15 @@ class PlatformSeeder extends Seeder
                 continue;
             }
 
-            if (!isset($scraper['logo'])) {
-                $imageData = LogoDev::make($scraper['name'])->getLogoFileContent();
-                $scraper['logo'] = $this->uploadBase64ToS3($imageData);
+            if (config('app.env') !== 'local') {
+                if (!isset($scraper['logo'])) {
+                    $imageData = LogoDev::make($scraper['name'])->getLogoFileContent();
+                    $scraper['logo'] = $this->uploadBase64ToS3($imageData);
+                } else {
+                    $scraper['logo'] = $this->uploadBase64ToS3(LogoDev::getFileContents($scraper['logo']));
+                }
             } else {
-                $scraper['logo'] = $this->uploadBase64ToS3(LogoDev::getFileContents($scraper['logo']));
+                $scraper['logo'] = $scraper['logo'] ?? '';
             }
 
 
