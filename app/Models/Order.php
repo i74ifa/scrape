@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
     protected $fillable = [
-        'identifier',
+        'code',
         'local_shipping',
         'tax',
         'discount',
@@ -36,5 +37,23 @@ class Order extends Model
     public function address()
     {
         return $this->belongsTo(Address::class);
+    }
+
+    public static function generateCode($prefix = 'ORD')
+    {
+        // Get current date in YYYYMMDD format
+        $dateStr = date("Ymd");
+
+        // Generate a random 3-digit number (001-999)
+        $randomNumber = str_pad(rand(1, 99999999), 7, "0", STR_PAD_LEFT);
+
+        // Combine prefix, date, and random number
+        $orderCode = "{$prefix}-{$dateStr}-{$randomNumber}";
+
+        if (self::where('code', $orderCode)->exists()) {
+            return self::generateCode($prefix);
+        }
+
+        return $orderCode;
     }
 }

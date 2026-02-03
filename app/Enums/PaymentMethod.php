@@ -3,8 +3,10 @@
 namespace App\Enums;
 
 use App\Classes\BankTransfer;
+use App\Interfaces\PaymentMethodInterface;
 
 enum PaymentMethod: string
+
 
 {
     case BANK_TRANSFER = 'bank_transfer';
@@ -17,6 +19,15 @@ enum PaymentMethod: string
             self::CASH_ON_DELIVERY => __('Cash on delivery'),
         };
     }
+
+    public function getHandlerClass(): ?string
+    {
+        return match ($this) {
+            self::BANK_TRANSFER => BankTransfer::class,
+            default => null,
+        };
+    }
+
 
     public function bankTransfer(): ?BankTransfer
     {

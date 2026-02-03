@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class CheckoutOrder extends Model
 {
     protected $fillable = [
+        'code',
         'user_id',
         'address_id',
         'sub_total',
@@ -19,6 +20,10 @@ class CheckoutOrder extends Model
         'payment_method',
         'payment_status',
         'payment_reference',
+    ];
+
+    protected $hidden = [
+        'payment_reference'
     ];
 
     protected $casts = [
@@ -39,5 +44,10 @@ class CheckoutOrder extends Model
     public function orders()
     {
         return $this->hasMany(Order::class);
+    }
+
+    public static function generateCode()
+    {
+        return Order::generateCode();
     }
 }

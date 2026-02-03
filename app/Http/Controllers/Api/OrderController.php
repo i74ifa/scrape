@@ -12,6 +12,7 @@ use App\Enums\PaymentStatus;
 use Illuminate\Validation\Rules\Enum;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderResource;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
 
@@ -21,21 +22,38 @@ class OrderController extends Controller
     {
         // get user orders
         $user = auth()->user();
-        $orders = $user->orders()->with('items')->paginate(10);
+        $orders = $user->orders()->paginate(10);
 
         return OrderResource::collection($orders);
+    }
+
+    public function show(CheckoutOrder $order)
+    {
+        $order->load('orders.items');
+
+        return OrderResource::make($order);
     }
 
     public function checkout(Request $request)
     {
         try {
-            $validated = $request->validate([
+            $rules = [
                 'cart_ids' => 'required|array',
                 'cart_ids.*' => 'exists:carts,id',
                 'payment_method' => ['required', new Enum(PaymentMethod::class)],
-                'payment_reference' => 'required',
+                // 'payment_reference' => 'required',
                 'address_id' => 'required|exists:addresses,id',
-            ]);
+            ];
+
+            $paymentMethod = PaymentMethod::tryFrom($request->payment_method);
+            $paymentHandler = $paymentMethod->getHandlerClass();
+            $paymentHandlerInstance = $paymentHandler::make($request->all());
+
+            if ($paymentMethod && $handlerClass = $paymentMethod->getHandlerClass()) {
+                $rules = array_merge($rules, $handlerClass::rules());
+            }
+
+            $validated = $request->validate($rules);
 
             $paymentMethod = PaymentMethod::from($validated['payment_method']);
         } catch (ValidationException $e) {
@@ -45,69 +63,72 @@ class OrderController extends Controller
             ], 422);
         }
 
+        try {
+            DB::beginTransaction();
 
-        $carts = Cart::where('user_id', auth()->id())->whereIn('id', $validated['cart_ids'])->get();
 
-        if (!$carts) {
-            return response()->json([
-                'message' => 'Cart not found',
-            ], 404);
-        }
 
-        $checkoutOrder = CheckoutOrder::create([
-            'user_id' => auth()->id(),
-            'address_id' => $validated['address_id'],
-            'sub_total' => $carts->sum('subtotal'),
-            'tax' => $carts->sum('tax'),
-            'shipping' => $carts->sum('shipping'),
-            'discount' => $carts->sum('discount'),
-            'local_shipping' => $carts->sum('local_shipping'),
-            'grand_total' => $carts->sum('total'),
-            'payment_method' => PaymentMethod::CASH_ON_DELIVERY->value,
-            'payment_status' => PaymentStatus::PENDING->value,
-            'payment_reference' => $validated['payment_reference'],
-        ]);
+            $carts = Cart::where('user_id', auth()->id())->whereIn('id', $validated['cart_ids'])->get();
 
-        $subtotal = 0;
-        $tax = 0;
-        $shipping = 0;
-        $local_shipping = 0;
-        $total = 0;
-        $orderIds = [];
-        foreach ($carts as $cart) {
-            $order = Order::create([
-                'user_id' => auth()->id(),
-                'cart_id' => $cart->id,
-                'total' => $cart->total,
-                'subtotal' => $cart->subtotal,
-                'tax' => $cart->tax,
-                'shipping' => $cart->shipping,
-                'local_shipping' => $cart->local_shipping,
-            ]);
-
-            foreach ($cart->items as $item) {
-                OrderItem::create([
-                    'order_id' => $order->id,
-                    'product_id' => $item->product_id,
-                    'quantity' => $item->quantity,
-                    'price' => $item->price,
-                ]);
+            if (!$carts) {
+                return response()->json([
+                    'message' => 'Cart not found',
+                ], 404);
             }
 
-            $subtotal += $cart->subtotal;
-            $tax += $cart->tax;
-            $shipping += $cart->shipping;
-            $local_shipping += $cart->local_shipping;
-            $total += $cart->total;
+            $checkoutOrder = CheckoutOrder::create([
+                'user_id' => auth()->id(),
+                'address_id' => $validated['address_id'],
+                'sub_total' => $carts->sum('subtotal'),
+                'tax' => $carts->sum('tax'),
+                'shipping' => $carts->sum('shipping'),
+                'discount' => $carts->sum('discount'),
+                'local_shipping' => $carts->sum('local_shipping'),
+                'grand_total' => $carts->sum('total'),
+                'payment_method' => PaymentMethod::CASH_ON_DELIVERY->value,
+                'payment_status' => PaymentStatus::PENDING->value,
+                'payment_reference' => json_encode($paymentHandlerInstance->getData()),
+                'code' => CheckoutOrder::generateCode(),
+            ]);
 
-            $cart->delete();
 
-            $orderIds[] = $order->id;
+            foreach ($carts as $cart) {
+                $order = $checkoutOrder->orders()->create([
+                    'cart_id' => $cart->id,
+                    'total' => $cart->total,
+                    'subtotal' => $cart->subtotal,
+                    'tax' => $cart->tax,
+                    'shipping' => $cart->shipping,
+                    'local_shipping' => $cart->local_shipping,
+                    'platform_id' => $cart->platform_id,
+                    'code' => Order::generateCode(),
+                ]);
+
+                foreach ($cart->items as $item) {
+                    $order->items()->create([
+                        'product_id' => $item->product_id,
+                        'quantity' => $item->quantity,
+                        'price' => $item->price,
+                        'total' => $item->total,
+                    ]);
+                }
+
+                $cart->delete();
+            }
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Failed to create order',
+                'error' => $e->getMessage(),
+            ], 500);
         }
+
 
         return response()->json([
             'message' => 'Order created successfully',
-            'order' => new OrderResource($order),
+            'order' => new OrderResource($checkoutOrder),
         ]);
     }
 }

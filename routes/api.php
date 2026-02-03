@@ -9,7 +9,7 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::apiResource('addresses', Api\AddressController::class);
+Route::apiResource('addresses', Api\AddressController::class)->middleware('auth:sanctum');
 Route::apiResource('products', Api\ProductController::class)->except(['update']);
 
 Route::group(['prefix' => 'auth'], function () {
@@ -30,6 +30,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::prefix('orders')->middleware('auth:sanctum')->group(function () {
     Route::get('', [Api\OrderController::class, 'index']);
+    Route::get('{order}', [Api\OrderController::class, 'show']);
+
     Route::post('checkout', [Api\OrderController::class, 'checkout']);
 });
 

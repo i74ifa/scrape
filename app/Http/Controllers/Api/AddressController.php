@@ -23,10 +23,13 @@ class AddressController extends Controller
         $validated = $request->validate([
             'address_one' => 'nullable|string',
             'phone' => 'nullable|string',
-            'geometry' => 'nullable', // Assuming geometry is passed as string or handled by accessor/mutator if needed, keeping simple for now
+            'geometry' => 'nullable',
         ]);
 
-        return \App\Models\Address::create($validated);
+        return \App\Models\Address::create([
+            'user_id' => auth()->id(),
+            ...$validated
+        ]);
     }
 
     /**

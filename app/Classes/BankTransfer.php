@@ -2,23 +2,39 @@
 
 namespace App\Classes;
 
-class BankTransfer
-{
-    public function __construct(
-        public string $bankName,
-        public string $accountName,
-        public string $accountNumber,
-        public ?string $iban = null,
-        public ?string $swiftCode = null,
-    ) {}
+use App\Interfaces\PaymentMethodInterface;
 
-    public static function make(
-        string $bankName,
-        string $accountName,
-        string $accountNumber,
-        ?string $iban = null,
-        ?string $swiftCode = null
-    ): self {
-        return new self($bankName, $accountName, $accountNumber, $iban, $swiftCode);
+class BankTransfer implements PaymentMethodInterface
+{
+
+    protected $bankName;
+    protected $iban;
+
+    public function __construct(
+        $data
+    ) {
+        $this->bankName = $data['bank_name'];
+        $this->iban = $data['iban'];
+    }
+
+    public static function make($data): self
+    {
+        return new self($data);
+    }
+
+    public static function rules(): array
+    {
+        return [
+            'bank_name' => 'required|string',
+            'iban' => 'required|string',
+        ];
+    }
+
+    public function getData(): array
+    {
+        return [
+            'bank_name' => $this->bankName,
+            'iban' => $this->iban,
+        ];
     }
 }

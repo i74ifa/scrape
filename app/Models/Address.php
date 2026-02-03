@@ -11,5 +11,6 @@ class Address extends Model
         'address_one',
         'phone',
         'geometry',
+        'user_id',
     ];
 }
