@@ -3,14 +3,15 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Cart;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use App\Models\Platform;
 use App\Models\Product;
-use App\Services\Currency;
+use App\Models\Platform;
 use App\Services\Weight;
+use App\Services\Currency;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 use App\Http\Resources\CartResource;
+use App\Http\Resources\ProductResource;
+use Illuminate\Support\Facades\Validator;
 
 class CartController extends Controller
 {
@@ -74,6 +75,7 @@ class CartController extends Controller
 
         return response()->json([
             'message' => 'Scraping started',
+            'product' => ProductResource::make($product),
         ]);
     }
 }
