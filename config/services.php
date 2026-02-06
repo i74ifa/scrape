@@ -45,6 +45,10 @@ return [
         'api_key' => env('365_DIALOG_API_KEY'),
         'template' => env('365_DIALOG_TEMPLATE'),
         'url' => env('365_DIALOG_URL', 'https://waba.360dialog.io/v1/messages')
-    ]
+    ],
+
+    'fcm' => [
+        'project_id' => env('FCM_PROJECT_ID'),
+    ],
 
 ];

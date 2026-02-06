@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Cart;
 use App\Models\Order;
-use App\Models\OrderItem;
 use Illuminate\Http\Request;
 use App\Models\CheckoutOrder;
 use App\Enums\PaymentMethod;

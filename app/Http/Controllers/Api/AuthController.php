@@ -66,6 +66,8 @@ class AuthController extends Controller
                 'phone' => 'required|string',
                 'otp' => 'required|numeric|digits:4',
                 'country_code' => 'nullable|string',
+                'device_token' => 'nullable|string',
+                'device_type' => 'nullable|in:android,ios,ipados',
             ]);
         } catch (ValidationException $th) {
             return response()->json([
@@ -108,6 +110,9 @@ class AuthController extends Controller
         }
 
         $token = $user->createToken('auth_token')->plainTextToken;
+
+        $user->device_token = $request->device_token;
+        $user->device_type = $request->device_type;
 
         return response()->json([
             'message' => trans('Authenticated successfully'),
