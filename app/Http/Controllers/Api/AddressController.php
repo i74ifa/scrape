@@ -23,13 +23,10 @@ class AddressController extends Controller
         $validated = $request->validate([
             'address_one' => 'nullable|string',
             'phone' => 'nullable|string',
-            'longitude' => 'nullable',
-            'latitude' => 'nullable',
+            'longitude' => 'nullable|numeric',
+            'latitude' => 'nullable|numeric',
         ]);
 
-
-        // format: longitude, latitude, we will convert it to geometry
-        $validated['geometry'] = $validated['longitude'] && $validated['latitude'] ? "POINT(" . $validated['longitude'] . " " . $validated['latitude'] . ")" : null;
 
         return \App\Models\Address::create([
             'user_id' => auth()->id(),
@@ -55,7 +52,8 @@ class AddressController extends Controller
         $validated = $request->validate([
             'address_one' => 'nullable|string',
             'phone' => 'nullable|string',
-            'geometry' => 'nullable',
+            'longitude' => 'nullable|numeric',
+            'latitude' => 'nullable|numeric',
         ]);
 
         $address->update($validated);

@@ -10,7 +10,8 @@ class Address extends Model
     protected $fillable = [
         'address_one',
         'phone',
-        'geometry',
+        'latitude',
+        'longitude',
         'user_id',
     ];
 }
