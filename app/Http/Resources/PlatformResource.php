@@ -19,7 +19,7 @@ class PlatformResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'description' => $this->when($request->description, $this->description),
-            'logo' => Storage::disk('r2')->url($this->logo),
+            'logo' => url($this->logo),
             'country' => $this->country,
             'url' => $this->url,
         ];
