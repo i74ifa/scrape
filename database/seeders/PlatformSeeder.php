@@ -21,6 +21,7 @@ class PlatformSeeder extends Seeder
                 'currency' => 'SAR',
                 'currency_symbol' => 'ر.س',
                 'country' => 'SA',
+                'logo' => '/images/icons/amazon.png'
             ],
             [
                 'id' => 2,
@@ -30,16 +31,18 @@ class PlatformSeeder extends Seeder
                 'currency' => 'SAR',
                 'currency_symbol' => 'ر.س',
                 'country' => 'SA',
+                'logo' => '/images/icons/aliexpress.png'
             ],
-            [
-                'id' => 3,
-                'name' => 'Trendyol',
-                'url' => 'https://www.trendyol.com/ar',
-                'script_file' => 'trendyol',
-                'currency' => 'SAR',
-                'currency_symbol' => 'ر.س',
-                'country' => 'SA',
-            ],
+            // [
+            //     'id' => 3,
+            //     'name' => 'Trendyol',
+            //     'url' => 'https://www.trendyol.com/ar',
+            //     'script_file' => 'trendyol',
+            //     'currency' => 'SAR',
+            //     'currency_symbol' => 'ر.س',
+            //     'country' => 'SA',
+            //     'logo' => '/images/icons/trendyol.png'
+            // ],
             [
                 'id' => 4,
                 'name' => 'Ebay',
@@ -48,6 +51,7 @@ class PlatformSeeder extends Seeder
                 'currency' => 'USD',
                 'currency_symbol' => '$',
                 'country' => 'US',
+                'logo' => '/images/icons/ebay.png'
             ],
             [
                 'id' => 5,
@@ -57,6 +61,7 @@ class PlatformSeeder extends Seeder
                 'currency' => 'SAR',
                 'currency_symbol' => 'ر.س',
                 'country' => 'SA',
+                'logo' => '/images/icons/shein.png'
             ],
             [
                 'id' => 6,
@@ -66,6 +71,7 @@ class PlatformSeeder extends Seeder
                 'currency' => 'SAR',
                 'currency_symbol' => 'ر.س',
                 'country' => 'SA',
+                'logo' => '/images/icons/zara.png'
             ],
             [
                 'id' => 7,
@@ -75,6 +81,7 @@ class PlatformSeeder extends Seeder
                 'currency' => 'SAR',
                 'currency_symbol' => 'ر.س',
                 'country' => 'SA',
+                'logo' => '/images/icons/sephora.png'
             ],
             [
                 'id' => 8,
@@ -84,7 +91,7 @@ class PlatformSeeder extends Seeder
                 'currency' => 'SAR',
                 'currency_symbol' => 'ر.س',
                 'country' => 'SA',
-                'logo' => 'https://gissah.com/web/image/website/2/logo/Kuwait?unique=31ed69a',
+                'logo' => '/images/icons/gissah.png',
             ],
             [
                 'id' => 9,
@@ -94,6 +101,7 @@ class PlatformSeeder extends Seeder
                 'currency' => 'SAR',
                 'currency_symbol' => 'ر.س',
                 'country' => 'SA',
+                'logo' => '/images/icons/puma.png'
             ],
             [
                 'id' => 10,
@@ -103,6 +111,7 @@ class PlatformSeeder extends Seeder
                 'currency' => 'SAR',
                 'currency_symbol' => 'ر.س',
                 'country' => 'SA',
+                'logo' => '/images/icons/nike.png'
             ],
             [
                 'id' => 11,
@@ -112,6 +121,7 @@ class PlatformSeeder extends Seeder
                 'currency' => 'SAR',
                 'currency_symbol' => 'ر.س',
                 'country' => 'SA',
+                'logo' => '/images/icons/adidas.png'
             ],
             // [
             //     'id' => 12,
@@ -158,16 +168,16 @@ class PlatformSeeder extends Seeder
                 continue;
             }
 
-            if (config('app.env') !== 'local') {
-                if (!isset($scraper['logo'])) {
-                    $imageData = LogoDev::make($scraper['name'])->getLogoFileContent();
-                    $scraper['logo'] = $this->uploadBase64ToS3($imageData);
-                } else {
-                    $scraper['logo'] = $this->uploadBase64ToS3(LogoDev::getFileContents($scraper['logo']));
-                }
-            } else {
-                $scraper['logo'] = $scraper['logo'] ?? '';
-            }
+            // if (config('app.env') !== 'local') {
+            //     if (!isset($scraper['logo'])) {
+            //         $imageData = LogoDev::make($scraper['name'])->getLogoFileContent();
+            //         $scraper['logo'] = $this->uploadBase64ToS3($imageData);
+            //     } else {
+            //         $scraper['logo'] = $this->uploadBase64ToS3(LogoDev::getFileContents($scraper['logo']));
+            //     }
+            // } else {
+            //     $scraper['logo'] = $scraper['logo'] ?? '';
+            // }
 
 
             DB::table('platforms')->insert($scraper);
