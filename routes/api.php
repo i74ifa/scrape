@@ -24,18 +24,18 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('carts', [Api\CartController::class, 'index']);
-    Route::post('carts/{platform}', [Api\CartController::class, 'store']);
-});
+    Route::prefix('carts')->name('carts.')->group(function () {
+        Route::get('', [Api\CartController::class, 'index'])->name('index');
+        Route::post('{platform}', [Api\CartController::class, 'store'])->name('store');
+    });
 
-Route::prefix('orders')->middleware('auth:sanctum')->group(function () {
-    Route::get('', [Api\OrderController::class, 'index']);
-    Route::get('{order}', [Api\OrderController::class, 'show']);
+    Route::prefix('orders')->group(function () {
+        Route::get('', [Api\OrderController::class, 'index']);
+        Route::get('{order}', [Api\OrderController::class, 'show']);
 
-    Route::post('checkout', [Api\OrderController::class, 'checkout']);
-});
+        Route::post('checkout', [Api\OrderController::class, 'checkout']);
+    });
 
-Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('payments', Api\PaymentController::class);
 });
 

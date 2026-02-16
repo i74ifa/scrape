@@ -11,11 +11,32 @@ class Currency
 {
 
     private static $currencySymbols = [
-        'YER' => 'ر.ي',
         'USD' => '$',
         'EUR' => '€',
         'GBP' => '£',
-        'TRY' => 'TL'
+        'JPY' => '¥',
+        'CNY' => '¥',
+        'CAD' => '$',
+        'AUD' => '$',
+        'CHF' => 'Fr',
+        'SEK' => 'kr',
+        'NZD' => '$',
+        'HKD' => 'HK$',
+        'SGD' => 'S$',
+        'NOK' => 'kr',
+        'MXN' => '$',
+        'BRL' => 'R$',
+        'ZAR' => 'R',
+        'TRY' => '₺',
+        'INR' => '₹',
+        'RUB' => '₽',
+        'AED' => 'د.إ',
+        'SAR' => 'ر.س',
+        'QAR' => 'ر.ق',
+        'KWD' => 'د.ك',
+        'BHD' => 'د.ب',
+        'OMR' => 'ر.ع.',
+        'default' => '$',
     ];
 
     /**
@@ -70,9 +91,16 @@ class Currency
 
     public static function format($amount, $currency = 'YER')
     {
-        $currencySymbol = self::$currencySymbols[$currency] ?? $currency;
-
         // format pattern
-        return number_format($amount, 0, '.', ',') . ' ' . $currencySymbol;
+        return number_format($amount, 2, '.', ',') . ' ' . self::getCurrencySymbol($currency);
+    }
+
+    public static function getCurrencySymbol($currency = 'YER', $start = true)
+    {
+        $symbol = self::$currencySymbols[$currency] ?? $currency;
+        if ($start) {
+            return $symbol . ' ';
+        }
+        return ' ' . $symbol;
     }
 }
