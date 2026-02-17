@@ -37,8 +37,8 @@ class OrderController extends Controller
     {
         try {
             $rules = [
-                'cart_ids' => 'required|array',
-                'cart_ids.*' => 'exists:carts,id',
+                // 'cart_ids' => 'required|array',
+                // 'cart_ids.*' => 'exists:carts,id',
                 'payment_method' => ['required', new Enum(PaymentMethod::class)],
                 // 'payment_reference' => 'required',
                 'address_id' => 'required|exists:addresses,id',
@@ -65,7 +65,8 @@ class OrderController extends Controller
         try {
             DB::beginTransaction();
 
-            $carts = Cart::where('user_id', auth()->id())->whereIn('id', $validated['cart_ids'])->get();
+            // $carts = Cart::where('user_id', auth()->id())->whereIn('id', $validated['cart_ids'])->get();
+            $carts = Cart::where('user_id', auth()->id())->get();
 
             if (!$carts) {
                 return response()->json([
