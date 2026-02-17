@@ -65,8 +65,6 @@ class OrderController extends Controller
         try {
             DB::beginTransaction();
 
-
-
             $carts = Cart::where('user_id', auth()->id())->whereIn('id', $validated['cart_ids'])->get();
 
             if (!$carts) {
@@ -84,7 +82,7 @@ class OrderController extends Controller
                 'discount' => $carts->sum('discount'),
                 'local_shipping' => $carts->sum('local_shipping'),
                 'grand_total' => $carts->sum('total'),
-                'payment_method' => PaymentMethod::CASH_ON_DELIVERY->value,
+                'payment_method' => $paymentMethod->value,
                 'payment_status' => PaymentStatus::PENDING->value,
                 'payment_reference' => json_encode($paymentHandlerInstance->getData()),
                 'code' => CheckoutOrder::generateCode(),
