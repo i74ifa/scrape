@@ -22,7 +22,7 @@ class FcmTest extends TestCase
     {
 
         $user = \App\Models\User::find(71);
-        
+
 
         // $user->notify(
         //     new DropshippingOrderStatusNotify(
@@ -30,16 +30,16 @@ class FcmTest extends TestCase
         //     );
         //     return;
 
-        
-        $fcm = $user->device_token;
-        $token = 'c49ZW_nMTU0VhFp9lTa0o2:APA91bH3ALn86bKTq3y1bykpftyzwXw3dotLvLsBMb-UegtYkR0Kf4smwZqVmU1r6aIBQi84XwbN9ksbPxjFhKtPs1EVHDDngMGezmrX3yTRiFSllpXyIGc';
+
+        // $fcm = $user->device_token;
+        $token = 'fvtssrk-SEiMJq9UHIZtzS:APA91bF-ETHrEAZzAFbYH2Vh90PHOd_C4elGcgnAg3bJ4QutNgZrNlGOxVqhFVy-SRNsoQq49ys9rJ5AwWNKrnG8i8GeSsXR-ieCu8lFFBvyrug28N2vC1M';
 
         $fcm = new Fcm();
         $res = $fcm->send(new FcmBody([
             'token' => $token,
             'title' => 'اشعار خاص جدا',
             'description' => 'اشعار خاص ماله فايده ✅',
-            'url' => route('dropshippings.queryable',[], false),
+            'url' => '',
         ]));
 
         return;

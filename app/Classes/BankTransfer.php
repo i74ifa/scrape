@@ -7,15 +7,16 @@ use App\Interfaces\PaymentMethodInterface;
 class BankTransfer implements PaymentMethodInterface
 {
 
-    protected $bankName;
-    protected $iban;
-    protected $image;
+    public $bankName;
+    public $iban;
+    public $image;
 
     public function __construct(
         $data
     ) {
         $this->bankName = $data['bank_name'];
-        $this->iban = $data['iban'];
+        $this->iban = $data['iban'] ?? null;
+        $this->image = $data['image'] ?? null;
     }
 
     public static function make($data): self
@@ -27,8 +28,8 @@ class BankTransfer implements PaymentMethodInterface
     {
         return [
             'bank_name' => 'required|string',
-            'iban' => 'required_if:image,null|string',
-            'image' => 'required_if:iban,null|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'iban'  => 'required_if:image,null|string|sometimes',
+            'image' => 'required_if:iban,null|image|mimes:jpeg,png,jpg,gif|max:2048|sometimes',
         ];
     }
 

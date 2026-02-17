@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Classes\BankTransfer;
 use App\Models\Cart;
 use App\Models\Order;
 use Illuminate\Http\Request;
@@ -12,6 +13,7 @@ use Illuminate\Validation\Rules\Enum;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\OrderResource;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 
 
@@ -72,6 +74,14 @@ class OrderController extends Controller
                 return response()->json([
                     'message' => 'Cart not found',
                 ], 404);
+            }
+
+            if ($paymentHandler == BankTransfer::class) {
+                if ($request->hasFile('image')) {
+                    $image = $request->file('image')->store('images', 'public');
+
+                    $paymentHandlerInstance->image = $image;
+                }
             }
 
             $checkoutOrder = CheckoutOrder::create([
