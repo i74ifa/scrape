@@ -106,12 +106,13 @@ class CartController extends Controller
 
     public function totals(Request $request)
     {
-        $request->validate([
-            'cart_ids' => 'required|array',
-            'cart_ids.*' => 'exists:carts,id',
-        ]);
+        // $request->validate([
+        //     'cart_ids' => 'required|array',
+        //     'cart_ids.*' => 'exists:carts,id',
+        // ]);
 
-        $carts = Cart::where('user_id', auth()->id())->whereIn('id', $request->cart_ids)->get();
+        // $carts = Cart::where('user_id', auth()->id())->whereIn('id', $request->cart_ids)->get();
+        $carts = Cart::where('user_id', auth()->id())->get();
 
         return response()->json([
             'subtotal' => $carts->sum('subtotal'),
