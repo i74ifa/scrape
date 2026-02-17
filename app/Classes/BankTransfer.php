@@ -9,6 +9,7 @@ class BankTransfer implements PaymentMethodInterface
 
     protected $bankName;
     protected $iban;
+    protected $image;
 
     public function __construct(
         $data
@@ -26,7 +27,8 @@ class BankTransfer implements PaymentMethodInterface
     {
         return [
             'bank_name' => 'required|string',
-            'iban' => 'required|string',
+            'iban' => 'required_if:image,null|string',
+            'image' => 'required_if:iban,null|image|mimes:jpeg,png,jpg,gif|max:2048',
         ];
     }
 
@@ -35,6 +37,7 @@ class BankTransfer implements PaymentMethodInterface
         return [
             'bank_name' => $this->bankName,
             'iban' => $this->iban,
+            'image' => $this->image,
         ];
     }
 }
