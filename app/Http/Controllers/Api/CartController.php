@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Resources\CartItemResource;
 use App\Models\Cart;
 use App\Models\Product;
 use App\Models\Platform;
@@ -11,6 +12,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Resources\CartResource;
 use App\Http\Resources\ProductResource;
+use App\Models\CartItem;
 use Illuminate\Support\Facades\Validator;
 
 class CartController extends Controller
@@ -76,6 +78,48 @@ class CartController extends Controller
         return response()->json([
             'message' => 'Scraping started',
             'product' => ProductResource::make($product),
+        ]);
+    }
+
+    public function incrementQty(Request $request)
+    {
+        $request->validate([
+            'cart_item_id' => 'required|exists:cart_items,id',
+        ]);
+
+        $cartItem = CartItem::where('user_id', auth()->id())->where('id', $request->cart_item_id)->first();
+
+        if (!$cartItem) {
+            return response()->json([
+                'message' => 'Cart item not found',
+            ], 404);
+        }
+
+        $cartItem->quantity++;
+        $cartItem->save();
+
+        return response()->json([
+            'message' => __('Cart item updated successfully'),
+            'cart_item' => CartItemResource::make($cartItem),
+        ]);
+    }
+
+    public function totals(Request $request)
+    {
+        $request->validate([
+            'cart_ids' => 'required|array',
+            'cart_ids.*' => 'exists:carts,id',
+        ]);
+
+        $carts = Cart::where('user_id', auth()->id())->whereIn('id', $request->cart_ids)->get();
+
+        return response()->json([
+            'subtotal' => $carts->sum('subtotal'),
+            'tax' => $carts->sum('tax'),
+            'shipping' => $carts->sum('shipping'),
+            'discount' => $carts->sum('discount'),
+            'local_shipping' => $carts->sum('local_shipping'),
+            'total' => $carts->sum('total'),
         ]);
     }
 }

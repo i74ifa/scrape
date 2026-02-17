@@ -17,5 +17,7 @@
     "Refunded": "تم الإرجاع",
     "Failed": "فشل",
     "Bank transfer": "تحويل بنكي",
-    "Cash on delivery": "الدفع عند الاستلام"
+    "Cash on delivery": "الدفع عند الاستلام",
+    "Cart updated successfully": "تم تحديث السلة بنجاح",
+    "Cart item updated successfully": "تم تحديث عنصر السلة بنجاح"
 }

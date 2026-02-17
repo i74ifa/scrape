@@ -27,6 +27,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('carts')->name('carts.')->group(function () {
         Route::get('', [Api\CartController::class, 'index'])->name('index');
         Route::post('{platform}', [Api\CartController::class, 'store'])->name('store');
+        Route::get('totals', [Api\CartController::class, 'totals']);
     });
 
     Route::prefix('orders')->group(function () {
