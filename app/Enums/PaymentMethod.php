@@ -10,13 +10,13 @@ enum PaymentMethod: string
 
 {
     case BANK_TRANSFER = 'bank_transfer';
-    case CASH_ON_DELIVERY = 'cash_on_delivery';
+    // case CASH_ON_DELIVERY = 'cash_on_delivery';
 
     public function label(): string
     {
         return match ($this) {
             self::BANK_TRANSFER => __('Bank transfer'),
-            self::CASH_ON_DELIVERY => __('Cash on delivery'),
+            // self::CASH_ON_DELIVERY => __('Cash on delivery'),
         };
     }
 
@@ -32,11 +32,11 @@ enum PaymentMethod: string
     public function bankTransfer(): ?BankTransfer
     {
         return match ($this) {
-            self::BANK_TRANSFER => BankTransfer::make(
-                bankName: 'Al-Kuraimi Bank',
-                accountName: 'Company Name',
-                accountNumber: '1234567890',
-            ),
+            self::BANK_TRANSFER => BankTransfer::make([
+                'bank_name' => 'Al-Kuraimi Bank',
+                'account_name' => 'Company Name',
+                'account_number' => '1234567890',
+            ]),
             default => null,
         };
     }
@@ -48,10 +48,10 @@ enum PaymentMethod: string
                 'name' => self::BANK_TRANSFER->value,
                 'label' => self::BANK_TRANSFER->label(),
             ],
-            [
-                'name' => self::CASH_ON_DELIVERY->value,
-                'label' => self::CASH_ON_DELIVERY->label(),
-            ],
+            // [
+            //     'name' => self::CASH_ON_DELIVERY->value,
+            //     'label' => self::CASH_ON_DELIVERY->label(),
+            // ],
         ];
     }
 }
