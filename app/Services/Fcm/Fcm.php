@@ -12,7 +12,7 @@ class Fcm
     {
         $projectId = config('services.fcm.project_id');
         $client = new Client();
-        $client->setAuthConfig(storage_path('app/json/app_cert.json'));
+        $client->setAuthConfig(storage_path('json/app_cert.json'));
         $client->addScope('https://www.googleapis.com/auth/firebase.messaging');
         $client->fetchAccessTokenWithAssertion();
         $token = $client->getAccessToken();
