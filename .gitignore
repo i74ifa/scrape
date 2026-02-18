@@ -27,3 +27,6 @@ Thumbs.db
 frankenphp
 frankenphp-worker.php
 /storage/json/
+/public/fonts
+/public/css/filament
+/public/js/filament
