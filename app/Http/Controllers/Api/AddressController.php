@@ -12,7 +12,7 @@ class AddressController extends Controller
      */
     public function index()
     {
-        return \App\Models\Address::all();
+        return \App\Models\Address::where('user_id', auth()->id())->get();
     }
 
     /**
