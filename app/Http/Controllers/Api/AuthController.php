@@ -9,6 +9,8 @@ use App\Modules\M365Dialog;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Services\Fcm\Fcm;
+use App\Services\Fcm\FcmBody;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
@@ -114,6 +116,20 @@ class AuthController extends Controller
         $user->device_token = $request->device_token;
         $user->device_type = $request->device_type;
         $user->save();
+
+        // send welcome otp
+
+        try {
+            $fcm = new Fcm();
+            $res = $fcm->send(new FcmBody([
+                'token' => $request->device_token,
+                'title' => 'ياهلا ومرحبا',
+                'description' => 'حسابك عندنا، منتظرين اول طلب 🫰',
+                'url' => '',
+            ]));
+        } catch (\Exception $th) {
+            //throw $th;
+        }
 
         return response()->json([
             'message' => trans('Authenticated successfully'),

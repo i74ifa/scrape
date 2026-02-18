@@ -30,9 +30,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('totals', [Api\CartController::class, 'totals']);
     });
 
-    Route::prefix('orders')->group(function () {
+    Route::prefix('orders')->name('orders.')->group(function () {
         Route::get('', [Api\OrderController::class, 'index']);
-        Route::get('{order}', [Api\OrderController::class, 'show']);
+        Route::get('{order}', [Api\OrderController::class, 'show'])->name('show');
 
         Route::post('checkout', [Api\OrderController::class, 'checkout']);
     });

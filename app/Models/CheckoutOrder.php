@@ -20,6 +20,7 @@ class CheckoutOrder extends Model
         'payment_method',
         'payment_status',
         'payment_reference',
+        'status',
     ];
 
     protected $hidden = [
@@ -29,6 +30,7 @@ class CheckoutOrder extends Model
     protected $casts = [
         'payment_method' => Enums\PaymentMethod::class,
         'payment_status' => Enums\PaymentStatus::class,
+        'status' => Enums\CheckoutOrderStatus::class,
     ];
 
     public function user()

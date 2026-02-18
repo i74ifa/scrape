@@ -12,7 +12,11 @@ enum CheckoutOrderStatus: string
 
     public static function toArray(): array
     {
-        return array_map(fn($case) => $case->value, self::cases());
+        return collect(self::cases())
+            ->mapWithKeys(fn($case) => [
+                $case->value => $case->label(),
+            ])
+            ->toArray();
     }
 
     public function label(): string
