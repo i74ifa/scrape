@@ -39,7 +39,7 @@ class AddressController extends Controller
      */
     public function show(string $id)
     {
-        return \App\Models\Address::findOrFail($id);
+        return \App\Models\Address::where('user_id', auth()->id())->findOrFail($id);
     }
 
     /**
@@ -47,7 +47,7 @@ class AddressController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $address = \App\Models\Address::findOrFail($id);
+        $address = \App\Models\Address::where('user_id', auth()->id())->findOrFail($id);
 
         $validated = $request->validate([
             'address_one' => 'nullable|string',
@@ -66,7 +66,7 @@ class AddressController extends Controller
      */
     public function destroy(string $id)
     {
-        \App\Models\Address::destroy($id);
+        \App\Models\Address::where('user_id', auth()->id())->destroy($id);
 
         return response()->noContent();
     }
