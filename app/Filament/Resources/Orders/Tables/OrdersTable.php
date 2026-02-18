@@ -12,7 +12,7 @@ use Filament\Actions\EditAction;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Table;
 use Filament\Tables\Columns;
-
+use Illuminate\Support\Facades\Log;
 
 class OrdersTable
 {
@@ -58,10 +58,12 @@ class OrdersTable
                             $user->notify(new ChangeOrderStatusNotify(
                                 order: $record,
                                 title: trans('Order Status Changed'),
-                                description: trans('Order Status Changed to :status', ['status' => $data['status']]),
+                                description: trans('Order Status Changed to :status', ['status' => OrderStatus::APPROVED->label()]),
                                 url: route('orders.show', $record->id),
                             ));
                         } catch (\Exception $th) {
+                            dd($th->getMessage());
+                            Log::info($th->getMessage());
                             //throw $th;
                         }
                     }),

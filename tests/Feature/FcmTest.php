@@ -32,7 +32,7 @@ class FcmTest extends TestCase
 
 
         // $fcm = $user->device_token;
-        $token = 'fvtssrk-SEiMJq9UHIZtzS:APA91bF-ETHrEAZzAFbYH2Vh90PHOd_C4elGcgnAg3bJ4QutNgZrNlGOxVqhFVy-SRNsoQq49ys9rJ5AwWNKrnG8i8GeSsXR-ieCu8lFFBvyrug28N2vC1M';
+        $token = 'fFubuD2wRP2GgJjLRqAyOt:APA91bFrch7gY_4xud2r0pWjuW5LO9hS9Z058E4OjMPJXgc0Qd6FwU159DuG4eJ5seImhMujhF4fAGY4--YlaaokF07Bo3sG10WbavZEujzlTtuxxGGFmHw';
 
         $fcm = new Fcm();
         $res = $fcm->send(new FcmBody([

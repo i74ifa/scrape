@@ -4,6 +4,7 @@ namespace App\Broadcasting;
 
 use App\Models\User;
 use App\Services\Fcm\Fcm;
+use Illuminate\Support\Facades\Log;
 
 class FcmChannel
 {
@@ -22,6 +23,7 @@ class FcmChannel
     {
         $fcmBody = $notification->toFcm($notifiable);
 
+        Log::info('fcmBody', [$fcmBody]);
         if ($fcmBody) {
             $fcm = new Fcm();
             $fcm->send($fcmBody);

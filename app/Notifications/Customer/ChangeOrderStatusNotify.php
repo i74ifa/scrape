@@ -38,10 +38,16 @@ class ChangeOrderStatusNotify extends Notification
         $userLocale = $notifiable->locale ?? 'ar';
 
         return new FcmBody([
-            'title' => trans($this->title, $userLocale),
-            'description' => trans($this->description, $userLocale),
+            'title' => trans(
+                key: $this->title,
+                locale: $userLocale
+            ),
+            'description' => trans(
+                key: $this->description,
+                locale: $userLocale
+            ),
             'url' => $this->url,
-            'token' => $notifiable->device_token,
+            'token' => $notifiable->fcm_token,
         ]);
     }
     /**
