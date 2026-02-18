@@ -23,7 +23,6 @@ class FcmChannel
     {
         $fcmBody = $notification->toFcm($notifiable);
 
-        Log::info('fcmBody', [$fcmBody]);
         if ($fcmBody) {
             $fcm = new Fcm();
             $fcm->send($fcmBody);

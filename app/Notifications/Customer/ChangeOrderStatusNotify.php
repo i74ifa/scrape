@@ -41,13 +41,13 @@ class ChangeOrderStatusNotify extends Notification
             'title' => trans(
                 key: $this->title,
                 locale: $userLocale
-            ),
+            ) ?? '',
             'description' => trans(
                 key: $this->description,
                 locale: $userLocale
-            ),
-            'url' => $this->url,
-            'token' => $notifiable->fcm_token,
+            ) ?? '',
+            'url' => $this->url ?? '',
+            'token' => $notifiable->device_token,
         ]);
     }
     /**

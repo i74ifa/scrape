@@ -37,5 +37,11 @@
     "Paid": "دُفِعت",
     "Unpaid": "لم تُدفع",
     "Change Status": "تغيير الحالة",
-    "Order Status Changed to :status": "حالة طلبك صارت :status"
+    "Order Status Changed to :status": "حالة طلبك صارت :status",
+    "approved": "تم القبول",
+    "pending": "قيد الانتظار",
+    "shipped": "تم الشحن",
+    "delivered": "تم التوصيل",
+    "cancelled": "تم الإلغاء",
+    "returned": "تم الإرجاع"
 }
