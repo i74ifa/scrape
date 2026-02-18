@@ -20,7 +20,7 @@ class ChangeOrderStatusNotify extends Notification
     {
         $this->title = $title ?? __('Order Status Changed');
         $this->description = $description ?? __('Order Status Changed');
-        $this->url = $url ?? route('orders.show', $order->id);
+        $this->url = $url ?? route('orders.show', $order->id, false);
     }
 
     /**
