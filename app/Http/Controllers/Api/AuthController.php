@@ -113,6 +113,7 @@ class AuthController extends Controller
 
         $user->device_token = $request->device_token;
         $user->device_type = $request->device_type;
+        $user->save();
 
         return response()->json([
             'message' => trans('Authenticated successfully'),

@@ -24,6 +24,8 @@ class User extends Authenticatable
         'phone',
         'country_code',
         'password',
+        'device_token',
+        'device_type',
     ];
 
     /**
