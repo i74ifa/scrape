@@ -16,6 +16,7 @@ class CheckoutOrderResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'code' => $this->code,
             'sub_total' => $this->sub_total,
             'grand_total' => $this->grand_total,
             'local_shipping' => $this->local_shipping,

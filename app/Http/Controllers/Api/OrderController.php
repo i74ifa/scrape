@@ -137,7 +137,7 @@ class OrderController extends Controller
 
         return response()->json([
             'message' => 'Order created successfully',
-            'order' => new OrderResource($checkoutOrder),
+            'order' => new CheckoutOrderResource($checkoutOrder),
         ]);
     }
 }
