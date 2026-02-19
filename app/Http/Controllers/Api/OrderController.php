@@ -31,7 +31,7 @@ class OrderController extends Controller
 
     public function show(CheckoutOrder $order)
     {
-        $order->load('orders.items:id,order_id,product_id,quantity,price,total', 'orders.items.product:id,name,price,image,weight', 'address:id,address_one,phone,latitude,longitude');
+        $order->load('orders.platform:id,name,url,logo', 'orders.items:id,order_id,product_id,quantity,price,total', 'orders.items.product:id,name,price,image,weight', 'address:id,address_one,phone,latitude,longitude');
 
         return CheckoutOrderResource::make($order);
     }

@@ -20,6 +20,7 @@ class OrderResource extends JsonResource
             'status' => $this->status->label(),
 
             'items' => OrderItemResource::collection($this->whenLoaded('items')),
+            'platform' => $this->whenLoaded('platform'),
         ];
     }
 }

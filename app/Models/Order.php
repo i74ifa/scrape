@@ -44,6 +44,11 @@ class Order extends Model
         return $this->belongsTo(Address::class);
     }
 
+    public function platform()
+    {
+        return $this->belongsTo(Platform::class);
+    }
+
     public static function generateCode($prefix = 'ORD')
     {
         // Get current date in YYYYMMDD format
