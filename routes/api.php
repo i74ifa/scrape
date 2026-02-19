@@ -40,6 +40,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('payments', Api\PaymentController::class);
 });
 
+Route::get('pages/{slug}', [Api\PageController::class, 'show']);
 
 
 Route::fallback(function () {

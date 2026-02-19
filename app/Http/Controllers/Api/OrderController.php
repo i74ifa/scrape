@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Classes\BankTransfer;
+use App\Enums\CheckoutOrderStatus;
 use App\Models\Cart;
 use App\Models\Order;
 use Illuminate\Http\Request;
@@ -95,9 +96,10 @@ class OrderController extends Controller
                 'local_shipping' => $carts->sum('local_shipping'),
                 'grand_total' => $carts->sum('total'),
                 'payment_method' => $paymentMethod->value,
-                'payment_status' => PaymentStatus::PENDING->value,
+                'payment_status' => CheckoutOrderStatus::PARTIALLY_REFUNDED,
                 'payment_reference' => json_encode($paymentHandlerInstance->getData()),
                 'code' => CheckoutOrder::generateCode(),
+                // 'status' => CheckoutOrderStatus::
             ]);
 
 

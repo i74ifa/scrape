@@ -7,6 +7,7 @@
         "dev": "vite"
     },
     "devDependencies": {
+        "@tailwindcss/typography": "^0.5.19",
         "@tailwindcss/vite": "^4.1.18",
         "@types/react": "^19.2.14",
         "@types/react-dom": "^19.2.3",
@@ -20,7 +21,9 @@
         "vite-tsconfig-paths": "^6.1.1"
     },
     "dependencies": {
+        "@tanstack/react-query": "^5.90.21",
         "@vitejs/plugin-react": "^5.1.4",
-        "react": "^19.2.4"
+        "react": "^19.2.4",
+        "react-router": "^7.13.0"
     }
 }
