@@ -11,6 +11,7 @@ use App\Enums\PaymentMethod;
 use App\Enums\PaymentStatus;
 use Illuminate\Validation\Rules\Enum;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CheckoutOrderResource;
 use App\Http\Resources\OrderResource;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -25,14 +26,14 @@ class OrderController extends Controller
         $user = auth()->user();
         $orders = $user->orders()->paginate(10);
 
-        return OrderResource::collection($orders);
+        return CheckoutOrderResource::collection($orders);
     }
 
     public function show(CheckoutOrder $order)
     {
-        $order->load('orders.items');
+        $order->load('orders.items:id,order_id,product_id,quantity,price,total', 'orders.items.product:id,name,price,image,weight', 'address:id,address_one,phone,latitude,longitude');
 
-        return OrderResource::make($order);
+        return CheckoutOrderResource::make($order);
     }
 
     public function checkout(Request $request)
