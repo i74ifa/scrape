@@ -161,8 +161,15 @@
             '.add-cart__animation-normal',
             '#buyBoxAccordion #snsAccordionRowMobileMiddle',
             '.productShippingTitle',
-            '.shipping-drawer__to'
-        ])
+            '.shipping-drawer__to',
+            '.footer-cart__icon:has(.footer-cart__icon-warp)',
+            '[data-title="userPage"]',
+            '[data-title="wishlist"]',
+            '[data-title="cart"]',
+            '[aria-label="Cart"]',
+            '[aria-label="Save"]',
+            '[aria-label="User"]',
+        ], false)
     } catch (error) {
         console.info(error);
     }
