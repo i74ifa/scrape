@@ -61,6 +61,11 @@ class User extends Authenticatable
         return $this->hasMany(Address::class);
     }
 
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
+    }
+
     public static function generateOtpToken(): string
     {
         if (app()->environment('production')) {

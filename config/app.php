@@ -125,6 +125,7 @@ return [
 
     'aliases' => [
         'fcm' => App\Broadcasting\FcmChannel::class,
+        'local' => App\Services\NotificationLocalChannel::class,
     ],
 
 ];

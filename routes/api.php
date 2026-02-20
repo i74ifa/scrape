@@ -38,6 +38,12 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::apiResource('payments', Api\PaymentController::class);
+
+    Route::prefix('notifications')->group(function () {
+        Route::get('/', [Api\NotificationController::class, 'index']);
+        Route::post('{id}/read', [Api\NotificationController::class, 'markAsRead']);
+        Route::post('read-all', [Api\NotificationController::class, 'markAllAsRead']);
+    });
 });
 
 Route::get('pages/{slug}', [Api\PageController::class, 'show']);

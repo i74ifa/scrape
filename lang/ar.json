@@ -43,5 +43,8 @@
     "shipped": "تم الشحن",
     "delivered": "تم التوصيل",
     "cancelled": "تم الإلغاء",
-    "returned": "تم الإرجاع"
+    "returned": "تم الإرجاع",
+    "order": "طلب",
+    "product": "منتج",
+    "other": "أخرى"
 }

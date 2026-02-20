@@ -2,6 +2,7 @@
 
 namespace App\Notifications\Customer;
 
+use App\Enums\NotificationType;
 use App\Services\Fcm\FcmBody;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -30,7 +31,7 @@ class ChangeOrderStatusNotify extends Notification
      */
     public function via(object $notifiable): array
     {
-        return ['fcm'];
+        return ['fcm', 'local'];
     }
 
     public function toFcm($notifiable): FcmBody
@@ -50,6 +51,25 @@ class ChangeOrderStatusNotify extends Notification
             'token' => $notifiable->device_token,
         ]);
     }
+
+    public function toLocal($notifiable): array
+    {
+        $userLocale = $notifiable->locale ?? 'ar';
+
+        return [
+            'title' => trans(
+                key: $this->title,
+                locale: $userLocale
+            ) ?? '',
+            'body' => trans(
+                key: $this->description,
+                locale: $userLocale
+            ) ?? '',
+            'type' => NotificationType::ORDER->value,
+            'url' => $this->url ?? '',
+        ];
+    }
+
     /**
      * Get the mail representation of the notification.
      */

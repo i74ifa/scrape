@@ -20,9 +20,13 @@ class ProductResource extends JsonResource
             'name' => $this->name,
             'price' => Currency::format($this->price, 'SAR'),
             'image' => $this->image,
-            'weight' => $this->weight,
+            'weight' => (float) $this->weight,
             'description' => $this->description,
+            'variants' => $this->variants,
             'url' => $this->url,
+            'brand' => $this->brand,
+            'category' => $this->category,
+            'platform_id' => $this->platform_id,
             'platform' => $this->whenLoaded('platform', function () {
                 return new PlatformResource($this->platform);
             }),

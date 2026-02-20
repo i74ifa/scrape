@@ -19,7 +19,7 @@ class FcmChannel
     /**
      * Authenticate the user's access to the channel.
      */
-    public function send($notifiable, $notification)
+    public function send($notifiable, $notification): void
     {
         $fcmBody = $notification->toFcm($notifiable);
 
