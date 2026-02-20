@@ -23,8 +23,6 @@ enum OrderStatus: string
         return match ($this) {
             self::PENDING => __('Pending'),
             self::APPROVED => __('Approved'),
-            self::WAITING_FOR_PAYMENT => __('Waiting for payment'),
-            self::PAID => __('Paid'),
             self::SHIPPED => __('Shipped'),
             self::DELIVERED => __('Delivered'),
             self::CANCELLED => __('Cancelled'),

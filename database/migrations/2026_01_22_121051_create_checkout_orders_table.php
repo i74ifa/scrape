@@ -25,7 +25,6 @@ return new class extends Migration
             $table->decimal('sub_total', 10, 2);
             $table->decimal('grand_total', 10, 2);
             $table->string('payment_method');
-            $table->string('payment_status');
             $table->string('payment_reference')->nullable();
 
             $table->foreignId('address_id')->constrained('addresses')->cascadeOnDelete();

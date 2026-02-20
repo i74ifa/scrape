@@ -18,7 +18,6 @@ class CheckoutOrder extends Model
         'shipping',
         'grand_total',
         'payment_method',
-        'payment_status',
         'payment_reference',
         'status',
     ];
@@ -29,7 +28,6 @@ class CheckoutOrder extends Model
 
     protected $casts = [
         'payment_method' => Enums\PaymentMethod::class,
-        'payment_status' => Enums\PaymentStatus::class,
         'status' => Enums\CheckoutOrderStatus::class,
     ];
 
