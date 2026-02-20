@@ -27,6 +27,11 @@ class Product extends Model
         'product_id',
     ];
 
+    public function platform()
+    {
+        return $this->belongsTo(Platform::class);
+    }
+
     public function casts()
     {
         return [

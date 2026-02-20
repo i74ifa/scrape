@@ -20,6 +20,11 @@ class ProductResource extends JsonResource
             'price' => $this->price,
             'image' => $this->image,
             'weight' => $this->weight,
+            'description' => $this->description,
+            'url' => $this->url,
+            'platform' => $this->whenLoaded('platform', function () {
+                return new PlatformResource($this->platform);
+            }),
             'created_at' => $this->when($this->created_at, $this->created_at),
             'updated_at' => $this->when($this->updated_at, $this->updated_at),
         ];

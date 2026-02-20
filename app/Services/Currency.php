@@ -52,41 +52,46 @@ class Currency
      */
     public static function convert($amount, $currencyFrom, $currencyTo = 'YER')
     {
-        if (!in_array($currencyTo, ['YER', 'SAR'])) {
-            throw new \Exception('Currency not supported');
-        }
-
-        if ($currencyFrom === 'SAR') {
+        if ($currencyFrom === $currencyTo) {
             return $amount;
         }
 
-        $rateYer = 140;
-        $rate = self::getExchangeRate($currencyFrom);
-        if ($currencyTo === $currencyFrom) {
-            return $amount;
-        }
+        $fromRate = self::getExchangeRate($currencyFrom);
+        $toRate = self::getExchangeRate($currencyTo);
 
-        $amount = $amount * $rate;
-        if ($currencyTo === 'SAR') {
-            return $amount;
-        }
+        // Convert to SAR pivot
+        $amountInSar = $amount * $fromRate;
 
-        return $amount * $rateYer;
+        // Convert from SAR to target
+        return $amountInSar / $toRate;
     }
 
     public static function getExchangeRate($currency = 'YER')
     {
-        $rate = 1;
-
-        if ($currency == 'YER') {
-            $rate = 140;
-        } else {
-            $exchangeRate = CurrencyExchangeRate::where('code', $currency)->first();
-            $rate = $exchangeRate->rate ?? 1;
-            $rate = 1 / $rate;
+        if ($currency === 'SAR') {
+            return 1.0;
         }
 
-        return $rate;
+        if ($currency === 'YER') {
+            return 1.0 / 140.0;
+        }
+
+        if ($currency === 'USD') {
+            return 3.75;
+        }
+
+        $exchangeRate = CurrencyExchangeRate::where('code', $currency)->first();
+
+        // If not found, we assume it might be SAR based on the old "default" logic or just return 1
+        if (!$exchangeRate) {
+            return 1.0;
+        }
+
+        // rate in DB is units per USD (e.g. 1.41 for AUD)
+        // 1 unit = (1 / rate) USD
+        // 1 USD = 3.75 SAR
+        // 1 unit = (3.75 / rate) SAR
+        return 3.75 / (float)$exchangeRate->rate;
     }
 
     public static function format($amount, $currency = 'YER')

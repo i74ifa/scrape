@@ -123,12 +123,13 @@ class CartController extends Controller
         $carts = Cart::where('user_id', auth()->id())->get();
 
         return response()->json([
-            'subtotal' => $carts->sum('subtotal'),
-            'tax' => $carts->sum('tax'),
-            'shipping' => $carts->sum('shipping'),
-            'discount' => $carts->sum('discount'),
-            'local_shipping' => $carts->sum('local_shipping'),
-            'total' => $carts->sum('total'),
+            'subtotal' => Currency::format($carts->sum('subtotal'), 'SAR'),
+            'tax' => Currency::format($carts->sum('tax'), 'SAR'),
+            'shipping' => Currency::format($carts->sum('shipping'), 'SAR'),
+            'discount' => Currency::format($carts->sum('discount'), 'SAR'),
+            'local_shipping' => Currency::format($carts->sum('local_shipping'), 'SAR'),
+            'total' => Currency::format($carts->sum('total'), 'SAR'),
+            'total_yer' => Currency::format(Currency::convert($carts->sum('total'), 'SAR'), 'YER'),
         ]);
     }
 }
