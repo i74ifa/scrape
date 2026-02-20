@@ -62,7 +62,6 @@ class OrdersTable
                                 url: route('orders.show', $record->id),
                             ));
                         } catch (\Exception $th) {
-                            dd($th->getMessage());
                             Log::info($th->getMessage());
                             //throw $th;
                         }
@@ -70,7 +69,7 @@ class OrdersTable
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
-                    DeleteBulkAction::make(),
+                    // DeleteBulkAction::make(),
                 ]),
             ]);
     }
