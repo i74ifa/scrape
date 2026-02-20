@@ -96,10 +96,9 @@ class OrderController extends Controller
                 'local_shipping' => $carts->sum('local_shipping'),
                 'grand_total' => $carts->sum('total'),
                 'payment_method' => $paymentMethod->value,
-                'payment_status' => CheckoutOrderStatus::PARTIALLY_REFUNDED,
                 'payment_reference' => json_encode($paymentHandlerInstance->getData()),
                 'code' => CheckoutOrder::generateCode(),
-                // 'status' => CheckoutOrderStatus::
+                'status' => CheckoutOrderStatus::PENDING_PAYMENT,
             ]);
 
 
@@ -130,6 +129,7 @@ class OrderController extends Controller
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
+            Log::error($e);
             return response()->json([
                 'message' => 'Failed to create order',
                 'error' => $e->getMessage(),
