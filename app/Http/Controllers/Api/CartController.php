@@ -20,6 +20,14 @@ class CartController extends Controller
     public function index()
     {
         $cart = Cart::where('user_id', auth()->id())->with('items.product:id,name,image,price', 'platform')->get();
+
+        // delte zero carts
+        $cart->each(function ($cart) {
+            if ($cart->items()->count() == 0 || $cart->total === 0) {
+                $cart->delete();
+            }
+        });
+
         return CartResource::collection($cart);
     }
 

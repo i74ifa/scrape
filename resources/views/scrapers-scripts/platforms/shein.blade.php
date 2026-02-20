@@ -27,18 +27,18 @@
     function setLocationCurrent() {
         let locationCurrent = localStorage.getItem('LOCATION_CURRENT');
         locationCurrent = JSON.parse(locationCurrent);
-        if (locationCurrent && locationCurrent?.value === 'AE') {
+        if (locationCurrent && locationCurrent?.value === 'SA') {
             return;
         }
         localStorage.setItem('LOCATION_CURRENT',
-            `{"id":"224","country":"United Arab Emirates","value":"AE","phone_code":"+971","host":"ar.shein.com","lang":"ar","siteUid":"ar"}`
+            `{"id":"186","country":"Saudi Arabia","value":"SA","phone_code":"+966","host":"m.shein.com/ar-en","lang":"ar-en","siteUid":"pwaren"}`
         );
     }
 
     function setIpCountry() {
         let ipCountry = localStorage.getItem('ipCountry');
         ipCountry = JSON.parse(ipCountry);
-        if (ipCountry && ipCountry?.value?.countryId == 224) {
+        if (ipCountry && ipCountry?.value?.countryId == 186) {
             return;
         }
 
@@ -47,7 +47,7 @@
         oneMonthLater.setMonth(now.getMonth() + 1);
 
         localStorage.setItem('ipCountry',
-            `{"value":{"countryId":"224","countryAbbr":"AE","formatCountryAbbr":"AE"},"end":${oneMonthLater.getTime()}}`);
+            `{"value":{"countryId":"186","countryAbbr":"SA","formatCountryAbbr":"SA"},"end":${oneMonthLater.getTime()}}`);
 
 
     }
@@ -56,13 +56,13 @@
         // set address
         let addressCookie = localStorage.getItem('addressCookie');
         addressCookie = JSON.parse(addressCookie);
-        if (addressCookie && addressCookie?.countryId == 224) {
+        if (addressCookie && addressCookie?.countryId == 186) {
             return;
         }
 
-        localStorage.setItem('addressCookie',
-            `{"addressId":"","countryName":"United Arab Emirates","value":"A","countryId":"224","state":"","stateId":"","cityId":"","city":"","district":"","districtId":"","postcode":"","memberId":"","siteUid":"pwaren","addrFromFlag":"2","isIpAddress":0,"ipDisplayLevel":"","address1":"","address2":"","street":"","displayAddress":"United Arab Emirates","displayAddressType":0,"displayAddressWithMinLevel":"United Arab Emirates","extraTraceLogs":{"messageText":"请求bff query_user_address获取地址信息","sourceFrom":"bff_query_user_address"},"traceId":"ffa6d27eee3ff6fb:d01f3f38992ce7e0:6eda914bd27e7be3:0"}`
-        );
+        // localStorage.setItem('addressCookie',
+        //     `{"addressId":"","countryName":"Saudi Arabia","value":"A","countryId":"224","state":"","stateId":"","cityId":"","city":"","district":"","districtId":"","postcode":"","memberId":"","siteUid":"pwaren","addrFromFlag":"2","isIpAddress":0,"ipDisplayLevel":"","address1":"","address2":"","street":"","displayAddress":"Saudi Arabia","displayAddressType":0,"displayAddressWithMinLevel":"Saudi Arabia","extraTraceLogs":{"messageText":"请求bff query_user_address获取地址信息","sourceFrom":"bff_query_user_address"},"traceId":"ffa6d27eee3ff6fb:d01f3f38992ce7e0:6eda914bd27e7be3:0"}`
+        // );
     }
 
 
@@ -100,10 +100,10 @@
             after: () => {
                 // get locals
                 try {
-                    setLocationCurrent();
-                    setIpCountry();
-                    setAddressCookie();
-                    setCurrency();
+                    // setLocationCurrent();
+                    // setIpCountry();
+                    // setAddressCookie();
+                    // setCurrency();
                     
                 } catch (error) {
                     console.info(error);
