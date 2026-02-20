@@ -5,15 +5,29 @@ namespace App\Http\Controllers\Api;
 use App\Modules\Scraper;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ProductResource;
+use App\Models\Product;
 
 class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return \App\Models\Product::all();
+        $limit = $request->get('limit', 15);
+
+        $products = Product::query()
+            ->with('platform')
+            ->when($request->has('platform_id'), function ($query) use ($request) {
+                $query->where('platform_id', $request->platform_id);
+            })
+            ->when($request->has('search'), function ($query) use ($request) {
+                $query->where('name', 'like', "%{$request->search}%");
+            })
+            ->cursorPaginate($limit);
+
+        return ProductResource::collection($products);
     }
 
     /**
@@ -28,8 +42,6 @@ class ProductController extends Controller
         ]);
 
         $productData = new Scraper($validated['url'], $validated['selectors'], $validated['platform_id']);
-
-        dd($productData);
 
         return \App\Models\Product::create($validated);
     }
