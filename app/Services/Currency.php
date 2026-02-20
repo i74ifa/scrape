@@ -36,7 +36,8 @@ class Currency
         'KWD' => 'د.ك',
         'BHD' => 'د.ب',
         'OMR' => 'ر.ع.',
-        'default' => '$',
+        'YER' => 'ر.ي',
+        'default' => 'SAR',
     ];
 
     /**
@@ -49,25 +50,24 @@ class Currency
      * @return float
      * @throws \Exception
      */
-    public static function convert($amount, $productCurrency, $currency = 'YER')
+    public static function convert($amount, $currencyFrom, $currencyTo = 'YER')
     {
-        if (!in_array($currency, ['YER', 'SAR'])) {
+        if (!in_array($currencyTo, ['YER', 'SAR'])) {
             throw new \Exception('Currency not supported');
         }
 
-        if ($productCurrency === 'SAR') {
+        if ($currencyFrom === 'SAR') {
             return $amount;
         }
 
-        $rateYer = 530;
-        $rate = self::getExchangeRate($productCurrency);
-
-        if ($currency === $productCurrency) {
-            $amount = $amount / $rateYer;
+        $rateYer = 140;
+        $rate = self::getExchangeRate($currencyFrom);
+        if ($currencyTo === $currencyFrom) {
+            return $amount;
         }
 
         $amount = $amount * $rate;
-        if ($currency === 'SAR') {
+        if ($currencyTo === 'SAR') {
             return $amount;
         }
 
@@ -79,7 +79,7 @@ class Currency
         $rate = 1;
 
         if ($currency == 'YER') {
-            $rate = 530;
+            $rate = 140;
         } else {
             $exchangeRate = CurrencyExchangeRate::where('code', $currency)->first();
             $rate = $exchangeRate->rate ?? 1;
