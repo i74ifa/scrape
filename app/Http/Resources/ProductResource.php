@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Services\Currency;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -17,7 +18,7 @@ class ProductResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'price' => $this->price,
+            'price' => Currency::format($this->price, 'SAR'),
             'image' => $this->image,
             'weight' => $this->weight,
             'description' => $this->description,
