@@ -34,6 +34,7 @@ class OrdersTable
             ->filters([
                 //
             ])
+            ->defaultSort('created_at', 'desc')
             ->recordActions([
                 // EditAction::make(),
                 Action::make('change_status')
