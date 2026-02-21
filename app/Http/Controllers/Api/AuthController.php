@@ -9,6 +9,7 @@ use App\Modules\M365Dialog;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Modules\SmsGateway;
 use App\Services\Fcm\Fcm;
 use App\Services\Fcm\FcmBody;
 use Illuminate\Validation\ValidationException;
@@ -53,7 +54,7 @@ class AuthController extends Controller
         ]);
 
         if (app()->environment('production')) {
-            M365Dialog::send(to: $phone, text: $token, countryCode: $countryCode);
+            SmsGateway::send(to: $phone, text: $token, countryCode: $countryCode);
         }
 
         return response()->json([

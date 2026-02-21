@@ -13,9 +13,9 @@ class SmsGateway
      * @param string $text
      * @return \Illuminate\Http\Client\Response
      */
-    public static function send($to, $text)
+    public static function send($to, $text, $countryCode = '967')
     {
-        $to = self::initialPhone($to);
+        $to = self::initialPhone($to, $countryCode);
         $username = config('services.sms_gate.username');
         $password = config('services.sms_gate.password');
         $url = config('services.sms_gate.url');
