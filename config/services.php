@@ -51,4 +51,10 @@ return [
         'project_id' => env('FCM_PROJECT_ID'),
     ],
 
+    'sms_gate' => [
+        'username' => env('SMS_GATE_USERNAME'),
+        'password' => env('SMS_GATE_PASSWORD'),
+        'url' => env('SMS_GATE_URL', 'https://api.sms-gate.app/3rdparty/v1/message'),
+    ],
+
 ];
