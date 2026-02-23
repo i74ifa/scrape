@@ -6,8 +6,10 @@ enum OrderStatus: string
 {
     case PENDING = 'pending';
     case APPROVED = 'approved';
-    case WAITING_FOR_PAYMENT = 'waiting_for_payment';
-    case PAID = 'paid';
+    case PURCHASING = 'purchasing';
+    case PURCHASED = 'purchased';
+    case READY_TO_SHIP = 'ready_to_ship';
+    case CUSTOMS_CLEARANCE = 'customs_clearance';
     case SHIPPED = 'shipped';
     case DELIVERED = 'delivered';
     case CANCELLED = 'cancelled';
@@ -15,18 +17,22 @@ enum OrderStatus: string
 
     public static function toArray(): array
     {
-        return array_map(fn($case) => $case->value, self::cases());
+        return array_map(fn($case) => trans($case->value), self::cases());
     }
 
-    public function label(): string
+    public function message($platform): string
     {
         return match ($this) {
-            self::PENDING => __('Pending'),
-            self::APPROVED => __('Approved'),
-            self::SHIPPED => __('Shipped'),
-            self::DELIVERED => __('Delivered'),
-            self::CANCELLED => __('Cancelled'),
-            self::RETURNED => __('Returned'),
+            self::PENDING => __('messages.pending', ['platform' => $platform->name]),
+            self::APPROVED => __('messages.approved', ['platform' => $platform->name]),
+            self::PURCHASING => __('messages.purchasing', ['platform' => $platform->name]),
+            self::SHIPPED => __('messages.shipped', ['platform' => $platform->name]),
+            self::PURCHASED => __('messages.purchased', ['platform' => $platform->name]),
+            self::READY_TO_SHIP => __('messages.ready_to_ship', ['platform' => $platform->name]),
+            self::CUSTOMS_CLEARANCE => __('messages.customs_clearance', ['platform' => $platform->name]),
+            self::DELIVERED => __('messages.delivered', ['platform' => $platform->name]),
+            self::CANCELLED => __('messages.cancelled', ['platform' => $platform->name]),
+            self::RETURNED => __('messages.returned', ['platform' => $platform->name]),
         };
     }
 }

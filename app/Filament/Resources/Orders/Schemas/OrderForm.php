@@ -19,7 +19,7 @@ class OrderForm
                         ImageEntry::make('product.image')
                             ->label('')
                             ->circular()
-                            ->grow(false),
+                            ->grow(true),
 
                         // 2. Name & Link
                         TextEntry::make('product.name')
@@ -30,7 +30,7 @@ class OrderForm
                             ->color('primary'),
 
                         TextEntry::make('price')
-                            ->money('USD'),
+                            ->money('SAR'),
                     ])
             ]);
     }

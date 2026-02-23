@@ -59,7 +59,7 @@ class CheckoutOrdersTable
                             $user->notify(new ChangeOrderStatusNotify(
                                 order: $record,
                                 title: trans('Order Status Changed'),
-                                description: trans('Order Status Changed to :status', ['status' => OrderStatus::APPROVED->label()]),
+                                description: trans('Order Status Changed to :status', ['status' => trans(OrderStatus::APPROVED->value)]),
                                 url: route('orders.show', $record->id),
                             ));
                         } catch (\Exception $th) {
