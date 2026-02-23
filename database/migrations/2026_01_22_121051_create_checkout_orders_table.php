@@ -17,7 +17,7 @@ return new class extends Migration
         Schema::create('checkout_orders', function (Blueprint $table) {
             $table->id();
             $table->string('code')->unique();
-            $table->enum('status', CheckoutOrderStatus::toArray())->default(CheckoutOrderStatus::PENDING_PAYMENT->value);
+            $table->enum('status', CheckoutOrderStatus::values())->default(CheckoutOrderStatus::PENDING_PAYMENT->value);
             $table->decimal('local_shipping', 10, 2)->default(0);
             $table->decimal('tax', 10, 2)->default(0);
             $table->decimal('discount', 10, 2);

@@ -46,5 +46,7 @@
     "returned": "تم الإرجاع",
     "order": "طلب",
     "product": "منتج",
-    "other": "أخرى"
+    "other": "أخرى",
+    "Cart item deleted successfully": "تم حذف منتجك من السلة",
+    "Cart item updated successfully": "تم تحديث منتجك في السلة"
 }
