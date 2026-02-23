@@ -5,6 +5,7 @@ namespace App\Filament\Resources\CheckoutOrders;
 use App\Filament\Resources\CheckoutOrders\Pages\CreateCheckoutOrder;
 use App\Filament\Resources\CheckoutOrders\Pages\EditCheckoutOrder;
 use App\Filament\Resources\CheckoutOrders\Pages\ListCheckoutOrders;
+use App\Filament\Resources\CheckoutOrders\RelationManagers\OrdersRelationManager;
 use App\Filament\Resources\CheckoutOrders\Schemas\CheckoutOrderForm;
 use App\Filament\Resources\CheckoutOrders\Tables\CheckoutOrdersTable;
 use App\Models\CheckoutOrder;
@@ -35,7 +36,7 @@ class CheckoutOrderResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            OrdersRelationManager::class,
         ];
     }
 
