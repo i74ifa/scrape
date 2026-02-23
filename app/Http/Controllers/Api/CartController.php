@@ -89,24 +89,29 @@ class CartController extends Controller
         ]);
     }
 
-    public function incrementQty(Request $request)
+    public function updateQuantity(CartItem $cartItem, Request $request)
     {
         $request->validate([
-            'cart_item_id' => 'required|exists:cart_items,id',
+            'quantity' => 'required|integer|min:0',
         ]);
 
-        $cartItem = CartItem::where('user_id', auth()->id())->where('id', $request->cart_item_id)->first();
-
-        if (!$cartItem) {
+        if ($request->quantity == 0) {
+            $cartItem->delete();
+            $cartItem->cart->updateSummary();
             return response()->json([
-                'message' => 'Cart item not found',
-            ], 404);
+                'status' => 'success',
+                'message' => __('Cart item deleted successfully'),
+            ]);
         }
 
-        $cartItem->quantity++;
+        $cartItem->quantity = $request->quantity;
+        $cartItem->total = $cartItem->price * $cartItem->quantity;
         $cartItem->save();
 
+        $cartItem->cart->updateSummary();
+
         return response()->json([
+            'status' => 'success',
             'message' => __('Cart item updated successfully'),
             'cart_item' => CartItemResource::make($cartItem),
         ]);

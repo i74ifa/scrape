@@ -18,7 +18,6 @@ class Order extends Model
         'grand_total',
         'status',
         'payment_method',
-        'payment_status',
         'payment_reference',
         'user_id',
         'platform_id',
@@ -47,6 +46,11 @@ class Order extends Model
     public function platform()
     {
         return $this->belongsTo(Platform::class);
+    }
+
+    public function checkout_order()
+    {
+        return $this->belongsTo(CheckoutOrder::class);
     }
 
     public static function generateCode($prefix = 'ORD')

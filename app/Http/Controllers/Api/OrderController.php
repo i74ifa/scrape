@@ -13,7 +13,6 @@ use App\Enums\PaymentStatus;
 use Illuminate\Validation\Rules\Enum;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CheckoutOrderResource;
-use App\Http\Resources\OrderResource;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;

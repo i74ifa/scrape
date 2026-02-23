@@ -28,6 +28,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('', [Api\CartController::class, 'index'])->name('index');
         Route::post('{platform}', [Api\CartController::class, 'store'])->name('store');
         Route::get('totals', [Api\CartController::class, 'totals']);
+        Route::post('{cartItem}/quantity', [Api\CartController::class, 'updateQuantity']);
     });
 
     Route::prefix('orders')->name('orders.')->group(function () {
@@ -43,6 +44,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/', [Api\NotificationController::class, 'index']);
         Route::post('{id}/read', [Api\NotificationController::class, 'markAsRead']);
         Route::post('read-all', [Api\NotificationController::class, 'markAllAsRead']);
+    });
+
+    Route::prefix('sections')->group(function () {
+        Route::get('home', [Api\AppSectionController::class, 'homePage']);
+        Route::get('products', [Api\AppSectionController::class, 'productsPage']);
     });
 });
 

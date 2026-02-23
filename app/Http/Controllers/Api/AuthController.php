@@ -53,8 +53,14 @@ class AuthController extends Controller
             'valid' => true,
         ]);
 
+        $template = <<<EOT
+        رمز التحقق الخاص بك هو :otp
+
+        لاتشاركه مع احد.
+        EOT;
+
         if (app()->environment('production')) {
-            SmsGateway::send(to: $phone, text: $token, countryCode: $countryCode);
+            SmsGateway::send(to: $phone, text: str_replace(':otp', $token, $template), countryCode: $countryCode);
         }
 
         return response()->json([
