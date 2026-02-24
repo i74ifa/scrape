@@ -19,7 +19,7 @@ export default function Page() {
         <Layout>
             <div className="max-w-5xl mx-auto px-10">
                 <article
-                    className="prose prose-invert"
+                    className="prose dark:prose-invert max-w-none"
                     dangerouslySetInnerHTML={{
                         __html: page?.content || "",
                     }}

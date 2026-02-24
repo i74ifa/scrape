@@ -1,2 +1,37 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
+
+@theme {
+    --color-brand-primary: var(--brand-primary);
+    --color-brand-secondary: var(--brand-secondary);
+    --color-background: var(--background);
+    --color-surface: var(--surface);
+    --color-surface-hover: var(--surface-hover);
+    --color-border-subtle: var(--border-subtle);
+    --color-text-main: var(--text-main);
+    --color-text-dimmed: var(--text-dimmed);
+}
+
+:root {
+    --brand-primary: #2563eb;
+    --brand-secondary: #f3f4f6;
+    --background: #ffffff;
+    --surface: #f9fafb;
+    --surface-hover: #f3f4f6;
+    --border-subtle: #e5e7eb;
+    --text-main: #111827;
+    --text-dimmed: #6b7280;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --brand-primary: #3b82f6;
+        --brand-secondary: #333333;
+        --background: #1a1a1a;
+        --surface: #262626;
+        --surface-hover: #2d2d2d;
+        --border-subtle: #333333;
+        --text-main: #ffffff;
+        --text-dimmed: #9ca3af;
+    }
+}

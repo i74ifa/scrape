@@ -216,9 +216,9 @@ const App: React.FC = () => {
                 <div className="text-right space-y-8 animate-fade-in">
                     <h1 className="text-4xl md:text-6xl font-bold leading-tight">
                         كل طلباتك في{" "}
-                        <span className="text-blue-500">مكان واحد</span>
+                        <span className="text-brand-primary">مكان واحد</span>
                     </h1>
-                    <p className="text-xl text-gray-400 max-w-lg leading-relaxed">
+                    <p className="text-xl text-text-dimmed max-w-lg leading-relaxed">
                         تسوق من أمازون، إيباي، شي إن وغيرهم الكثير. أضف للسلة،
                         تتبع الشحنات، واستلمها بسرعة البرق عبر تطبيقنا.
                     </p>
@@ -241,7 +241,7 @@ const App: React.FC = () => {
                     className="relative animate-fade-in"
                     style={{ animationDelay: "0.2s" }}
                 >
-                    <Card className="relative z-10 border border-[#333333] shadow-2xl">
+                    <Card className="relative z-10 border border-border-subtle shadow-2xl">
                         <div className="space-y-6">
                             <div className="flex justify-between items-center mb-4">
                                 <span className="bg-green-500/20 text-green-500 px-4 py-1 rounded-full text-xs md:text-sm font-bold">
@@ -251,16 +251,16 @@ const App: React.FC = () => {
                                     #TAL-882941
                                 </span>
                             </div>
-                            <div className="h-2 bg-[#333333] rounded-full overflow-hidden">
-                                <div className="w-2/3 h-full bg-blue-500"></div>
+                            <div className="h-2 bg-brand-secondary rounded-full overflow-hidden">
+                                <div className="w-2/3 h-full bg-brand-primary"></div>
                             </div>
-                            <div className="flex justify-between text-xs text-gray-400">
+                            <div className="flex justify-between text-xs text-text-dimmed">
                                 <span>تم الشحن</span>
                                 <span>في الطريق</span>
                                 <span>تم الاستلام</span>
                             </div>
-                            <div className="pt-4 border-t border-[#333333] flex items-center gap-4 text-right">
-                                <div className="w-12 h-12 bg-[#333333] rounded-2xl flex items-center justify-center overflow-hidden">
+                            <div className="pt-4 border-t border-border-subtle flex items-center gap-4 text-right">
+                                <div className="w-12 h-12 bg-surface rounded-2xl flex items-center justify-center overflow-hidden">
                                     <img
                                         src="https://picsum.photos/seed/amazon/50/50"
                                         alt="Store"
@@ -278,12 +278,12 @@ const App: React.FC = () => {
                             </div>
                         </div>
                     </Card>
-                    <div className="absolute -bottom-6 -left-6 w-full h-full bg-blue-600/10 rounded-[2.5rem] -z-0"></div>
+                    <div className="absolute -bottom-6 -left-6 w-full h-full bg-brand-primary/10 rounded-[2.5rem] -z-0"></div>
                 </div>
             </section>
 
             <section className="container mx-auto px-6 py-12 relative z-10">
-                <Card className="max-w-4xl mx-auto text-center border border-[#333333] bg-[#262626]/80 backdrop-blur-md">
+                <Card className="max-w-4xl mx-auto text-center border border-border-subtle bg-surface/80 backdrop-blur-md">
                     <h2 className="text-3xl font-bold mb-8">
                         تتبع شحنتك فوراً
                     </h2>
@@ -299,12 +299,12 @@ const App: React.FC = () => {
                             placeholder="أدخل رقم التتبع هنا..."
                             value={trackingNumber}
                             onChange={(e) => setTrackingNumber(e.target.value)}
-                            className="flex-1 bg-[#1A1A1A]/80 border-2 border-[#333333] rounded-full px-6 py-4 text-white focus:border-blue-500 outline-none transition-colors"
+                            className="flex-1 bg-background/80 border-2 border-border-subtle rounded-full px-6 py-4 text-text-main focus:border-brand-primary outline-none transition-colors"
                         />
                         <Button type="submit" className="md:w-48 h-[60px]">
                             {isSearching ? (
                                 <div className="flex items-center justify-center gap-2">
-                                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                                    <div className="w-4 h-4 border-2 border-text-main/30 border-t-text-main rounded-full animate-spin"></div>
                                     <span>جاري البحث...</span>
                                 </div>
                             ) : (
@@ -320,14 +320,14 @@ const App: React.FC = () => {
                     <h2 className="text-4xl font-bold mb-4">
                         لماذا تطبيق "طلبي"؟
                     </h2>
-                    <p className="text-gray-400">
+                    <p className="text-text-dimmed">
                         نحن نقدم تجربة تسوق عالمية بمعايير محلية من خلال واجهة
                         سهلة
                     </p>
                 </div>
                 <div className="grid md:grid-cols-3 gap-8 text-right">
-                    <Card className="hover:bg-[#2d2d2d] transition-all duration-300 border border-transparent hover:border-[#444444] bg-[#262626]/60 backdrop-blur-sm">
-                        <div className="w-16 h-16 bg-blue-600/20 text-blue-500 rounded-3xl flex items-center justify-center mb-6">
+                    <Card className="hover:bg-surface-hover transition-all duration-300 border border-transparent hover:border-border-subtle bg-surface/60 backdrop-blur-sm">
+                        <div className="w-16 h-16 bg-brand-primary/20 text-brand-primary rounded-3xl flex items-center justify-center mb-6">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 className="h-8 w-8"
@@ -346,12 +346,12 @@ const App: React.FC = () => {
                         <h3 className="text-2xl font-bold mb-4">
                             شحن فائق السرعة
                         </h3>
-                        <p className="text-gray-400 leading-relaxed">
+                        <p className="text-text-dimmed leading-relaxed">
                             نضمن وصول شحناتك من أي مكان في العالم إلى باب منزلك
                             بسرعة البرق.
                         </p>
                     </Card>
-                    <Card className="hover:bg-[#2d2d2d] transition-all duration-300 border border-transparent hover:border-[#444444] bg-[#262626]/60 backdrop-blur-sm">
+                    <Card className="hover:bg-surface-hover transition-all duration-300 border border-transparent hover:border-border-subtle bg-surface/60 backdrop-blur-sm">
                         <div className="w-16 h-16 bg-purple-600/20 text-purple-500 rounded-3xl flex items-center justify-center mb-6">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -371,12 +371,12 @@ const App: React.FC = () => {
                         <h3 className="text-2xl font-bold mb-4">
                             سلة تسوق موحدة
                         </h3>
-                        <p className="text-gray-400 leading-relaxed">
+                        <p className="text-text-dimmed leading-relaxed">
                             اجمع منتجاتك من أمازون، إيباي، وشي إن في سلة واحدة
                             داخل التطبيق.
                         </p>
                     </Card>
-                    <Card className="hover:bg-[#2d2d2d] transition-all duration-300 border border-transparent hover:border-[#444444] bg-[#262626]/60 backdrop-blur-sm">
+                    <Card className="hover:bg-surface-hover transition-all duration-300 border border-transparent hover:border-border-subtle bg-surface/60 backdrop-blur-sm">
                         <div className="w-16 h-16 bg-green-600/20 text-green-500 rounded-3xl flex items-center justify-center mb-6">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -396,7 +396,7 @@ const App: React.FC = () => {
                         <h3 className="text-2xl font-bold mb-4">
                             حماية وأمان تام
                         </h3>
-                        <p className="text-gray-400 leading-relaxed">
+                        <p className="text-text-dimmed leading-relaxed">
                             تأمين شامل على جميع الشحنات. فريقنا يتابع كل قطعة
                             لضمان وصولها سليمة.
                         </p>
@@ -404,7 +404,7 @@ const App: React.FC = () => {
                 </div>
             </section>
 
-            <section className="bg-[#262626]/40 backdrop-blur-lg py-24 relative z-10">
+            <section className="bg-surface/40 backdrop-blur-lg py-24 relative z-10">
                 <div className="container mx-auto px-6 text-center">
                     <h2 className="text-3xl font-bold mb-16">
                         تصفح المتاجر العالمية واطلبها في "طلبي"
@@ -421,7 +421,7 @@ const App: React.FC = () => {
             </section>
 
             <section className="container mx-auto px-6 py-24 relative z-10">
-                <Card className="bg-blue-600 text-center text-white overflow-hidden relative border-none shadow-2xl">
+                <Card className="bg-brand-primary text-center text-white overflow-hidden relative border-none shadow-2xl">
                     <div className="relative z-10 py-8">
                         <h2 className="text-4xl md:text-5xl font-bold mb-6">
                             احمل التطبيق وابدأ التسوق الآن
@@ -449,7 +449,7 @@ const App: React.FC = () => {
     const renderTracking = () => {
         const data = getMockTrackingData(activeTrackingId || "---");
         return (
-            <div className="container mx-auto px-6 py-12 animate-fade-in relative z-10">
+            <div className="container mx-auto px-6 py-12 animate-fade-in relative z-10 text-text-main">
                 <div className="flex items-center justify-between mb-12">
                     <Button
                         variant="outline"
@@ -476,7 +476,7 @@ const App: React.FC = () => {
                         <h1 className="text-2xl md:text-4xl font-bold">
                             تفاصيل الشحنة
                         </h1>
-                        <p className="text-gray-500 font-mono mt-1">
+                        <p className="text-text-dimmed font-mono mt-1">
                             رقم التتبع: {data.id}
                         </p>
                     </div>
@@ -484,10 +484,10 @@ const App: React.FC = () => {
 
                 <div className="grid lg:grid-cols-3 gap-8">
                     <div className="lg:col-span-2 space-y-8">
-                        <Card className="border border-[#333333] bg-[#262626]/80 backdrop-blur-md">
+                        <Card className="border border-border-subtle bg-surface/80 backdrop-blur-md">
                             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-10">
                                 <div className="flex items-center gap-4">
-                                    <div className="w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center shadow-lg shadow-blue-900/20">
+                                    <div className="w-14 h-14 bg-brand-primary rounded-2xl flex items-center justify-center shadow-lg shadow-brand-primary/20">
                                         <svg
                                             xmlns="http://www.w3.org/2000/svg"
                                             className="h-8 w-8 text-white"
@@ -508,7 +508,7 @@ const App: React.FC = () => {
                                         <h2 className="text-2xl font-bold">
                                             {data.statusAr}
                                         </h2>
-                                        <p className="text-gray-400">
+                                        <p className="text-text-dimmed">
                                             تاريخ الوصول المتوقع:{" "}
                                             <span className="text-white font-bold">
                                                 {data.estimatedDelivery}
@@ -517,23 +517,23 @@ const App: React.FC = () => {
                                     </div>
                                 </div>
                                 <div className="flex flex-col items-end">
-                                    <span className="bg-blue-600/20 text-blue-400 px-6 py-2 rounded-full font-bold text-lg">
+                                    <span className="bg-brand-primary/20 text-brand-primary px-6 py-2 rounded-full font-bold text-lg">
                                         {data.percentage}%
                                     </span>
-                                    <span className="text-[10px] text-gray-500 mt-2 tracking-widest uppercase text-right">
+                                    <span className="text-[10px] text-text-dimmed mt-2 tracking-widest uppercase text-right">
                                         جاري التتبع
                                     </span>
                                 </div>
                             </div>
-                            <div className="relative h-4 bg-[#1A1A1A] rounded-full overflow-hidden mb-12">
+                            <div className="relative h-4 bg-background rounded-full overflow-hidden mb-12">
                                 <div
-                                    className="h-full bg-blue-500 rounded-full transition-all duration-1000 shadow-[0_0_20px_rgba(59,130,246,0.3)]"
+                                    className="h-full bg-brand-primary rounded-full transition-all duration-1000 shadow-[0_0_20px_rgba(59,130,246,0.3)]"
                                     style={{ width: `${data.percentage}%` }}
                                 ></div>
                             </div>
-                            <div className="grid md:grid-cols-2 gap-8 border-t border-[#333333] pt-8 text-right">
+                            <div className="grid md:grid-cols-2 gap-8 border-t border-border-subtle pt-8 text-right">
                                 <div>
-                                    <label className="text-gray-500 text-sm block mb-1">
+                                    <label className="text-text-dimmed text-sm block mb-1">
                                         من
                                     </label>
                                     <p className="font-bold text-lg">
@@ -541,7 +541,7 @@ const App: React.FC = () => {
                                     </p>
                                 </div>
                                 <div>
-                                    <label className="text-gray-500 text-sm block mb-1">
+                                    <label className="text-text-dimmed text-sm block mb-1">
                                         إلى
                                     </label>
                                     <p className="font-bold text-lg">
@@ -551,11 +551,11 @@ const App: React.FC = () => {
                             </div>
                         </Card>
 
-                        <Card className="border border-[#333333] bg-[#262626]/80 backdrop-blur-md">
+                        <Card className="border border-border-subtle bg-surface/80 backdrop-blur-md">
                             <h3 className="text-xl font-bold mb-8 text-right">
                                 سجل التتبع
                             </h3>
-                            <div className="space-y-0 relative before:absolute before:right-[21px] before:top-4 before:bottom-4 before:w-[2px] before:bg-[#333333]">
+                            <div className="space-y-0 relative before:absolute before:right-[21px] before:top-4 before:bottom-4 before:w-[2px] before:bg-border-subtle">
                                 {data.timeline.map((item, idx) => {
                                     const IconComponent =
                                         TimelineIcons[
@@ -572,16 +572,16 @@ const App: React.FC = () => {
                                             className={`relative pr-16 pb-12 last:pb-0 text-right transition-opacity duration-300 ${item.completed ? "opacity-60" : "opacity-100"}`}
                                         >
                                             <div
-                                                className={`absolute right-0 top-1 w-11 h-11 rounded-2xl border-4 border-[#262626] z-10 flex items-center justify-center transition-all duration-500 ${
+                                                className={`absolute right-0 top-1 w-11 h-11 rounded-2xl border-4 border-surface z-10 flex items-center justify-center transition-all duration-500 ${
                                                     item.completed
-                                                        ? "bg-[#333333] text-gray-500"
+                                                        ? "bg-brand-secondary text-text-dimmed"
                                                         : isLastCompleted ||
                                                             (!item.completed &&
                                                                 data.timeline[
                                                                     idx - 1
                                                                 ]?.completed)
-                                                          ? "bg-blue-600 text-white shadow-lg shadow-blue-900/40 scale-110"
-                                                          : "bg-[#1A1A1A] text-gray-700 border-[#333333]"
+                                                          ? "bg-brand-primary text-white shadow-lg shadow-brand-primary/40 scale-110"
+                                                          : "bg-background text-text-dimmed border-border-subtle"
                                                 }`}
                                             >
                                                 <IconComponent />
@@ -599,7 +599,7 @@ const App: React.FC = () => {
                                                 >
                                                     {item.title}
                                                 </div>
-                                                <div className="text-gray-500 text-sm">
+                                                <div className="text-text-dimmed text-sm">
                                                     {item.time}
                                                 </div>
                                             </div>
@@ -609,10 +609,10 @@ const App: React.FC = () => {
                                                     ?.completed && (
                                                     <div className="absolute left-0 top-2 flex items-center gap-2">
                                                         <span className="relative flex h-3 w-3">
-                                                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                                                            <span className="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
+                                                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-primary opacity-75"></span>
+                                                            <span className="relative inline-flex rounded-full h-3 w-3 bg-brand-primary"></span>
                                                         </span>
-                                                        <span className="text-blue-400 text-xs font-bold uppercase tracking-wider">
+                                                        <span className="text-brand-primary text-xs font-bold uppercase tracking-wider">
                                                             الحالة الحالية
                                                         </span>
                                                     </div>
@@ -625,7 +625,7 @@ const App: React.FC = () => {
                     </div>
 
                     <div className="space-y-8 text-right">
-                        <Card className="bg-blue-600 text-white border-none overflow-hidden relative group shadow-xl">
+                        <Card className="bg-brand-primary text-white border-none overflow-hidden relative group shadow-xl">
                             <div className="relative z-10">
                                 <h3 className="text-xl font-bold mb-4">
                                     هل تحتاج لمساعدة؟
@@ -642,14 +642,15 @@ const App: React.FC = () => {
                                 </Button>
                             </div>
                             <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
+                            <div className="absolute -bottom-10 -right-10 w-32 h-32 bg-surface/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700"></div>
                         </Card>
 
-                        <Card className="border border-[#333333] hover:border-[#444444] transition-colors bg-[#262626]/80 backdrop-blur-md shadow-lg">
+                        <Card className="border border-border-subtle hover:border-surface-hover transition-colors bg-surface/80 backdrop-blur-md shadow-lg">
                             <h3 className="text-lg font-bold mb-6 flex items-center justify-end gap-2">
                                 <span>بيانات الطلب</span>
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
-                                    className="h-5 w-5 text-gray-500"
+                                    className="h-5 w-5 text-text-dimmed"
                                     fill="none"
                                     viewBox="0 0 24 24"
                                     stroke="currentColor"
@@ -663,19 +664,21 @@ const App: React.FC = () => {
                                 </svg>
                             </h3>
                             <div className="space-y-4">
-                                <div className="flex justify-between items-center text-sm p-3 bg-[#1A1A1A]/60 rounded-2xl">
+                                <div className="flex justify-between items-center text-sm p-3 bg-background/60 rounded-2xl">
                                     <span className="font-bold">Amazon.sa</span>
-                                    <span className="text-gray-500">
+                                    <span className="text-text-dimmed">
                                         المتجر
                                     </span>
                                 </div>
-                                <div className="flex justify-between items-center text-sm p-3 bg-[#1A1A1A]/60 rounded-2xl">
+                                <div className="flex justify-between items-center text-sm p-3 bg-background/60 rounded-2xl">
                                     <span className="font-bold">1.2 كجم</span>
-                                    <span className="text-gray-500">الوزن</span>
+                                    <span className="text-text-dimmed">
+                                        الوزن
+                                    </span>
                                 </div>
-                                <div className="flex justify-between items-center text-sm p-3 bg-[#1A1A1A]/60 rounded-2xl">
+                                <div className="flex justify-between items-center text-sm p-3 bg-background/60 rounded-2xl">
                                     <span className="font-bold">2</span>
-                                    <span className="text-gray-500">
+                                    <span className="text-text-dimmed">
                                         عدد القطع
                                     </span>
                                 </div>
