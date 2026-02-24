@@ -17,7 +17,7 @@ export default function Page() {
 
     return (
         <Layout>
-            <div className="max-w-5xl mx-auto">
+            <div className="max-w-5xl mx-auto px-10">
                 <article
                     className="prose prose-invert"
                     dangerouslySetInnerHTML={{
