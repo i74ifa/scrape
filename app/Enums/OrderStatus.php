@@ -17,7 +17,11 @@ enum OrderStatus: string
 
     public static function toArray(): array
     {
-        return array_map(fn($case) => trans($case->value), self::cases());
+        return collect(self::cases())
+            ->mapWithKeys(fn($case) => [
+                $case->value => trans($case->value)
+            ])
+            ->toArray();
     }
 
     public function message($platform): string

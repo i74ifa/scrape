@@ -56,7 +56,7 @@ class PlatformSeeder extends Seeder
             [
                 'id' => 5,
                 'name' => 'Shein',
-                'url' => 'https://ar.shein.com',
+                'url' => 'https://m.shein.com/ar',
                 'script_file' => 'shein',
                 'currency' => 'SAR',
                 'currency_symbol' => 'ر.س',

@@ -17,7 +17,7 @@ class OrderResource extends JsonResource
         return [
             'id' => $this->id,
             'grand_total' => $this->grand_total,
-            'status' => $this->status->label(),
+            'status' => trans($this->status->value),
 
             'items' => OrderItemResource::collection($this->whenLoaded('items')),
             'platform' => $this->whenLoaded('platform'),

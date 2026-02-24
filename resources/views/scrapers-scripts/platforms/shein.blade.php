@@ -25,11 +25,11 @@
 
 
     function setLocationCurrent() {
-        let locationCurrent = localStorage.getItem('LOCATION_CURRENT');
-        locationCurrent = JSON.parse(locationCurrent);
-        if (locationCurrent && locationCurrent?.value === 'SA') {
-            return;
-        }
+        const rawLocation = localStorage.getItem('LOCATION_CURRENT');
+        const location = rawLocation ? JSON.parse(rawLocation) : null;
+
+        if (location?.value === 'SA') return;
+
         localStorage.setItem('LOCATION_CURRENT',
             `{"id":"186","country":"Saudi Arabia","value":"SA","phone_code":"+966","host":"m.shein.com/ar-en","lang":"ar-en","siteUid":"pwaren"}`
         );

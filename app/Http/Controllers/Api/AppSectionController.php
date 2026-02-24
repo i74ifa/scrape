@@ -41,7 +41,8 @@ class AppSectionController extends Controller
                 "title" => "",
                 "config" => [
                     "autoplay" => false,
-                    "page_cols" => 1
+                    "page_cols" => 1,
+                    "height" => 110,
                 ]
             ]
         ];
@@ -62,15 +63,15 @@ class AppSectionController extends Controller
                         "url" => "/platforms/5",
                         "cols" => 6,
                         "image" => [
-                            "dark" => "https://talabye.com/images/hero-banner-dark.jpg",
-                            "light" => "https://talabye.com/images/hero-banner.jpeg"
+                            "dark" => "https://talabye.com/images/demo-dark.jpg",
+                            "light" => "https://talabye.com/images/demo-light.jpg"
                         ]
                     ],
                 ],
                 "title" => "",
                 "config" => [
                     "autoplay" => false,
-                    "page_cols" => 1
+                    "page_cols" => 1,
                 ]
             ]
         ];
@@ -100,14 +101,14 @@ class AppSectionController extends Controller
 
                     ],
                     [
-                        "url" => "/platforms/5",
+                        "url" => "/platforms/2",
                         "image" => [
                             "dark" => "https://talabye.com/images/hero-banner-dark.jpg",
                             "light" => "https://talabye.com/images/hero-banner.jpg"
                         ]
                     ],
                     [
-                        "url" => "/platforms/1",
+                        "url" => "/platforms/3",
                         "image" => [
                             "dark" => "https://talabye.com/images/hero-banner-dark.jpg",
                             "light" => "https://talabye.com/images/hero-banner.jpg"
@@ -117,7 +118,8 @@ class AppSectionController extends Controller
                 "title" => "",
                 "config" => [
                     "autoplay" => false,
-                    "page_cols" => 1
+                    "page_cols" => 1,
+                    "height" => 110,
                 ]
             ]
         ];
@@ -127,7 +129,7 @@ class AppSectionController extends Controller
             "content" => [
                 "data" => [
                     [
-                        "url" => "/platforms/5",
+                        "url" => "/platforms/2",
                         "cols" => 6,
                         "image" => [
                             "dark" => "https://talabye.com/images/demo-dark.jpg",
@@ -135,11 +137,11 @@ class AppSectionController extends Controller
                         ]
                     ],
                     [
-                        "url" => "/platforms/5",
+                        "url" => "/platforms/3",
                         "cols" => 6,
                         "image" => [
-                            "dark" => "https://talabye.com/images/hero-banner-dark.jpg",
-                            "light" => "https://talabye.com/images/hero-banner.jpeg"
+                            "dark" => "https://talabye.com/images/demo-dark.jpg",
+                            "light" => "https://talabye.com/images/demo-light.jpg"
                         ]
                     ],
                 ],

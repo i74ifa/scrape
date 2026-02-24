@@ -6,7 +6,6 @@ use App\Enums\OrderStatus;
 use App\Notifications\Customer\ChangeOrderStatusNotify;
 use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
-use Filament\Actions\DeleteBulkAction;
 use Filament\Forms\Components\Select;
 // use Filament\Actions\EditAction;
 use Filament\Tables\Table;
@@ -25,7 +24,7 @@ class OrdersTable
                 Columns\TextColumn::make('checkout_order.user.phone')->label(trans('User')),
                 Columns\TextColumn::make('sub_total')->label(trans('Sub Total')),
                 Columns\TextColumn::make('grand_total')->label(trans('Grand Total')),
-                Columns\TextColumn::make('status')->badge()->label(trans('Status'))->formatStateUsing(fn($state) => $state->label()),
+                Columns\TextColumn::make('status')->badge()->label(trans('Status'))->formatStateUsing(fn($state) => trans($state->value)),
                 Columns\TextColumn::make('created_at')->label(trans('Created At')),
             ])
             ->filters([
@@ -46,7 +45,7 @@ class OrdersTable
 
                         // notify user
                         try {
-                            $user = $record->user;
+                            $user = $record->checkout_order->user;
                             $user->notify(new ChangeOrderStatusNotify(
                                 order: $record,
                                 title: trans('Order Status Changed'),
