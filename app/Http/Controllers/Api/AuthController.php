@@ -102,6 +102,7 @@ class AuthController extends Controller
             ], 422);
         }
 
+        $isNew = false;
         $otpRecord->update(['valid' => false]);
 
         $user = User::where('phone', $phone)
@@ -109,6 +110,7 @@ class AuthController extends Controller
             ->first();
 
         if (! $user) {
+            $isNew = true;
             $user = User::create([
                 'name' => null,
                 'email' => null,
@@ -122,13 +124,12 @@ class AuthController extends Controller
 
         $user->device_token = $request->device_token;
         $user->device_type = $request->device_type;
+        $user->phone_verified_at = now();
         $user->save();
-
-        // send welcome otp
 
         try {
             $fcm = new Fcm();
-            $res = $fcm->send(new FcmBody([
+            $fcm->send(new FcmBody([
                 'token' => $request->device_token,
                 'title' => 'ياهلا ومرحبا',
                 'description' => 'حسابك عندنا، منتظرين اول طلب 🫰',
@@ -141,6 +142,7 @@ class AuthController extends Controller
         return response()->json([
             'message' => trans('Authenticated successfully'),
             'user' => $user,
+            'is_new' => $isNew,
             'token' => $token,
         ]);
     }

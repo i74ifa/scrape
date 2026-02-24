@@ -38,5 +38,7 @@
     "purchasing": "يتم الشراء",
     "purchased": "تم الشراء",
     "ready_to_ship": "جاهز للشحن",
-    "customs_clearance": "التخليص الجمركي"
+    "customs_clearance": "التخليص الجمركي",
+    "User updated successfully": "تم تحديث المستخدم بنجاح",
+    "User updated failed": "فشل تحديث المستخدم"
 }

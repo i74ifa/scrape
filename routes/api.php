@@ -31,6 +31,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('{cartItem}/quantity', [Api\CartController::class, 'updateQuantity']);
     });
 
+    Route::prefix('user')->name('user.')->group(function () {
+        Route::post('', [Api\UserController::class, 'update']);
+        Route::post('password', [Api\UserController::class, 'updatePassword']);
+    });
+
     Route::prefix('orders')->name('orders.')->group(function () {
         Route::get('', [Api\OrderController::class, 'index']);
         Route::get('{order}', [Api\OrderController::class, 'show'])->name('show');
