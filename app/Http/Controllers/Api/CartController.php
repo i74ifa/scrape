@@ -137,4 +137,15 @@ class CartController extends Controller
             'total_yer' => Currency::format(Currency::convert($carts->sum('total'), 'SAR'), 'YER'),
         ]);
     }
+
+    public function destroy(CartItem $cartItem)
+    {
+        $cartItem->delete();
+        $cartItem->cart->updateSummary();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => __('Cart item deleted successfully'),
+        ]);
+    }
 }

@@ -14,7 +14,7 @@ class UserController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'phone' => 'required|string|max:255',
+            'phone' => 'nullable|string|max:255',
             'password' => 'nullable|string',
         ]);
 
@@ -22,16 +22,15 @@ class UserController extends Controller
         try {
             $user = $request->user();
 
-            $user->phone = $request->phone;
+            if ($request->has('phone') && $request->phone !== $user->phone) {
+                $user->phone = $request->phone;
+                $user->phone_verified_at = null;
+            }
             $user->name  = $request->name;
 
             // set first time password
             if ($user->password === null) {
                 $user->password = bcrypt($request->password);
-            }
-
-            if ($user->isDirty('phone')) {
-                $user->phone_verified_at = null;
             }
 
             $user->save();

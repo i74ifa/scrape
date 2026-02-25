@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use App\Modules\SmsGateway;
 use App\Services\Fcm\Fcm;
 use App\Services\Fcm\FcmBody;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
@@ -29,6 +30,17 @@ class AuthController extends Controller
 
         $regex = RegexCode::getCountryRegexUsingCode($countryCode);
         $identifier = sprintf('%s%s', $countryCode, $phone);
+
+        $user = User::where('phone', $phone)
+            ->where('country_code', $countryCode)
+            ->first();
+
+        if ($user) {
+            return response()->json([
+                'message' => trans('User already exists'),
+                'is_new' => false,
+            ], 200);
+        }
 
         if ($regex === null) {
             return response()->json([
@@ -68,6 +80,57 @@ class AuthController extends Controller
         ]);
     }
 
+    public function loginAsPassword(Request $request)
+    {
+        try {
+            $request->validate([
+                'phone' => 'required|string',
+                'password' => 'required|string',
+                'country_code' => 'nullable|string',
+                'device_token' => 'nullable|string',
+                'device_type' => 'nullable|in:android,ios,ipados',
+            ]);
+        } catch (ValidationException $th) {
+            return response()->json([
+                'message' => $th->errors(),
+            ], 422);
+        }
+
+        $phone = $request->input('phone');
+        $countryCode = $request->input('country_code', '+967');
+        $countryCode = RegexCode::getPhoneCountryCode($countryCode);
+        $identifier = sprintf('%s%s', $countryCode, $phone);
+
+        $user = User::where('phone', $phone)
+            ->where('country_code', $countryCode)
+            ->first();
+
+        if (! $user) {
+            return response()->json([
+                'message' => trans('User not found'),
+            ], 422);
+        }
+
+        if (! Hash::check($request->password, $user->password)) {
+            return response()->json([
+                'message' => trans('Invalid password'),
+            ], 422);
+        }
+
+        $token = $user->createToken('auth_token')->plainTextToken;
+
+        $user->device_token = $request->device_token;
+        $user->device_type = $request->device_type;
+        $user->phone_verified_at = now();
+        $user->save();
+
+        return response()->json([
+            'message' => trans('Authenticated successfully'),
+            'user' => $user,
+            'token' => $token,
+        ]);
+    }
+
     public function verifyOtp(Request $request)
     {
         try {
@@ -102,7 +165,6 @@ class AuthController extends Controller
             ], 422);
         }
 
-        $isNew = false;
         $otpRecord->update(['valid' => false]);
 
         $user = User::where('phone', $phone)
@@ -110,7 +172,6 @@ class AuthController extends Controller
             ->first();
 
         if (! $user) {
-            $isNew = true;
             $user = User::create([
                 'name' => null,
                 'email' => null,
@@ -142,7 +203,6 @@ class AuthController extends Controller
         return response()->json([
             'message' => trans('Authenticated successfully'),
             'user' => $user,
-            'is_new' => $isNew,
             'token' => $token,
         ]);
     }

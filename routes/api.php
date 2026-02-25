@@ -15,6 +15,7 @@ Route::apiResource('products', Api\ProductController::class)->except(['update'])
 Route::group(['prefix' => 'auth'], function () {
     Route::post('/', [Api\AuthController::class, 'sendOtp']);
     Route::post('/verify', [Api\AuthController::class, 'verifyOtp']);
+    Route::post('/login', [Api\AuthController::class, 'loginAsPassword']);
 });
 
 
@@ -29,6 +30,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('{platform}', [Api\CartController::class, 'store'])->name('store');
         Route::get('totals', [Api\CartController::class, 'totals']);
         Route::post('{cartItem}/quantity', [Api\CartController::class, 'updateQuantity']);
+
+        Route::delete('{cartItem}', [Api\CartController::class, 'destroy']);
     });
 
     Route::prefix('user')->name('user.')->group(function () {
