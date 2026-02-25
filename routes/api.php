@@ -9,6 +9,7 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+Route::put('addresses/{address}/default', [Api\AddressController::class, 'setDefault']);
 Route::apiResource('addresses', Api\AddressController::class)->middleware('auth:sanctum');
 Route::apiResource('products', Api\ProductController::class)->except(['update']);
 

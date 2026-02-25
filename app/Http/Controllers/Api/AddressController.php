@@ -70,4 +70,17 @@ class AddressController extends Controller
 
         return response()->noContent();
     }
+
+    public function setDefault(string $id)
+    {
+        \App\Models\Address::where('user_id', auth()->id())->update([
+            'is_default' => false,
+        ]);
+
+        \App\Models\Address::where('user_id', auth()->id())->where('id', $id)->update([
+            'is_default' => true,
+        ]);
+
+        return response()->noContent();
+    }
 }
