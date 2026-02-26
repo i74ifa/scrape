@@ -26,7 +26,10 @@ class UserController extends Controller
                 $user->phone = $request->phone;
                 $user->phone_verified_at = null;
             }
-            $user->name  = $request->name;
+
+            if ($request->has('name') && $request->name !== $user->name) {
+                $user->name = $request->name;
+            }
 
             // set first time password
             if ($user->password === null) {

@@ -123,42 +123,16 @@ class PlatformSeeder extends Seeder
                 'country' => 'SA',
                 'logo' => '/images/icons/adidas.png'
             ],
-            // [
-            //     'id' => 12,
-            //     'name' => 'Fashion Nova',
-            //     'url' => 'https://www.fashionnova.com',
-            //     'script_file' => 'fashion-nova',
-            //     'currency' => 'USD',
-            //     'currency_symbol' => '$',
-            //     'country' => 'US',
-            // ],
-            // [
-            //     'id' => 13,
-            //     'name' => 'Light In The Box',
-            //     'url' => 'https://www.lightinthebox.com',
-            //     'script_file' => 'light-in-the-box',
-            //     'currency' => 'USD',
-            //     'currency_symbol' => '$',
-            //     'country' => 'US',
-            // ],
-            // [
-            //     'id' => 14,
-            //     'name' => 'Flo',
-            //     'url' => 'https://www.flo.com.tr',
-            //     'script_file' => 'flo',
-            //     'currency' => 'TRY',
-            //     'currency_symbol' => '₺',
-            //     'country' => 'TR',
-            // ],
-            // [
-            //     'id' => 15,
-            //     'name' => 'Noon SA',
-            //     'url' => 'https://www.noon.com/saudi-ar',
-            //     'script_file' => 'noon',
-            //     'currency' => 'SAR',
-            //     'currency_symbol' => 'ر.س',
-            //     'country' => 'SA',
-            // ]
+            [
+                'id' => 12,
+                'name' => 'جرير',
+                'url' => 'https://www.jarir.com',
+                'script_file' => 'jarir',
+                'currency' => 'SAR',
+                'currency_symbol' => 'ر.س',
+                'country' => 'SA',
+                'logo' => '/images/icons/jarir.png'
+            ]
         ];
 
         foreach ($data as $scraper) {

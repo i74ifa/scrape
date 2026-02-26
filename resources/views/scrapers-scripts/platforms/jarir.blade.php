@@ -4,7 +4,7 @@
     // ==UserScript==
     // @name        New script {name}
     // @namespace   Violentmonkey Scripts
-    // @match *://*.{domain}/*
+    // @match *://*.jarir.com/*
     // @run-at      document-body
     // @grant       none
     // @version     1.0
@@ -12,7 +12,9 @@
     // @description 12/14/2025, 9:13:36 PM
     // ==/UserScript==
 
-    const watchers = [];
+    const watchers = [
+        "#product"
+    ];
 
     // if you want append before and after initial
     window.tlabooAppendCode = {
@@ -25,7 +27,9 @@
             before: () => {
 
             },
-            onScrape: async (data) => { },
+            onScrape: async (data) => {
+                return data;
+            },
             after: () => { }
         }
     }
@@ -47,7 +51,7 @@
 
     const selectors = {
         name: {
-            selector: "{nameSelector}",
+            selector: ".product-title .product-title__title",
             type: "text",
             data: "",
         },
@@ -59,27 +63,27 @@
         },
 
         price: {
-            selector: "{priceSelector}",
+            selector: ".price-box__row  .price.price--pdp",
             type: "text",
             data: "",
         },
 
         originalPrice: {
-            selector: "{priceSelector}",
+            selector: ".price-box__row  .price.price--pdp",
             type: "text",
             data: "",
         },
 
 
         image: {
-            selector: "{imageSelector}",
+            selector: ".image--card img:nth-child(2)",
             type: "attr",
             data: "",
             attr: "src",
         },
 
         images: {
-            selector: "{imagesSelector}",
+            selector: ".image--card img",
             type: "multi-attr",
             data: [],
             attr: "src",
@@ -141,9 +145,21 @@
         },
     };
 
+    function trims(value) {
+        if (value === null || value === undefined) {
+            return "";
+        }
+
+        return value.replace(/\s+/g, ' ')
+            .replace('/', '')
+            .trim();
+    }
     function getSelectedVariant() {
-        // let doc = document.querySelectorAll('');
+        let doc = document.querySelectorAll('[data-testid="variantsLabel"]');
         const data = [];
+        doc.forEach(el => {
+            data.push(trims(el.textContent));
+        });
         return data.join(' - ');
     }
 
@@ -166,11 +182,11 @@
             price = document.querySelector(selectors.price.selector)?.value;
         }
 
-        selectors.name.data = document.querySelector(selectors.name.selector).textContent;
+        selectors.name.data = trims(document.querySelector(selectors.name.selector).textContent);
         selectors.images.data = getSelector(selectors.images.selector, 'src', false);
         selectors.image.data = document.querySelector(selectors.image.selector)?.src ?? selectors.images.data[0] ?? "";
-        selectors.price.data = price;
-        selectors.originalPrice.data = price;
+        selectors.price.data = trims(price);
+        selectors.originalPrice.data = trims(price);
         selectors.selectedVariant.data = getSelectedVariant();
         selectors.brand.data = document.querySelector(selectors.brand.selector)?.textContent ?? "";
 

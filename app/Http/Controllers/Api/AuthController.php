@@ -77,6 +77,7 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => trans('OTP sent successfully'),
+            'is_new' => true,
         ]);
     }
 
@@ -171,7 +172,9 @@ class AuthController extends Controller
             ->where('country_code', $countryCode)
             ->first();
 
+        $isNew = false;
         if (! $user) {
+            $isNew = true;
             $user = User::create([
                 'name' => null,
                 'email' => null,
@@ -190,12 +193,14 @@ class AuthController extends Controller
 
         try {
             $fcm = new Fcm();
-            $fcm->send(new FcmBody([
-                'token' => $request->device_token,
-                'title' => 'ياهلا ومرحبا',
-                'description' => 'حسابك عندنا، منتظرين اول طلب 🫰',
-                'url' => '',
-            ]));
+            if ($isNew) {
+                $fcm->send(new FcmBody([
+                    'token' => $request->device_token,
+                    'title' => 'ياهلا ومرحبا',
+                    'description' => 'حسابك عندنا، منتظرين اول طلب 🫰',
+                    'url' => '',
+                ]));
+            }
         } catch (\Exception $th) {
             //throw $th;
         }
@@ -204,6 +209,7 @@ class AuthController extends Controller
             'message' => trans('Authenticated successfully'),
             'user' => $user,
             'token' => $token,
+            'is_new' => $isNew,
         ]);
     }
 }
