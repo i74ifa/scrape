@@ -25,6 +25,7 @@ class Product extends Model
         'platform_id',
         'user_id',
         'product_id',
+        'is_active',
     ];
 
     public function platform()

@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'pending' => 'طلبك قيد انتظار الموافقه',
+    'pending' => 'طلبك ينتظر الموافقة',
     'approved' => 'وافقنا على طلبك من :platform',
     'purchasing' => 'قاعدين نشتري اغراضك من :platform',
     'purchased' => 'اشترينا اغراضك من :platform',
