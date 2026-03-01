@@ -15,7 +15,7 @@ class PlatformSeeder extends Seeder
         $data = [
             [
                 'id' => 1,
-                'name' => 'Amazon',
+                'name' => 'أمازون',
                 'url' => 'https://www.amazon.sa',
                 'script_file' => 'amazon',
                 'currency' => 'SAR',
@@ -25,7 +25,7 @@ class PlatformSeeder extends Seeder
             ],
             [
                 'id' => 2,
-                'name' => 'Ali Express',
+                'name' => 'علي إكسبريس',
                 'url' => 'https://ar.aliexpress.com?_randl_shipto=SA&gatewayAdaptuae',
                 'script_file' => 'ali_express',
                 'currency' => 'SAR',
@@ -45,7 +45,7 @@ class PlatformSeeder extends Seeder
             // ],
             [
                 'id' => 4,
-                'name' => 'Ebay',
+                'name' => 'إي باي',
                 'url' => 'https://www.ebay.com',
                 'script_file' => 'ebay',
                 'currency' => 'USD',
@@ -55,7 +55,7 @@ class PlatformSeeder extends Seeder
             ],
             [
                 'id' => 5,
-                'name' => 'Shein',
+                'name' => 'شي إن',
                 'url' => 'https://m.shein.com/ar',
                 'script_file' => 'shein',
                 'currency' => 'SAR',
@@ -65,7 +65,7 @@ class PlatformSeeder extends Seeder
             ],
             [
                 'id' => 6,
-                'name' => 'Zara',
+                'name' => 'زارا',
                 'url' => 'https://www.zara.com/sa/ar',
                 'script_file' => 'zara',
                 'currency' => 'SAR',
@@ -73,19 +73,19 @@ class PlatformSeeder extends Seeder
                 'country' => 'SA',
                 'logo' => '/images/icons/zara.png'
             ],
-            [
-                'id' => 7,
-                'name' => 'Sephora',
-                'url' => 'https://www.sephora.me/sa-ar',
-                'script_file' => 'sephora',
-                'currency' => 'SAR',
-                'currency_symbol' => 'ر.س',
-                'country' => 'SA',
-                'logo' => '/images/icons/sephora.png'
-            ],
+            // [
+            //     'id' => 7,
+            //     'name' => 'Sephora',
+            //     'url' => 'https://www.sephora.me/sa-ar',
+            //     'script_file' => 'sephora',
+            //     'currency' => 'SAR',
+            //     'currency_symbol' => 'ر.س',
+            //     'country' => 'SA',
+            //     'logo' => '/images/icons/sephora.png'
+            // ],
             [
                 'id' => 8,
-                'name' => 'Gissah SA',
+                'name' => 'قصة',
                 'url' => 'https://sa.gissah.com/ar',
                 'script_file' => 'gissah',
                 'currency' => 'SAR',
@@ -95,7 +95,7 @@ class PlatformSeeder extends Seeder
             ],
             [
                 'id' => 9,
-                'name' => 'Puma SA',
+                'name' => 'بوما',
                 'url' => 'https://sa.puma.com',
                 'script_file' => 'puma',
                 'currency' => 'SAR',
@@ -105,7 +105,7 @@ class PlatformSeeder extends Seeder
             ],
             [
                 'id' => 10,
-                'name' => 'Nike SA',
+                'name' => 'نايكي',
                 'url' => 'https://www.nike.sa/ar/home',
                 'script_file' => 'nike',
                 'currency' => 'SAR',
@@ -115,7 +115,7 @@ class PlatformSeeder extends Seeder
             ],
             [
                 'id' => 11,
-                'name' => 'Adidas SA',
+                'name' => 'أديداس',
                 'url' => 'https://www.adidas.sa/ar',
                 'script_file' => 'adidas',
                 'currency' => 'SAR',
