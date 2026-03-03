@@ -17,7 +17,8 @@ class ProductsTable
             ->columns([
                 Columns\ImageColumn::make('image')
                     ->label(trans('Image'))
-                    ->circular(),
+                    ->imageSize(80)
+                    ->square(),
 
                 Columns\TextColumn::make('name')
                     ->label(trans('Name'))

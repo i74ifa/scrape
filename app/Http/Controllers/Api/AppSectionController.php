@@ -59,14 +59,14 @@ class AppSectionController extends Controller
                             "light" => "https://talabye.com/images/demo-light.jpg"
                         ]
                     ],
-                    [
-                        "url" => "/platforms/5",
-                        "cols" => 6,
-                        "image" => [
-                            "dark" => "https://talabye.com/images/demo-dark.jpg",
-                            "light" => "https://talabye.com/images/demo-light.jpg"
-                        ]
-                    ],
+                    // [
+                    //     "url" => "/platforms/5",
+                    //     "cols" => 6,
+                    //     "image" => [
+                    //         "dark" => "https://talabye.com/images/demo-dark.jpg",
+                    //         "light" => "https://talabye.com/images/demo-light.jpg"
+                    //     ]
+                    // ],
                 ],
                 "title" => "",
                 "config" => [
@@ -76,8 +76,8 @@ class AppSectionController extends Controller
             ]
         ];
 
-        $sections[] = $bannerSwipe;
-        $sections[] = $bannerGrid;
+        // $sections[] = $bannerSwipe;
+        // $sections[] = $bannerGrid;
 
         return response()->json([
             'data' => $sections
@@ -136,14 +136,14 @@ class AppSectionController extends Controller
                             "light" => "https://talabye.com/images/demo-light.jpg"
                         ]
                     ],
-                    [
-                        "url" => "/platforms/3",
-                        "cols" => 6,
-                        "image" => [
-                            "dark" => "https://talabye.com/images/demo-dark.jpg",
-                            "light" => "https://talabye.com/images/demo-light.jpg"
-                        ]
-                    ],
+                    // [
+                    //     "url" => "/platforms/3",
+                    //     "cols" => 6,
+                    //     "image" => [
+                    //         "dark" => "https://talabye.com/images/demo-dark.jpg",
+                    //         "light" => "https://talabye.com/images/demo-light.jpg"
+                    //     ]
+                    // ],
                 ],
                 "title" => "",
                 "config" => [
@@ -154,7 +154,7 @@ class AppSectionController extends Controller
         ];
 
         $sections[] = $bannerSwipe;
-        $sections[] = $bannerGrid;
+        // $sections[] = $bannerGrid;
 
         return response()->json([
             'data' => $sections

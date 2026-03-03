@@ -53,6 +53,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/', [Api\NotificationController::class, 'index']);
         Route::post('{id}/read', [Api\NotificationController::class, 'markAsRead']);
         Route::post('read-all', [Api\NotificationController::class, 'markAllAsRead']);
+        Route::get('count', [Api\NotificationController::class, 'count']);
     });
 
     Route::prefix('sections')->group(function () {
