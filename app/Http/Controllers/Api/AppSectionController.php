@@ -76,8 +76,28 @@ class AppSectionController extends Controller
             ]
         ];
 
+        $customBanner = [
+            'name' => 'CustomBanner',
+            'content' => [
+                'title' => 'Custom Banner',
+                'description' => 'Custom Banner',
+                'icon' => 'Custom Banner',
+                'button' => [
+                    'title' => 'Custom Banner',
+                    'url' => 'Custom Banner'
+                ],
+                'colors' => [
+                    'background' => '#fff',
+                    'text' => '#000',
+                    'button' => '#fff',
+                    'button_text' => '#000'
+                ]
+            ]
+        ];
+
         // $sections[] = $bannerSwipe;
         // $sections[] = $bannerGrid;
+        $sections[] = $customBanner;
 
         return response()->json([
             'data' => $sections

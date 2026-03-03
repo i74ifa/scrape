@@ -66,7 +66,7 @@ class AddressController extends Controller
      */
     public function destroy(string $id)
     {
-        \App\Models\Address::where('user_id', auth()->id())->destroy($id);
+        \App\Models\Address::where('user_id', auth()->id())->where('id', $id)->delete();
 
         return response()->noContent();
     }

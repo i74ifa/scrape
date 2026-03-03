@@ -74,4 +74,9 @@ class User extends Authenticatable
 
         return '0000';
     }
+
+    public function carts()
+    {
+        return $this->hasMany(Cart::class);
+    }
 }

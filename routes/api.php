@@ -33,6 +33,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('{cartItem}/quantity', [Api\CartController::class, 'updateQuantity']);
 
         Route::delete('{cartItem}', [Api\CartController::class, 'destroy']);
+        Route::get('count', [Api\CartController::class, 'count']);
     });
 
     Route::prefix('user')->name('user.')->group(function () {

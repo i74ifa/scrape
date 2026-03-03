@@ -138,6 +138,13 @@ class CartController extends Controller
         ]);
     }
 
+    public function count(Request $request)
+    {
+        $count = $request->user()->carts()->withCount('items')->get();
+
+        return response()->json(['count' => $count->sum('items_count')]);
+    }
+
     public function destroy(CartItem $cartItem)
     {
         $cartItem->delete();
