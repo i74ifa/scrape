@@ -61,6 +61,18 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('home', [Api\AppSectionController::class, 'homePage']);
         Route::get('products', [Api\AppSectionController::class, 'productsPage']);
     });
+
+    Route::get('app-summary', function (Request $request) {
+        // use cart counts and notifications counts
+
+        $notification = app(Api\NotificationController::class)->count($request);
+        $cart = app(Api\CartController::class)->count($request);
+
+        return response()->json([
+            'notification' => $notification->original['count'],
+            'cart' => $cart->original['count']
+        ]);
+    });
 });
 
 Route::get('pages/{slug}', [Api\PageController::class, 'show']);
