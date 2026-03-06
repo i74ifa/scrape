@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 
 class AppSectionController extends Controller
 {
@@ -79,18 +78,21 @@ class AppSectionController extends Controller
         $customBanner = [
             'name' => 'CustomBanner',
             'content' => [
-                'title' => 'Custom Banner',
-                'description' => 'Custom Banner',
-                'icon' => 'Custom Banner',
+                'title' => 'تخفيضات شي إن',
+                'description' => 'خصومات تصل إلى 70% على جميع المنتجات',
                 'button' => [
-                    'title' => 'Custom Banner',
-                    'url' => 'Custom Banner'
+                    'title' => 'تسوق الآن',
+                    'url' => '/platforms/5'
+                ],
+                'icon' => [
+                    'dark' => 'https://talabye.com/images/icons/shein.png',
+                    'light' => 'https://talabye.com/images/icons/shein.png'
                 ],
                 'colors' => [
-                    'background' => '#fff',
-                    'text' => '#000',
-                    'button' => '#fff',
-                    'button_text' => '#000'
+                    'background' => '#76D2DB',
+                    'text' => '#ffffff',
+                    'button' => '#ffffff',
+                    'button_text' => '#000000'
                 ]
             ]
         ];

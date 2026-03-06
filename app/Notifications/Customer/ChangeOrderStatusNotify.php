@@ -67,6 +67,7 @@ class ChangeOrderStatusNotify extends Notification
             ) ?? '',
             'type' => NotificationType::ORDER->value,
             'url' => $this->url ?? '',
+            'reference_id' => $this->order->code,
         ];
     }
 

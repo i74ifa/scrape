@@ -15,6 +15,7 @@ class Notification extends Model
         'body',
         'type',
         'read',
+        'reference_id',
         'url',
     ];
 
