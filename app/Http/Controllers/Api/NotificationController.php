@@ -12,7 +12,12 @@ class NotificationController extends Controller
      */
     public function index(Request $request)
     {
+        $request->validate([
+            'filter_by' => 'in:order,promotion',
+        ]);
+
         $notifications = $request->user()->notifications()
+            ->when($request->filled('filter_by'), fn($q) => $q->where('type', $request->filter_by))
             ->latest()
             ->cursorPaginate($request->get('per_page', 15));
 
