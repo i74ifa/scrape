@@ -2,12 +2,15 @@
 
 use Illuminate\Http\Request;
 use \App\Http\Controllers\Api;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
 
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
+
+Route::put('/user/update-token', [UserController::class, 'updateDeviceToken'])->middleware('auth:sanctum');
 
 Route::put('addresses/{address}/default', [Api\AddressController::class, 'setDefault']);
 Route::apiResource('addresses', Api\AddressController::class)->middleware('auth:sanctum');

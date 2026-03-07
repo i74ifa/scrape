@@ -30,6 +30,7 @@ class NotificationLocalChannel
             'body' => $data['body'],
             'type' => $data['type'],
             'url' => $data['url'],
+            'reference_id' => $data['reference_id'] ?? null,
             'read' => false,
         ]);
     }

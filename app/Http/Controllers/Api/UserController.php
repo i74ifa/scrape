@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -85,6 +86,19 @@ class UserController extends Controller
         return response()->json([
             'message' => trans('User password updated successfully'),
             'user' => new UserResource($user),
+        ]);
+    }
+
+    public function updateDeviceToken(Request $request)
+    {
+        $request->validate([
+            'device_token' => ['required'],
+        ]);
+
+        $user = Auth::guard('sanctum')->user();
+
+        $user->update([
+            'device_token' => $request->device_token,
         ]);
     }
 }
