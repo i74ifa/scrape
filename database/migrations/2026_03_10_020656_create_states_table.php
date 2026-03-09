@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->string('code');
+            $table->decimal('delivery_cost')->default(0);
             $table->boolean('is_supported')->default(true);
         });
     }
