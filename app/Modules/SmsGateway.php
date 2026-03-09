@@ -10,10 +10,10 @@ class SmsGateway
      * Send SMS via Sms Gate API.
      *
      * @param string $to
-     * @param string $text
+     * @param string $message
      * @return \Illuminate\Http\Client\Response
      */
-    public static function send($to, $text, $countryCode = '967')
+    public static function send($to, $message, $countryCode = '967')
     {
         $to = self::initialPhone($to, $countryCode);
         $username = config('services.sms_gate.username');
@@ -21,7 +21,7 @@ class SmsGateway
         $url = config('services.sms_gate.url');
 
         $data = [
-            'message' => $text,
+            'message' => $message,
             'phoneNumbers' => [$to],
         ];
 

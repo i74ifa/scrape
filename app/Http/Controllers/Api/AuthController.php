@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Modules\SmsGateway;
+use App\Modules\WhatsappGateway;
 use App\Services\Fcm\Fcm;
 use App\Services\Fcm\FcmBody;
 use Illuminate\Support\Facades\Hash;
@@ -72,7 +73,7 @@ class AuthController extends Controller
         EOT;
 
         if (app()->environment('production')) {
-            SmsGateway::send(to: $phone, text: str_replace(':otp', $token, $template), countryCode: $countryCode);
+            WhatsappGateway::sendMessage(to: $phone, message: str_replace(':otp', $token, $template), countryCode: $countryCode);
         }
 
         return response()->json([

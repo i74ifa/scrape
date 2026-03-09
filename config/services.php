@@ -56,5 +56,11 @@ return [
         'password' => env('SMS_GATE_PASSWORD'),
         'url' => env('SMS_GATE_URL', 'https://api.sms-gate.app/3rdparty/v1/message'),
     ],
+    'talabye_whatsapp' => [
+        'username' => env('TALABYE_WHATSAPP_USERNAME'),
+        'password' => env('TALABYE_WHATSAPP_PASSWORD'),
+        'deviceId' => env('TALABYE_WHATSAPP_DEVICE_ID'),
+        'url' => env('TALABYE_WHATSAPP_URL', 'https://bot.talabye.com')
+    ],
 
 ];
