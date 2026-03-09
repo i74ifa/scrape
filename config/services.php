@@ -62,5 +62,8 @@ return [
         'deviceId' => env('TALABYE_WHATSAPP_DEVICE_ID'),
         'url' => env('TALABYE_WHATSAPP_URL', 'https://bot.talabye.com')
     ],
+    'google_map' => [
+        'key' => env('GOOGLE_MAP_KEY'),
+    ],
 
 ];

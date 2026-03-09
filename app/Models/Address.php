@@ -13,6 +13,7 @@ class Address extends Model
         'latitude',
         'longitude',
         'user_id',
+        'state_id',
         'is_default',
     ];
 }

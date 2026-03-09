@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Modules\GoogleMap;
 
 class AddressController extends Controller
 {
@@ -27,9 +28,19 @@ class AddressController extends Controller
             'latitude' => 'nullable|numeric',
         ]);
 
+        $state = GoogleMap::getStateName($request->latitude, $request->longitude);
+        $getState = \App\Models\State::where('name', 'LIKE', "%$state%")->first();
+
+        if (!$getState) {
+            return response()->json([
+                'message' => 'State not found',
+            ], 404);
+        }
+
 
         return \App\Models\Address::create([
             'user_id' => auth()->id(),
+            'state_id' => $getState->id ?? null,
             ...$validated
         ]);
     }
