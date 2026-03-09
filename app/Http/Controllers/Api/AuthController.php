@@ -66,11 +66,7 @@ class AuthController extends Controller
             'valid' => true,
         ]);
 
-        $template = <<<EOT
-        رمز التحقق الخاص بك هو :otp
-
-        لاتشاركه مع احد.
-        EOT;
+        $template = "رمز التحقق الخاص بك في تطبيق طلبي هو :otp\n\nلاتشاركه مع احد.";
 
         if (app()->environment('production')) {
             WhatsappGateway::sendMessage(to: $phone, message: str_replace(':otp', $token, $template), countryCode: $countryCode);
