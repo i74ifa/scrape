@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Http;
 
 class GoogleMap
 {
-    public static function getStateName($apiResponse)
+    private static function getStateName($apiResponse)
     {
         if (!isset($apiResponse['results'][0])) {
             return "Unknown";
@@ -30,7 +30,7 @@ class GoogleMap
         return null;
     }
 
-    public function getLocationInfo($lat, $lng)
+    public static function getLocationInfo($lat, $lng)
     {
         $key = config('services.google_map.key');
 

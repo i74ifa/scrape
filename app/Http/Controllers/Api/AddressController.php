@@ -28,7 +28,7 @@ class AddressController extends Controller
             'latitude' => 'nullable|numeric',
         ]);
 
-        $state = GoogleMap::getStateName($request->latitude, $request->longitude);
+        $state = GoogleMap::getLocationInfo($request->latitude, $request->longitude);
         $getState = \App\Models\State::where('name', 'LIKE', "%$state%")->first();
 
         if (!$getState) {
