@@ -36,12 +36,12 @@ class AuthController extends Controller
             ->where('country_code', $countryCode)
             ->first();
 
-        if ($user) {
-            return response()->json([
-                'message' => trans('User already exists'),
-                'is_new' => false,
-            ], 200);
-        }
+        // if ($user) {
+        //     return response()->json([
+        //         'message' => trans('User already exists'),
+        //         'is_new' => false,
+        //     ], 200);
+        // }
 
         if ($regex === null) {
             return response()->json([
@@ -66,7 +66,7 @@ class AuthController extends Controller
             'valid' => true,
         ]);
 
-        $template = "رمز التحقق الخاص بك في تطبيق طلبي هو :otp\n\nلاتشاركه مع احد.";
+        $template = "رمز التحقق الخاص بك في تطبيق طلبي هو \n:otp\n\nلاتشاركه مع احد.";
 
         if (app()->environment('production')) {
             WhatsappGateway::sendMessage(to: $phone, message: str_replace(':otp', $token, $template), countryCode: $countryCode);

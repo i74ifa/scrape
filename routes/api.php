@@ -17,7 +17,7 @@ Route::apiResource('addresses', Api\AddressController::class)->middleware('auth:
 Route::apiResource('products', Api\ProductController::class)->except(['update']);
 
 Route::group(['prefix' => 'auth'], function () {
-    Route::post('/', [Api\AuthController::class, 'sendOtp']);
+    Route::post('/', [Api\AuthController::class, 'sendOtp'])->middleware('throttle:1,1');
     Route::post('/verify', [Api\AuthController::class, 'verifyOtp']);
     Route::post('/login', [Api\AuthController::class, 'loginAsPassword']);
 });
