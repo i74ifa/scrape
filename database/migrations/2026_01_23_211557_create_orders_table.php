@@ -21,7 +21,7 @@ return new class extends Migration
             $table->decimal('shipping', 10, 2)->default(0);
             $table->decimal('sub_total', 10, 2)->default(0);
             $table->decimal('grand_total', 10, 2)->default(0);
-            $table->enum('status', OrderStatus::toArray())->default(OrderStatus::PENDING->value);
+            $table->enum('status', OrderStatus::all())->default(OrderStatus::PENDING->value);
 
             $table->foreignId('platform_id')->constrained('platforms')->cascadeOnDelete();
             $table->foreignId('checkout_order_id')->constrained('checkout_orders')->cascadeOnDelete();

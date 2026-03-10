@@ -24,6 +24,22 @@ enum OrderStatus: string
             ->toArray();
     }
 
+    public static function all()
+    {
+        return [
+            self::PENDING->value,
+            self::APPROVED->value,
+            self::PURCHASING->value,
+            self::PURCHASED->value,
+            self::READY_TO_SHIP->value,
+            self::CUSTOMS_CLEARANCE->value,
+            self::SHIPPED->value,
+            self::DELIVERED->value,
+            self::CANCELLED->value,
+            self::RETURNED->value,
+        ];
+    }
+
     public function message($platform): string
     {
         return match ($this) {
