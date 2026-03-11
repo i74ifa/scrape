@@ -7,6 +7,7 @@ use App\Models\Otp;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Jobs\SendOtpJob;
 use App\Modules\Massaging\Contracts\MessageSender;
 use App\Services\Fcm\Fcm;
 use App\Services\Fcm\FcmBody;
@@ -72,7 +73,8 @@ class AuthController extends Controller
         ]);
 
         try {
-            $sender->send(to: $phone, message: $token, countryCode: $countryCode);
+            $randomSeconds = rand(5, 10);
+            SendOtpJob::dispatch($phone, $token, $countryCode)->delay(now()->addSeconds($randomSeconds));
         } catch (\Exception $th) {
             return response()->json([
                 'message' => 'Failed to send OTP',
