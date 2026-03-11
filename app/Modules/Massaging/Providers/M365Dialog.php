@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Modules;
+namespace App\Modules\Massaging\Providers;
 
+use App\Modules\Massaging\Contracts\MessageSender;
 use Illuminate\Support\Facades\Http;
 
-class M365Dialog
+class M365Dialog implements MessageSender
 {
-    public static function send($to, $text, $countryCode = '967')
+    public function send($to, $text, $countryCode = '967'): bool
     {
         $code = preg_replace('/[^0-9]/', '', $text);
         $to = self::initialPhone($to, $countryCode);
@@ -50,7 +51,7 @@ class M365Dialog
         return Http::withHeaders([
             'D360-API-KEY' => $key,
             'Content-Type' => 'application/json'
-        ])->post($url, $messageData);
+        ])->post($url, $messageData)->throw()->successful();
     }
 
     public static function initialPhone($phone, $countryCode = '967')

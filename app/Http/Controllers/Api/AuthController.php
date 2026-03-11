@@ -5,20 +5,18 @@ namespace App\Http\Controllers\Api;
 use App\RegexCode;
 use App\Models\Otp;
 use App\Models\User;
-use App\Modules\M365Dialog;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Modules\SmsGateway;
-use App\Modules\WhatsappGateway;
+use App\Modules\Massaging\Contracts\MessageSender;
 use App\Services\Fcm\Fcm;
 use App\Services\Fcm\FcmBody;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
-    public function sendOtp(Request $request)
+    public function sendOtp(Request $request, MessageSender $sender)
     {
         $request->validate([
             'phone' => 'required|string',
@@ -32,9 +30,9 @@ class AuthController extends Controller
         $regex = RegexCode::getCountryRegexUsingCode($countryCode);
         $identifier = sprintf('%s%s', $countryCode, $phone);
 
-        $user = User::where('phone', $phone)
-            ->where('country_code', $countryCode)
-            ->first();
+        // $user = User::where('phone', $phone)
+        //     ->where('country_code', $countryCode)
+        //     ->first();
 
         // if ($user) {
         //     return response()->json([
@@ -49,6 +47,13 @@ class AuthController extends Controller
             ], 422);
         }
 
+        $key = 'send-otp:' . $request->ip();
+
+        // if (RateLimiter::tooManyAttempts($key, 2)) {
+        //     $seconds = RateLimiter::availableIn($key);
+        //     return response()->json(['message' => "يرجى الانتظار $seconds ثانية"], 429);
+        // }
+
         if (! preg_match($regex, '+' . $identifier)) {
             return response()->json([
                 'message' => trans('Invalid phone number'),
@@ -62,14 +67,16 @@ class AuthController extends Controller
         Otp::create([
             'identifier' => $identifier,
             'token' => $token,
-            'expires_at' => now()->addMinutes(10),
+            'expires_at' => now()->addMinutes(5),
             'valid' => true,
         ]);
 
-        $template = "رمز التحقق الخاص بك في تطبيق طلبي هو \n:otp\n\nلاتشاركه مع احد.";
-
-        if (app()->environment('production')) {
-            WhatsappGateway::sendMessage(to: $phone, message: str_replace(':otp', $token, $template), countryCode: $countryCode);
+        try {
+            $sender->send(to: $phone, message: $token, countryCode: $countryCode);
+        } catch (\Exception $th) {
+            return response()->json([
+                'message' => 'Failed to send OTP',
+            ], 500);
         }
 
         return response()->json([
