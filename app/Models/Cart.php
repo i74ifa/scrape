@@ -40,6 +40,11 @@ class Cart extends Model
         return $this->hasMany(CartItem::class);
     }
 
+    public function address()
+    {
+        return $this->belongsTo(Address::class);
+    }
+
     public function updateSummary()
     {
         $items = $this->items;
@@ -49,6 +54,8 @@ class Cart extends Model
             $item->total = $item->product->price * $item->quantity;
             $item->save();
         }
+
+        // get address
 
 
         $this->subtotal = $this->items->sum('total');

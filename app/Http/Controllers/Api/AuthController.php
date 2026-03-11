@@ -49,10 +49,10 @@ class AuthController extends Controller
 
         $key = 'send-otp:' . $request->ip();
 
-        // if (RateLimiter::tooManyAttempts($key, 2)) {
-        //     $seconds = RateLimiter::availableIn($key);
-        //     return response()->json(['message' => "يرجى الانتظار $seconds ثانية"], 429);
-        // }
+        if (RateLimiter::tooManyAttempts($key, 2)) {
+            $seconds = RateLimiter::availableIn($key);
+            return response()->json(['message' => "يرجى الانتظار $seconds ثانية"], 429);
+        }
 
         if (! preg_match($regex, '+' . $identifier)) {
             return response()->json([

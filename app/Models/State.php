@@ -11,5 +11,6 @@ class State extends Model
     protected $fillable = [
         'name',
         'code',
+        'delivery_cost',
     ];
 }
