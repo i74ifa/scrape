@@ -75,6 +75,7 @@ class OrderController extends Controller
 
             $paymentData = $payment->pay([
                 'bank_name' => $request->bank_name,
+                'bank_id' => $request->bank_id,
                 'iban' => $request->iban,
                 'image' => $request->file('image'),
             ]);
