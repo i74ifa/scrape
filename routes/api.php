@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use \App\Http\Controllers\Api;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\BankAccountController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -76,6 +77,8 @@ Route::middleware('auth:sanctum')->group(function () {
             'cart' => $cart->original['count']
         ]);
     });
+
+    Route::get('bank-accounts', [BankAccountController::class, 'index']);
 });
 
 Route::get('pages/{slug}', [Api\PageController::class, 'show']);

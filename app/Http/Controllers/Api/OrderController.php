@@ -13,6 +13,7 @@ use App\Enums\PaymentStatus;
 use Illuminate\Validation\Rules\Enum;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CheckoutOrderResource;
+use App\Modules\Payment\Payment;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
@@ -47,17 +48,11 @@ class OrderController extends Controller
                 'address_id' => 'required|exists:addresses,id',
             ];
 
-            $paymentMethod = PaymentMethod::tryFrom($request->payment_method);
-            $paymentHandler = $paymentMethod->getHandlerClass();
-            $paymentHandlerInstance = $paymentHandler::make($request->all());
-
-            if ($paymentMethod && $handlerClass = $paymentMethod->getHandlerClass()) {
-                $rules = array_merge($rules, $handlerClass::rules());
-            }
+            $paymentMethod = $request->payment_method;
+            $payment = Payment::handle($paymentMethod);
+            $rules = array_merge($payment->rules(), $rules);
 
             $validated = $request->validate($rules);
-
-            $paymentMethod = PaymentMethod::from($validated['payment_method']);
         } catch (ValidationException $e) {
             return response()->json([
                 'message' => $e->getMessage(),
@@ -77,13 +72,12 @@ class OrderController extends Controller
                 ], 404);
             }
 
-            if ($paymentHandler == BankTransfer::class) {
-                if ($request->hasFile('image')) {
-                    $image = $request->file('image')->store('images', 'public');
 
-                    $paymentHandlerInstance->image = $image;
-                }
-            }
+            $paymentData = $payment->pay([
+                'bank_name' => $request->bank_name,
+                'iban' => $request->iban,
+                'image' => $request->file('image'),
+            ]);
 
             $checkoutOrder = CheckoutOrder::create([
                 'user_id' => auth()->id(),
@@ -94,8 +88,8 @@ class OrderController extends Controller
                 'discount' => $carts->sum('discount'),
                 'local_shipping' => $carts->sum('local_shipping'),
                 'grand_total' => $carts->sum('total'),
-                'payment_method' => $paymentMethod->value,
-                'payment_reference' => json_encode($paymentHandlerInstance->getData()),
+                'payment_method' => $paymentMethod,
+                'payment_reference' => json_encode($paymentData),
                 'code' => CheckoutOrder::generateCode(),
                 'status' => CheckoutOrderStatus::PENDING_PAYMENT,
             ]);

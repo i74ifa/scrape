@@ -1,30 +1,25 @@
 <?php
 
-namespace App\Classes;
+namespace App\Modules\Payment\Gateways;
 
-use App\Interfaces\PaymentMethodInterface;
+use App\Modules\Payment\Contracts\PaymentGateway;
 
-class BankTransfer implements PaymentMethodInterface
+class BanksTransfer implements PaymentGateway
 {
-
     public $bankName;
     public $iban;
     public $image;
 
-    public function __construct(
-        $data
-    ) {
-        $this->bankName = $data['bank_name'];
-        $this->iban = $data['iban'] ?? null;
-        $this->image = $data['image'] ?? null;
-    }
-
-    public static function make($data): self
+    public function pay(array $data): ?array
     {
-        return new self($data);
+        if ($data['image']) {
+            $data['image'] = $data['image']->store('images', 'public');
+        }
+
+        return $this->getData();
     }
 
-    public static function rules(): array
+    public function rules(): array
     {
         return [
             'bank_name' => 'required|string',
@@ -33,7 +28,7 @@ class BankTransfer implements PaymentMethodInterface
         ];
     }
 
-    public function getData(): array
+    private function getData(): array
     {
         return [
             'bank_name' => $this->bankName,

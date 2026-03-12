@@ -2,42 +2,14 @@
 
 namespace App\Enums;
 
-use App\Classes\BankTransfer;
-use App\Interfaces\PaymentMethodInterface;
-
 enum PaymentMethod: string
-
-
 {
-    case BANK_TRANSFER = 'bank_transfer';
-    // case CASH_ON_DELIVERY = 'cash_on_delivery';
+    case BANKS_TRANSFER = 'banks_transfer';
 
     public function label(): string
     {
         return match ($this) {
-            self::BANK_TRANSFER => __('Bank transfer'),
-            // self::CASH_ON_DELIVERY => __('Cash on delivery'),
-        };
-    }
-
-    public function getHandlerClass(): ?string
-    {
-        return match ($this) {
-            self::BANK_TRANSFER => BankTransfer::class,
-            default => null,
-        };
-    }
-
-
-    public function bankTransfer(): ?BankTransfer
-    {
-        return match ($this) {
-            self::BANK_TRANSFER => BankTransfer::make([
-                'bank_name' => 'Al-Kuraimi Bank',
-                'account_name' => 'Company Name',
-                'account_number' => '1234567890',
-            ]),
-            default => null,
+            self::BANKS_TRANSFER => __('Bank transfer'),
         };
     }
 
@@ -45,13 +17,9 @@ enum PaymentMethod: string
     {
         return [
             [
-                'name' => self::BANK_TRANSFER->value,
-                'label' => self::BANK_TRANSFER->label(),
+                'name' => self::BANKS_TRANSFER->value,
+                'label' => self::BANKS_TRANSFER->label(),
             ],
-            // [
-            //     'name' => self::CASH_ON_DELIVERY->value,
-            //     'label' => self::CASH_ON_DELIVERY->label(),
-            // ],
         ];
     }
 }
