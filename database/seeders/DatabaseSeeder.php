@@ -20,6 +20,9 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             PlatformSeeder::class,
+            BankAccountSeeder::class,
+            PageSeeder::class,
+            StateSeeder::class,
         ]);
 
         Artisan::call('currency:exchange-rate');

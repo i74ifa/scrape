@@ -158,6 +158,16 @@ class CartController extends Controller
     public function totals(Request $request)
     {
         $bundle = CartBundle::where('user_id', user('id'))->first();
+        if (!$bundle) {
+            return response()->json([
+                'subtotal' => 0,
+                'tax' => 0,
+                'shipping' => 0,
+                'discount' => 0,
+                'local_shipping' => 0,
+                'total' => 0,
+            ]);
+        }
 
         return response()->json([
             'subtotal' => Currency::convert(
