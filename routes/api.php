@@ -78,6 +78,8 @@ Route::middleware('auth:sanctum')->group(function () {
         ]);
     });
 
+    Route::get('currencies', [Api\CurrencyController::class, 'index']);
+    Route::post('user/default-currency', [Api\CurrencyController::class, 'update']);
     Route::get('bank-accounts', [BankAccountController::class, 'index']);
 });
 

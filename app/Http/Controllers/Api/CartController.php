@@ -160,12 +160,36 @@ class CartController extends Controller
         $bundle = CartBundle::where('user_id', user('id'))->first();
 
         return response()->json([
-            'subtotal' => Currency::format($bundle->subtotal, 'SAR'),
-            'tax' => Currency::format($bundle->tax, 'SAR'),
-            'shipping' => Currency::format($bundle->shipping, 'SAR'),
-            'discount' => Currency::format($bundle->discount, 'SAR'),
-            'local_shipping' => Currency::format($bundle->local_shipping, 'SAR'),
-            'total' => Currency::format($bundle->total, 'SAR'),
+            'subtotal' => Currency::convert(
+                amount: $bundle->subtotal,
+                currencyFrom: 'SAR',
+                format: true
+            ),
+            'tax' => Currency::convert(
+                amount: $bundle->tax,
+                currencyFrom: 'SAR',
+                format: true
+            ),
+            'shipping' => Currency::convert(
+                amount: $bundle->shipping,
+                currencyFrom: 'SAR',
+                format: true
+            ),
+            'discount' => Currency::convert(
+                amount: $bundle->discount,
+                currencyFrom: 'SAR',
+                format: true
+            ),
+            'local_shipping' => Currency::convert(
+                amount: $bundle->local_shipping,
+                currencyFrom: 'SAR',
+                format: true
+            ),
+            'total' => Currency::convert(
+                amount: $bundle->total,
+                currencyFrom: 'SAR',
+                format: true
+            ),
         ]);
     }
 

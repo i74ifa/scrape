@@ -50,7 +50,7 @@ class Currency
      * @return float
      * @throws \Exception
      */
-    public static function convert($amount, $currencyFrom, $currencyTo = null)
+    public static function convert($amount, $currencyFrom, $currencyTo = null, $format = false)
     {
         if ($currencyTo === null) {
             $currencyTo = self::$currency;
@@ -67,7 +67,13 @@ class Currency
         $amountInSar = $amount * $fromRate;
 
         // Convert from SAR to target
-        return $amountInSar / $toRate;
+        $amount = $amountInSar / $toRate;
+
+        if ($format) {
+            return self::format($amount, $currencyTo);
+        }
+
+        return $amount;
     }
 
     public static function getExchangeRate($currency = 'YER')
@@ -100,8 +106,8 @@ class Currency
 
     public static function format($amount, $currency = 'YER')
     {
-        // format pattern
-        return number_format($amount, 2, '.', ',') . ' ' . self::getCurrencySymbol($currency);
+        $amount = round($amount, 2);
+        return number_format($amount, 0, '.', ',') . ' ' . self::getCurrencySymbol($currency);
     }
 
     public static function getCurrencySymbol($currency = 'YER', $start = true)
