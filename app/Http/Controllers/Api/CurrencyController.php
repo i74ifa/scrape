@@ -12,11 +12,11 @@ class CurrencyController extends Controller
         return response()->json(
             [
                 [
-                    'label' => 'Yemen',
+                    'label' => trans('Yemen riyal'),
                     'value' => 'YER',
                 ],
                 [
-                    'label' => 'Saudi Arabia',
+                    'label' => trans('Saudi riyal'),
                     'value' => 'SAR',
                 ],
             ]
