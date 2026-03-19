@@ -33,6 +33,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('carts')->name('carts.')->group(function () {
         Route::get('', [Api\CartController::class, 'index'])->name('index');
         Route::post('{platform}', [Api\CartController::class, 'store'])->name('store');
+        Route::post('product/{product}', [Api\CartController::class, 'storeById'])->name('storeById');
         Route::get('totals', [Api\CartController::class, 'totals']);
         Route::post('{cartItem}/quantity', [Api\CartController::class, 'updateQuantity']);
 

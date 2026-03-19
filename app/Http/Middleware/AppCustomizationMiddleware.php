@@ -17,7 +17,7 @@ class AppCustomizationMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         if (user()) {
-            app()->setLocale(user('local'));
+            app()->setLocale(user('locale'));
             app(Currency::class)->setCurrency(user('currency'));
         }
         return $next($request);

@@ -220,4 +220,46 @@ class CartController extends Controller
             'message' => __('Cart item deleted successfully'),
         ]);
     }
+
+    public function storeById(Product $product, Request $request)
+    {
+        try {
+            $validatedData = Validator::make($request->all(), [
+                'quantity' => 'required|integer|min:1',
+            ])->validate();
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+            ], 400);
+        }
+
+        $cart = Cart::where('user_id', user('id'))->where('platform_id', $product->platform_id)->first();
+        if (!$cart) {
+            $cart = Cart::create([
+                'user_id' => user('id'),
+                'platform_id' => $product->platform_id,
+            ]);
+        }
+
+        $cartItem = $cart->items()->where('product_id', $product->id)->first();
+        if ($cartItem) {
+            $cartItem->quantity += $validatedData['quantity'];
+            $cartItem->save();
+        } else {
+            $cart->items()->create([
+                'product_id' => $product->id,
+                'quantity' => $validatedData['quantity'],
+                'price' => $product->price,
+                'total' => $product->price * $validatedData['quantity'],
+            ]);
+        }
+
+        $cart->updateSummary();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => __('Cart item added successfully'),
+            'cart_item' => CartItemResource::make($cartItem),
+        ]);
+    }
 }
