@@ -59,14 +59,17 @@ class CartController extends Controller
     {
         try {
             $validatedData = Validator::make($request->all(), [
-                'url' => 'required',
-                'selectors' => ['required', 'array'],
+                'url' => 'nullable|url',
+                'product_id' => 'nullable|exists:products,id',
+                'selectors' => ['required_without:product_id', 'array'],
             ])->validate();
         } catch (\Exception $e) {
             return response()->json([
                 'message' => $e->getMessage(),
             ], 400);
         }
+
+        $withId = $request->filled('product_id');
 
         $defaultAddress = user()->addresses()->where('is_default', true)->first();
         $userId = user('id');
@@ -96,8 +99,12 @@ class CartController extends Controller
                 'user_id' => $userId,
                 'discount' => 0,
             ]);
-            $scraperService = $platform->scraping($validatedData['selectors']);
-            $product = $this->createOrUpdateScrapedProduct($validatedData['url'], $scraperService, $platform);
+            if ($withId) {
+                $product = Product::find($validatedData['product_id']);
+            } else {
+                $scraperService = $platform->scraping($validatedData['selectors']);
+                $product = $this->createOrUpdateScrapedProduct($validatedData['url'], $scraperService, $platform);
+            }
             $cartItem = $cart->items()->where('product_id', $product->id)->first();
 
             if ($cartItem) {
