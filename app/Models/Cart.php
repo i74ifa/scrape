@@ -4,6 +4,43 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * @property int $id
+ * @property numeric $total
+ * @property numeric $subtotal
+ * @property numeric $tax
+ * @property numeric $shipping
+ * @property numeric $local_shipping
+ * @property numeric $discount
+ * @property int $is_delivery_to_home
+ * @property int $platform_id
+ * @property int $user_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int|null $cart_bundle_id
+ * @property-read \App\Models\Address|null $address
+ * @property-read \App\Models\CartBundle|null $cart_bundle
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\CartItem> $items
+ * @property-read int|null $items_count
+ * @property-read \App\Models\Platform $platform
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Cart newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Cart newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Cart query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Cart whereCartBundleId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Cart whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Cart whereDiscount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Cart whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Cart whereIsDeliveryToHome($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Cart whereLocalShipping($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Cart wherePlatformId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Cart whereShipping($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Cart whereSubtotal($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Cart whereTax($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Cart whereTotal($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Cart whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Cart whereUserId($value)
+ * @mixin \Eloquent
+ */
 class Cart extends Model
 {
     protected $fillable = [
@@ -14,6 +51,8 @@ class Cart extends Model
         'shipping',
         'total',
         'local_shipping',
+        'cart_bundle_id',
+        'discount'
     ];
 
     public static function getCart($platformId): self
@@ -55,15 +94,20 @@ class Cart extends Model
             $item->save();
         }
 
-        // get address
-
-
         $this->subtotal = $this->items->sum('total');
         // 5% tax
         $this->tax = $this->subtotal * 0.05;
         $this->shipping = $this->items->sum('shipping');
         $this->total = $this->subtotal + $this->tax + $this->shipping + $this->local_shipping;
         $this->save();
+
+        // update cartBundle
+        $this->cart_bundle->updateSummary();
+    }
+
+    public function cart_bundle()
+    {
+        return $this->belongsTo(CartBundle::class);
     }
 
     public function platform()

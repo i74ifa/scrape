@@ -12,19 +12,22 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Resources\CartResource;
 use App\Http\Resources\ProductResource;
+use App\Models\CartBundle;
 use App\Models\CartItem;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class CartController extends Controller
 {
     public function index()
     {
-        $cart = Cart::where('user_id', auth()->id())->with('items.product:id,name,image,price', 'platform')->get();
+        $cart = Cart::where('user_id', user('id'))->with('items.product:id,name,image,price', 'platform')->get();
 
         // delte zero carts
         $cart->each(function ($cart) {
             if ($cart->items()->count() == 0 || $cart->total === 0) {
                 $cart->delete();
+                $cart->cart_bundle->updateSummary();
             }
         });
 
@@ -48,7 +51,7 @@ class CartController extends Controller
             'platform_id' => $platform->id,
             'category_id' => $productDto->category,
             'weight' => Weight::parse($productDto->weight ?? Product::DEFAULT_WEIGHT_GRAMS)?->toGrams(),
-            'user_id' => auth()->id(),
+            'user_id' => user('id'),
         ]);
     }
 
@@ -64,24 +67,59 @@ class CartController extends Controller
                 'message' => $e->getMessage(),
             ], 400);
         }
-        $cart = Cart::getCart($platform->id);
-        $scraperService = $platform->scraping($validatedData['selectors']);
-        $product = $this->createOrUpdateScrapedProduct($validatedData['url'], $scraperService, $platform);
-        $cartItem = $cart->items()->where('product_id', $product->id)->first();
 
-        if ($cartItem) {
-            $cartItem->quantity++;
-            $cartItem->save();
-        } else {
-            $cart->items()->create([
-                'product_id' => $product->id,
-                'quantity' => 1,
-                'price' => $product->price,
-                'total' => $product->price,
+        $defaultAddress = user()->addresses()->where('is_default', true)->first();
+        $userId = user('id');
+
+        DB::beginTransaction();
+        try {
+            $cartBundle = CartBundle::where('user_id', $userId)->firstOrCreate([
+                'user_id' => $userId,
+            ], [
+                'subtotal' => 0,
+                'tax' => 0,
+                'shipping' => 0,
+                'local_shipping' => 0,
+                'total' => 0,
+                'address_id' => $defaultAddress?->id,
+                'user_id' => $userId,
+                'discount' => 0,
             ]);
-        }
+            $cart = $cartBundle->carts()->where('platform_id', $platform->id)->firstOrCreate([
+                'platform_id' => $platform->id,
+            ], [
+                'subtotal' => 0,
+                'tax' => 0,
+                'shipping' => 0,
+                'local_shipping' => 0,
+                'total' => 0,
+                'user_id' => $userId,
+                'discount' => 0,
+            ]);
+            $scraperService = $platform->scraping($validatedData['selectors']);
+            $product = $this->createOrUpdateScrapedProduct($validatedData['url'], $scraperService, $platform);
+            $cartItem = $cart->items()->where('product_id', $product->id)->first();
 
-        $cart->updateSummary();
+            if ($cartItem) {
+                $cartItem->quantity++;
+                $cartItem->save();
+            } else {
+                $cart->items()->create([
+                    'product_id' => $product->id,
+                    'quantity' => 1,
+                    'price' => $product->price,
+                    'total' => $product->price,
+                ]);
+            }
+
+            $cart->updateSummary();
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            dd($e);
+            return response()->json($e, 400);
+        }
 
         return response()->json([
             'message' => 'Scraping started',
@@ -119,22 +157,15 @@ class CartController extends Controller
 
     public function totals(Request $request)
     {
-        // $request->validate([
-        //     'cart_ids' => 'required|array',
-        //     'cart_ids.*' => 'exists:carts,id',
-        // ]);
-
-        // $carts = Cart::where('user_id', auth()->id())->whereIn('id', $request->cart_ids)->get();
-        $carts = Cart::where('user_id', auth()->id())->get();
+        $bundle = CartBundle::where('user_id', user('id'))->first();
 
         return response()->json([
-            'subtotal' => Currency::format($carts->sum('subtotal'), 'SAR'),
-            'tax' => Currency::format($carts->sum('tax'), 'SAR'),
-            'shipping' => Currency::format($carts->sum('shipping'), 'SAR'),
-            'discount' => Currency::format($carts->sum('discount'), 'SAR'),
-            'local_shipping' => Currency::format($carts->sum('local_shipping'), 'SAR'),
-            'total' => Currency::format($carts->sum('total'), 'SAR'),
-            'total_yer' => Currency::format(Currency::convert($carts->sum('total'), 'SAR'), 'YER'),
+            'subtotal' => Currency::format($bundle->subtotal, 'SAR'),
+            'tax' => Currency::format($bundle->tax, 'SAR'),
+            'shipping' => Currency::format($bundle->shipping, 'SAR'),
+            'discount' => Currency::format($bundle->discount, 'SAR'),
+            'local_shipping' => Currency::format($bundle->local_shipping, 'SAR'),
+            'total' => Currency::format($bundle->total, 'SAR'),
         ]);
     }
 

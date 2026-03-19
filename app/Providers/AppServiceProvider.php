@@ -2,10 +2,10 @@
 
 namespace App\Providers;
 
-use App\Exceptions\MessagingException;
 use App\Modules\Massaging\Contracts\MessageSender;
 use App\Modules\Massaging\Providers\M365Dialog;
 use App\Modules\Massaging\Providers\WaGo;
+use App\Services\Currency;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -23,6 +23,10 @@ class AppServiceProvider extends ServiceProvider
                 'm365-dialog' => app(M365Dialog::class),
                 default => app(WaGo::class)
             };
+        });
+
+        $this->app->singleton(Currency::class, function ($app) {
+            return new Currency();
         });
     }
 

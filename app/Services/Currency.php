@@ -3,12 +3,13 @@
 
 namespace App\Services;
 
-use NumberFormatter;
 use App\Models\ScraperProduct;
 use App\Models\CurrencyExchangeRate;
 
 class Currency
 {
+
+    public static $currency = 'SAR';
 
     private static $currencySymbols = [
         'USD' => '$',
@@ -37,7 +38,6 @@ class Currency
         'BHD' => 'د.ب',
         'OMR' => 'ر.ع.',
         'YER' => 'ر.ي',
-        'default' => 'SAR',
     ];
 
     /**
@@ -50,8 +50,12 @@ class Currency
      * @return float
      * @throws \Exception
      */
-    public static function convert($amount, $currencyFrom, $currencyTo = 'YER')
+    public static function convert($amount, $currencyFrom, $currencyTo = null)
     {
+        if ($currencyTo === null) {
+            $currencyTo = self::$currency;
+        }
+
         if ($currencyFrom === $currencyTo) {
             return $amount;
         }
@@ -107,5 +111,10 @@ class Currency
             return $symbol . ' ';
         }
         return ' ' . $symbol;
+    }
+
+    public static function setCurrency($currency)
+    {
+        self::$currency = $currency;
     }
 }
