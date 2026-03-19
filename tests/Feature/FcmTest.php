@@ -32,13 +32,13 @@ class FcmTest extends TestCase
 
 
         // $fcm = $user->device_token;
-        $token = 'fjbot7REPEYFiv_5hYVRQD:APA91bFaW5oMGr7S4kri3HYFrpvDuCWM97mzED06dRoPUvXMHiF-h-p1Xq7wogTDiEOaWMWVd1R55CIyy_-F3GTJkcftuhBD7ALx0CnLj7Bv5NeflQY-AqU';
+        $token = 'cEWyQd7D-kpglGpkEOFzt4:APA91bHacL5w-8jY5XUxNns0oKu5vveOPCEMBJnoZnXGRFJl6s8lw67yf8Zau4CWzpTncRRBg6LW3q9PpGHpZpVMsp4vBPlk1w9vROMMlbj5E8dmkzATm-g';
 
         $fcm = new Fcm();
         $res = $fcm->send(new FcmBody([
             'token' => $token,
-            'title' => 'اشعار خاص جدا',
-            'description' => 'اشعار خاص ماله فايده ✅',
+            'title' => 'تحقق من اخر العروض ',
+            'description' => 'تحقق من اخر االعروض المخصصه لك فقط💞',
             'url' => '',
         ]));
 
