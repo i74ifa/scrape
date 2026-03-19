@@ -78,6 +78,9 @@ class User extends Authenticatable implements FilamentUser
         'password',
         'device_token',
         'device_type',
+        'currency',
+        'unit',
+        'locale',
     ];
 
     /**

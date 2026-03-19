@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('local')->default('ar');
+            $table->string('locale')->default('ar');
             $table->string('currency')->default('SAR');
             $table->string('unit')->default('kg');
         });
@@ -24,7 +24,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('local');
+            $table->dropColumn('locale');
             $table->dropColumn('currency');
             $table->dropColumn('unit');
         });
