@@ -13,6 +13,7 @@ use App\Enums\PaymentStatus;
 use Illuminate\Validation\Rules\Enum;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CheckoutOrderResource;
+use App\Models\CartBundle;
 use App\Modules\Payment\Payment;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -45,7 +46,6 @@ class OrderController extends Controller
                 // 'cart_ids.*' => 'exists:carts,id',
                 'payment_method' => ['required', new Enum(PaymentMethod::class)],
                 // 'payment_reference' => 'required',
-                'address_id' => 'required|exists:addresses,id',
             ];
 
             $paymentMethod = $request->payment_method;
@@ -62,6 +62,14 @@ class OrderController extends Controller
 
         try {
             DB::beginTransaction();
+
+            $cartBundle = CartBundle::getActiveCartBundle();
+
+            if (!$cartBundle->address_id) {
+                return response()->json([
+                    'message' => 'Address not found',
+                ], 404);
+            }
 
             // $carts = Cart::where('user_id', auth()->id())->whereIn('id', $validated['cart_ids'])->get();
             $carts = Cart::where('user_id', auth()->id())->get();
@@ -82,13 +90,13 @@ class OrderController extends Controller
 
             $checkoutOrder = CheckoutOrder::create([
                 'user_id' => auth()->id(),
-                'address_id' => $validated['address_id'],
-                'sub_total' => $carts->sum('subtotal'),
-                'tax' => $carts->sum('tax'),
-                'shipping' => $carts->sum('shipping'),
-                'discount' => $carts->sum('discount'),
-                'local_shipping' => $carts->sum('local_shipping'),
-                'grand_total' => $carts->sum('total'),
+                'address_id' => $cartBundle->address_id,
+                'sub_total' => $cartBundle->subtotal,
+                'tax' => $cartBundle->tax,
+                'shipping' => $cartBundle->shipping,
+                'discount' => $cartBundle->discount,
+                'local_shipping' => $cartBundle->local_shipping,
+                'grand_total' => $cartBundle->total,
                 'payment_method' => $paymentMethod,
                 'payment_reference' => json_encode($paymentData),
                 'code' => CheckoutOrder::generateCode(),
