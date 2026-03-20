@@ -30,7 +30,6 @@ class CartBundleController extends Controller
 
         $cartBundle = CartBundle::getActiveCartBundle();
         $cartBundle->address_id = $address->id;
-        $cartBundle->local_shipping = $address->state?->delivery_cost ?? 0;
         $cartBundle->save();
 
         $cartBundle->updateSummary();

@@ -75,13 +75,19 @@ class CartBundle extends Model
         ]);
     }
 
+    public function address()
+    {
+        return $this->belongsTo(Address::class);
+    }
+
     public function updateSummary()
     {
         $this->subtotal = $this->carts->sum('subtotal');
         $this->tax = $this->carts->sum('tax');
         $this->shipping = $this->carts->sum('shipping');
+        $this->local_shipping = $this->address?->state?->delivery_cost ?? 0;
         $this->discount = $this->carts->sum('discount');
-        $this->total = $this->carts->sum('total');
+        $this->total = $this->carts->sum('total') + $this->local_shipping;
 
         $this->save();
     }

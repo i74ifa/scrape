@@ -21,7 +21,6 @@ class CartResource extends JsonResource
             'subtotal' => $this->subtotal,
             'tax' => $this->tax,
             'shipping' => $this->shipping,
-            'local_shipping' => $this->local_shipping,
             'total' => $this->total,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
