@@ -228,24 +228,31 @@ class CartController extends Controller
             ], 400);
         }
 
-        $cart = Cart::where('user_id', user('id'))->where('platform_id', $product->platform_id)->first();
-        if (!$cart) {
-            $cart = Cart::create([
-                'user_id' => user('id'),
-                'platform_id' => $product->platform_id,
-            ]);
-        }
+        $cartBundle = CartBundle::getActiveCartBundle();
+        $cart = $cartBundle->carts()->where('platform_id', $product->platform_id)->firstOrCreate(
+            ['platform_id' => $product->platform_id],
+            [
+                'user_id'        => user('id'),
+                'subtotal'       => 0,
+                'tax'            => 0,
+                'shipping'       => 0,
+                'local_shipping' => 0,
+                'total'          => 0,
+                'discount'       => 0,
+            ]
+        );
 
         $cartItem = $cart->items()->where('product_id', $product->id)->first();
         if ($cartItem) {
             $cartItem->quantity += $validatedData['quantity'];
+            $cartItem->total = $cartItem->price * $cartItem->quantity;
             $cartItem->save();
         } else {
-            $cart->items()->create([
+            $cartItem = $cart->items()->create([
                 'product_id' => $product->id,
-                'quantity' => $validatedData['quantity'],
-                'price' => $product->price,
-                'total' => $product->price * $validatedData['quantity'],
+                'quantity'   => $validatedData['quantity'],
+                'price'      => $product->price,
+                'total'      => $product->price * $validatedData['quantity'],
             ]);
         }
 

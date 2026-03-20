@@ -1,0 +1,75 @@
+[
+    {
+        "url": "https://www.amazon.com/Apple-2025-MacBook-13-inch-Laptop/dp/B0DZD9S5GC/ref=mp_s_a_1_3?crid=2SKPE3YPH2WI9&dib=eyJ2IjoiMSJ9.muB0x9i4HRk0FcvFF2m9azq-XzOMfyeNzXev_gH5C_CTnpWD3EVbkM-j6a6wKqKUaTbXKCKm8vOEl0nPRowINRRYn8xmJpLND8h_hxda3leRhZBrT0bRQNZ9w3fFRhBWWyZJ2FKquwAxIuOEl2gq-LJWYjI8H0sjmluJ8XLOqbmWb5XxpSQqdnAJZ_PkrwOGrp5YcjDrw0OKWpmeQt5UJg.XGCknJUvV8TKzPIpxd59dICOLhpcgqFuRGyOcpzUpkM&dib_tag=se&keywords=macbook&qid=1769890490&sprefix=macb%2Caps%2C455&sr=8-3",
+        "selectors": [
+            {
+                "name": "name",
+                "data": "Apple 2025 MacBook Air 13-inch Laptop with M4 chip: Built for Apple Intelligence, 13.6\" Liquid Retina Display, 16GB Unified Memory, 256GB SSD Storage, 12MP Center Stage Camera, Touch ID, Midnight    "
+            },
+            {
+                "name": "description",
+                "data": ""
+            },
+            {
+                "name": "price",
+                "data": "849.99"
+            },
+            {
+                "name": "originalPrice",
+                "data": "849.99"
+            },
+            {
+                "name": "image",
+                "data": "https://m.media-amazon.com/images/I/71cWZUr9SVL._AC_UF894,1000_QL80_FMwebp_.jpg"
+            },
+            {
+                "name": "images",
+                "data": [
+                    "https://m.media-amazon.com/images/I/71cWZUr9SVL._AC_UF894,1000_QL80_FMwebp_.jpg",
+                    "https://m.media-amazon.com/images/I/71CJ4ZJQ6oL._AC_UF894,1000_QL80_FMwebp_.jpg",
+                    "https://m.media-amazon.com/images/I/61wJeelYVaL._AC_UF350,350_QL80_FMwebp_.jpg",
+                    "https://m.media-amazon.com/images/I/71tFn+l-yUL._AC_UF350,350_QL80_FMwebp_.jpg",
+                    "https://m.media-amazon.com/images/I/81sCk7g0iLL._AC_UF350,350_QL80_FMwebp_.jpg",
+                    "https://m.media-amazon.com/images/I/71ow1e-aJZL._AC_UF350,350_QL80_FMwebp_.jpg",
+                    "https://m.media-amazon.com/images/I/61KOV61fKtL._AC_UF350,350_QL80_FMwebp_.jpg"
+                ]
+            },
+            {
+                "name": "review",
+                "data": ""
+            },
+            {
+                "name": "category",
+                "data": ""
+            },
+            {
+                "name": "brand",
+                "data": ""
+            },
+            {
+                "name": "averageRating",
+                "data": ""
+            },
+            {
+                "name": "totalReviews",
+                "data": ""
+            },
+            {
+                "name": "soldBy",
+                "data": ""
+            },
+            {
+                "name": "shippingPrice",
+                "data": ""
+            },
+            {
+                "name": "selectedVariant",
+                "data": "Midnight - 16GB Unified Memory, 256GB SSD Storage - Without AppleCare+"
+            },
+            {
+                "name": "id",
+                "data": ""
+            }
+        ]
+    }
+]
