@@ -28,6 +28,7 @@
     "Status": "الحالة",
     "Payment Method": "طريقة الدفع",
     "Created At": "تاريخ الإنشاء",
+    "Order Status Changed": "تغيرت حالة طلبك",
     "Order Status Changed to :status": "حالة طلبك صارت :status",
     "Waiting for payment": "في انتظار الدفع",
     "Change Status": "تغيير الحالة",
