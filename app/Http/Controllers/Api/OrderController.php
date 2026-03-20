@@ -111,7 +111,6 @@ class OrderController extends Controller
                     'subtotal' => $cart->subtotal,
                     'tax' => $cart->tax,
                     'shipping' => $cart->shipping,
-                    'local_shipping' => $cart->local_shipping,
                     'platform_id' => $cart->platform_id,
                     'code' => Order::generateCode(),
                 ]);

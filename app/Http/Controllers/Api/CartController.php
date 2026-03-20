@@ -111,7 +111,6 @@ class CartController extends Controller
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
-            dd($e);
             return response()->json($e, 400);
         }
 
@@ -229,7 +228,6 @@ class CartController extends Controller
                 'subtotal'       => 0,
                 'tax'            => 0,
                 'shipping'       => 0,
-                'local_shipping' => 0,
                 'total'          => 0,
                 'discount'       => 0,
             ]
