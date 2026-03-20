@@ -82,7 +82,6 @@ class CartController extends Controller
                 'subtotal' => 0,
                 'tax' => 0,
                 'shipping' => 0,
-                'local_shipping' => 0,
                 'total' => 0,
                 'user_id' => $userId,
                 'discount' => 0,

@@ -1,7 +1,7 @@
 <?php
 
 if (!function_exists('user')) {
-    function user($attribute = null, $guard = 'api'): mixed
+    function user($attribute = null, $guard = 'sanctum'): mixed
     {
         if ($attribute) {
             return auth($guard)->user()->$attribute;

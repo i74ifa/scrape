@@ -38,6 +38,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('totals', [Api\CartController::class, 'totals']);
         Route::post('{cartItem}/quantity', [Api\CartController::class, 'updateQuantity']);
 
+        Route::put('address/{address}', [Api\CartBundleController::class, 'updateAddress']);
+
         Route::delete('{cartItem}', [Api\CartController::class, 'destroy']);
         Route::get('count', [Api\CartController::class, 'count']);
     });

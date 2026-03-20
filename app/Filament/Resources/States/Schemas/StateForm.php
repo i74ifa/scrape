@@ -14,7 +14,7 @@ class StateForm
                 TextInput::make('delivery_cost')
                     ->label(trans('Delivery Cost'))
                     ->numeric()
-                    ->prefix('YER')
+                    ->prefix('SAR')
                     ->required(),
             ]);
     }
