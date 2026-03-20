@@ -19,7 +19,6 @@ return new class extends Migration
             $table->decimal('subtotal', 18, 6);
             $table->decimal('tax', 18, 6);
             $table->decimal('shipping', 18, 6);
-            $table->decimal('local_shipping', 18, 6);
             $table->decimal('discount', 18, 6);
             $table->boolean('is_delivery_to_home')->default(false);
             $table->foreignIdFor(Platform::class)->constrained()->cascadeOnDelete();

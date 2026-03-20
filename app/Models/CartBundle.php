@@ -81,7 +81,6 @@ class CartBundle extends Model
         $this->tax = $this->carts->sum('tax');
         $this->shipping = $this->carts->sum('shipping');
         $this->discount = $this->carts->sum('discount');
-        $this->local_shipping = $this->carts->sum('local_shipping');
         $this->total = $this->carts->sum('total');
 
         $this->save();
