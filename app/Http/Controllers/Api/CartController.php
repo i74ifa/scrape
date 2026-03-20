@@ -153,14 +153,7 @@ class CartController extends Controller
     {
         $bundle = CartBundle::where('user_id', user('id'))->first();
         if (!$bundle) {
-            return response()->json([
-                'subtotal' => 0,
-                'tax' => 0,
-                'shipping' => 0,
-                'discount' => 0,
-                'local_shipping' => 0,
-                'total' => 0,
-            ]);
+            return [];
         }
 
         return response()->json([
@@ -194,6 +187,7 @@ class CartController extends Controller
                 currencyFrom: 'SAR',
                 format: true
             ),
+            'address_id' => $bundle->address_id,
         ]);
     }
 

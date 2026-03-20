@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property numeric $subtotal
  * @property numeric $tax
  * @property numeric $shipping
- * @property numeric $local_shipping
  * @property numeric $discount
  * @property int $is_delivery_to_home
  * @property int $platform_id
@@ -50,7 +49,6 @@ class Cart extends Model
         'tax',
         'shipping',
         'total',
-        'local_shipping',
         'cart_bundle_id',
         'discount'
     ];
@@ -67,7 +65,6 @@ class Cart extends Model
                 'tax' => 0,
                 'shipping' => 0,
                 'total' => 0,
-                'local_shipping' => 0,
             ]);
         }
 
@@ -98,7 +95,7 @@ class Cart extends Model
         // 5% tax
         $this->tax = $this->subtotal * 0.05;
         $this->shipping = $this->items->sum('shipping');
-        $this->total = $this->subtotal + $this->tax + $this->shipping + $this->local_shipping;
+        $this->total = $this->subtotal + $this->tax + $this->shipping;
         $this->save();
 
         // update cartBundle
