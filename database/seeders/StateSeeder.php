@@ -20,6 +20,7 @@ class StateSeeder extends Seeder
                 //  remove the "Governorate" from the name
                 'name' => trim(str_replace('Governorate', '', $state['name'])),
                 'code' => $state['state_code'],
+                'delivery_cost' => 7,
             ]);
         }
     }

@@ -42,4 +42,9 @@ class Address extends Model
         'state_id',
         'is_default',
     ];
+
+    public function state()
+    {
+        return $this->belongsTo(State::class);
+    }
 }

@@ -52,6 +52,28 @@ class CartBundle extends Model
         return $this->hasMany(Cart::class);
     }
 
+    public static function getActiveCartBundle()
+    {
+        $defaultAddress = user()->addresses()->where('is_default', true)->first();
+
+        if ($defaultAddress) {
+            $localShippingCost = $defaultAddress?->state?->delivery_cost ?? 0;
+        }
+
+        return self::where('user_id', user('id'))->firstOrCreate([
+            'user_id' => user('id'),
+        ], [
+            'subtotal' => 0,
+            'tax' => 0,
+            'shipping' => 0,
+            'local_shipping' => $localShippingCost,
+            'total' => 0,
+            'address_id' => $defaultAddress?->id,
+            'user_id' => user('id'),
+            'discount' => 0,
+        ]);
+    }
+
     public function updateSummary()
     {
         $this->subtotal = $this->carts->sum('subtotal');

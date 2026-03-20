@@ -63,4 +63,10 @@ class ProductController extends Controller
 
         return response()->noContent();
     }
+
+    public function toggleFavorite(Product $product)
+    {
+        $user = user();
+        $user->favorite_products()->toggle($product);
+    }
 }

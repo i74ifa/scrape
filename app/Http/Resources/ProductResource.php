@@ -18,7 +18,11 @@ class ProductResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'price' => Currency::format($this->price, 'SAR'),
+            'price' => Currency::convert(
+                amount: $this->price,
+                currencyFrom: $this->currency,
+                format: true
+            ),
             'image' => $this->image,
             'weight' => (float) $this->weight,
             'description' => $this->description,

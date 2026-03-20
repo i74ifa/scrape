@@ -71,23 +71,11 @@ class CartController extends Controller
 
         $withId = $request->filled('product_id');
 
-        $defaultAddress = user()->addresses()->where('is_default', true)->first();
         $userId = user('id');
 
         DB::beginTransaction();
         try {
-            $cartBundle = CartBundle::where('user_id', $userId)->firstOrCreate([
-                'user_id' => $userId,
-            ], [
-                'subtotal' => 0,
-                'tax' => 0,
-                'shipping' => 0,
-                'local_shipping' => 0,
-                'total' => 0,
-                'address_id' => $defaultAddress?->id,
-                'user_id' => $userId,
-                'discount' => 0,
-            ]);
+            $cartBundle = CartBundle::getActiveCartBundle();
             $cart = $cartBundle->carts()->where('platform_id', $platform->id)->firstOrCreate([
                 'platform_id' => $platform->id,
             ], [

@@ -15,6 +15,7 @@ Route::put('/user/update-token', [UserController::class, 'updateDeviceToken'])->
 
 Route::put('addresses/{address}/default', [Api\AddressController::class, 'setDefault']);
 Route::apiResource('addresses', Api\AddressController::class)->middleware('auth:sanctum');
+Route::put('products/{product}/favorite', [Api\ProductController::class, 'toggleFavorite'])->middleware('auth:sanctum');
 Route::apiResource('products', Api\ProductController::class)->except(['update']);
 
 Route::group(['prefix' => 'auth'], function () {
@@ -44,6 +45,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('user')->name('user.')->group(function () {
         Route::post('', [Api\UserController::class, 'update']);
         Route::post('password', [Api\UserController::class, 'updatePassword']);
+        Route::get('favorite-products', [Api\UserController::class, 'favorite_products']);
     });
 
     Route::prefix('orders')->name('orders.')->group(function () {

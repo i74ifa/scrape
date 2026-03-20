@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ProductResource;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -100,5 +101,11 @@ class UserController extends Controller
         $user->update([
             'device_token' => $request->device_token,
         ]);
+    }
+
+    public function favorite_products()
+    {
+        $user = user();
+        return ProductResource::collection($user->favorite_products()->cursorPaginate(15));
     }
 }
