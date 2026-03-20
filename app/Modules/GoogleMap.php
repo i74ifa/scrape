@@ -17,13 +17,13 @@ class GoogleMap
 
         foreach ($addressComponents as $component) {
             if (in_array('locality', $component['types'])) {
-                return $component['long_name'];
+                return trim(str_replace("'", "", $component['long_name']));
             }
         }
 
         foreach ($addressComponents as $component) {
             if (in_array('administrative_area_level_1', $component['types'])) {
-                return $component['long_name'];
+                return trim(($component['long_name']));
             }
         }
 
