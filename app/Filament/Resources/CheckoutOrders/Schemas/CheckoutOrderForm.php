@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\CheckoutOrders\Schemas;
 
 use Filament\Schemas\Components\Section;
+use Filament\Forms\Components\KeyValue;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 
@@ -70,10 +71,15 @@ class CheckoutOrderForm
 
                 Section::make(trans('Payment Reference'))
                     ->schema([
-                        TextInput::make('payment_reference')
+                        KeyValue::make('payment_reference')
                             ->label(trans('Payment Reference'))
-                            ->columnSpanFull()
-                            ->disabled(),
+                            ->keyLabel(trans('Key'))
+                            ->valueLabel(trans('Value'))
+                            ->addable(false)
+                            ->deletable(false)
+                            ->editableKeys(false)
+                            ->editableValues(false)
+                            ->columnSpanFull(),
                     ]),
             ]);
     }
