@@ -3,8 +3,8 @@
 namespace App\Filament\Resources\CheckoutOrders;
 
 use App\Filament\Resources\CheckoutOrders\Pages\CreateCheckoutOrder;
-use App\Filament\Resources\CheckoutOrders\Pages\EditCheckoutOrder;
 use App\Filament\Resources\CheckoutOrders\Pages\ListCheckoutOrders;
+use App\Filament\Resources\CheckoutOrders\Pages\ViewCheckoutOrder;
 use App\Filament\Resources\CheckoutOrders\RelationManagers\OrdersRelationManager;
 use App\Filament\Resources\CheckoutOrders\Schemas\CheckoutOrderForm;
 use App\Filament\Resources\CheckoutOrders\Tables\CheckoutOrdersTable;
@@ -45,7 +45,7 @@ class CheckoutOrderResource extends Resource
         return [
             'index' => ListCheckoutOrders::route('/'),
             'create' => CreateCheckoutOrder::route('/create'),
-            'edit' => EditCheckoutOrder::route('/{record}/edit'),
+            'view' => ViewCheckoutOrder::route('/{record}'),
         ];
     }
 }
