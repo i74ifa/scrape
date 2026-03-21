@@ -9,6 +9,7 @@ use App\Services\Currency;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 use SocialiteProviders\Google\Provider as GoogleProvider;
+use SocialiteProviders\Telegram\Provider as TelegramProvider;
 use SocialiteProviders\Manager\SocialiteWasCalled;
 
 class AppServiceProvider extends ServiceProvider
@@ -35,6 +36,7 @@ class AppServiceProvider extends ServiceProvider
 
         Event::listen(function (SocialiteWasCalled $event) {
             $event->extendSocialite('google', GoogleProvider::class);
+            $event->extendSocialite('telegram', TelegramProvider::class);
         });
     }
 

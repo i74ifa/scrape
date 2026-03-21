@@ -24,6 +24,9 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('/login', [Api\AuthController::class, 'loginAsPassword']);
     Route::get('/google', [Api\AuthSocialController::class, 'redirectToGoogle']);
     Route::get('/google/callback', [Api\AuthSocialController::class, 'handleGoogleCallback']);
+
+    Route::get('/telegram', [Api\AuthSocialController::class, 'redirectToTelegram']);
+    Route::get('/telegram/callback', [Api\AuthSocialController::class, 'handleTelegramCallback']);
 });
 
 
