@@ -6,7 +6,10 @@ use App\Modules\Massaging\Contracts\MessageSender;
 use App\Modules\Massaging\Providers\M365Dialog;
 use App\Modules\Massaging\Providers\WaGo;
 use App\Services\Currency;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
+use SocialiteProviders\Google\Provider as GoogleProvider;
+use SocialiteProviders\Manager\SocialiteWasCalled;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,6 +30,11 @@ class AppServiceProvider extends ServiceProvider
 
         $this->app->singleton(Currency::class, function ($app) {
             return new Currency();
+        });
+
+
+        Event::listen(function (SocialiteWasCalled $event) {
+            $event->extendSocialite('google', GoogleProvider::class);
         });
     }
 

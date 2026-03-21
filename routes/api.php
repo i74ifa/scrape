@@ -22,6 +22,8 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('/', [Api\AuthController::class, 'sendOtp'])->middleware('throttle:1,1');
     Route::post('/verify', [Api\AuthController::class, 'verifyOtp']);
     Route::post('/login', [Api\AuthController::class, 'loginAsPassword']);
+    Route::get('/google', [Api\AuthSocialController::class, 'redirectToGoogle']);
+    Route::get('/google/callback', [Api\AuthSocialController::class, 'handleGoogleCallback']);
 });
 
 
