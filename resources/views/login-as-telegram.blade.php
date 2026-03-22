@@ -18,23 +18,26 @@
 
 </head>
 
-<body class="antialiased bg-gray-100">
+<body class="antialiased bg-gray-100 dark:bg-[#111]">
     <div class="min-h-screen flex flex-col items-center justify-center p-4">
-        <div class="max-w-md w-full bg-white rounded-3xl p-8 text-center">
+        <div class="max-w-md w-full bg-white dark:bg-[#1e1e1e] rounded-3xl p-8 text-center">
             <div class="mb-6">
-                <div class="w-20 h-20 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                <div
+                    class="w-20 h-20 bg-gray-50 dark:bg-[#2d2d2d] rounded-full flex items-center justify-center mx-auto mb-4">
                     <img src="{{ asset('/logo.png') }}" alt="Logo" class="p-3">
 
                 </div>
-                <h1 class="text-2xl font-bold text-gray-900 mb-2">سجل الدخول عبر تليجرام</h1>
-                <p class="text-gray-600">اضغط على الزر أدناه لتسجيل الدخول بأمان باستخدام حساب تليجرام الخاص بك</p>
+                <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-200 mb-2">سجل الدخول عبر تليجرام</h1>
+                <p class="text-gray-600 dark:text-gray-400 text-sm">اضغط على الزر أدناه لتسجيل الدخول بأمان باستخدام
+                    حساب
+                    تليجرام الخاص بك</p>
             </div>
 
             <div class="mb-6 flex justify-center">
-                {!! \Laravel\Socialite\Socialite::driver('telegram')->stateless()->getButton() !!}
+                {!! \Laravel\Socialite\Socialite::driver('telegram')->stateless()->with(['lang' => 'ar', 'userpic' => true, 'data-userpic' => true])->getButton() !!}
             </div>
 
-            <div class="text-sm text-gray-500">
+            <div class="text-sm text-gray-500 dark:text-gray-400">
                 <p>هل تحتاج إلى مساعدة؟ تواصل مع الدعم على <a href="mailto:support@talabye.com"
                         class="text-blue-600 hover:underline">support@talabye.com</a></p>
             </div>
