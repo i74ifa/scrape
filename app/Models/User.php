@@ -81,6 +81,8 @@ class User extends Authenticatable implements FilamentUser
         'currency',
         'unit',
         'locale',
+        'driver_type',
+        'driver_id',
     ];
 
     /**
