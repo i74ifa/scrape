@@ -98,6 +98,11 @@ class Cart extends Model
         $this->total = $this->subtotal + $this->tax + $this->shipping;
         $this->save();
 
+        if ($this->subtotal === 0 || $this->items->count() === 0) {
+            $this->items()->delete();
+            $this->delete();
+        }
+
         // update cartBundle
         $this->cart_bundle->updateSummary();
     }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
 
 use Laravel\Socialite\Socialite;
@@ -45,7 +46,9 @@ class AuthSocialController extends Controller
             ]
         );
 
-        return redirect($signedUrl);
+        // redirect to talabye://login?token=...&email=...&name=...
+        $url = "talabye://login?token={$token}&email={$user->email}&name={$user->name}";
+        return redirect()->away($url);
     }
 
     public function redirectToTelegram()
@@ -57,14 +60,23 @@ class AuthSocialController extends Controller
     {
         $user = Socialite::driver('telegram')->stateless()->user();
 
-        $existingUser = User::where('email', $user->email)->first();
+        $existingUser = User::where('driver_id', $user->id)->first();
 
         if ($existingUser) {
             $token = $existingUser->createToken('telegram-login')->plainTextToken;
+            if (empty($existingUser->email)) {
+                $existingUser->email = $user->username;
+            }
+
+            if (empty($existingUser->name)) {
+                $existingUser->name = $user->nickname;
+            }
+
+            $existingUser->save();
         } else {
             $newUser = User::create([
-                'name' => $user->first_name . ' ' . $user->last_name,
-                'email' => $user->email,
+                'name' => $user->nickname,
+                'email' => $user->username,
                 'driver_type' => 'telegram',
                 'driver_id' => $user->id,
             ]);
@@ -78,10 +90,12 @@ class AuthSocialController extends Controller
             [
                 'token' => $token,
                 'email' => $user->username,
-                'name' => $user->first_name . ' ' . $user->last_name,
+                'name' => $user->nickname,
             ]
         );
 
-        return redirect($signedUrl);
+        // redirect to talabye://login?token=...&email=...&name=...
+        $url = "talabye://login?token={$token}&email={$user->username}&name={$user->first_name} {$user->last_name}";
+        return redirect()->away($url);
     }
 }

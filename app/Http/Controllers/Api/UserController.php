@@ -103,9 +103,14 @@ class UserController extends Controller
         ]);
     }
 
-    public function favorite_products()
+    public function favorite_products(Request $request)
     {
         $user = user();
-        return ProductResource::collection($user->favorite_products()->cursorPaginate(15));
+        $products = $user->favorite_products()->with('platform')
+            ->withExists(['favorite_products as is_fav' => function ($query) use ($user) {
+                $query->where('user_id', $user->id);
+            }])
+            ->cursorPaginate(15);
+        return ProductResource::collection($products);
     }
 }

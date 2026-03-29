@@ -151,8 +151,19 @@ class CartController extends Controller
     public function totals(Request $request)
     {
         $bundle = CartBundle::where('user_id', user('id'))->first();
+
+        if ($bundle && $bundle->subtotal === 0) {
+            $bundle->carts()->delete();
+            $bundle->delete();
+            return response()->json([
+                'data' => (object)[]
+            ]);
+        }
+
         if (!$bundle) {
-            return [];
+            return response()->json([
+                'data' => (object)[]
+            ]);
         }
 
         return response()->json([

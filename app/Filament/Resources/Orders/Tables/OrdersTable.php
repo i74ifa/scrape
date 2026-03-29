@@ -41,9 +41,15 @@ class OrdersTable
                             ->required(),
                     ])
                     ->action(function ($record, $data) {
+
+                        $history = $record->status_history ?? [];
+                        $history[] = [
+                            'status' => $data['status'],
+                            'created_at' => now()->toDateTimeString(),
+                        ];
+                        $data['status_history'] = $history;
                         $record->update($data);
 
-                        // notify user
                         try {
                             $user = $record->checkout_order->user;
                             $user->notify(new ChangeOrderStatusNotify(

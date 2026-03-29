@@ -16,9 +16,12 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $limit = $request->get('limit', 15);
-
+        $user = user();
         $products = Product::query()
             ->with('platform')
+            ->withExists(['favorite_products as is_fav' => function ($query) use ($user) {
+                $query->where('user_id', $user?->id);
+            }])
             ->when($request->has('platform_id'), function ($query) use ($request) {
                 $query->where('platform_id', $request->platform_id);
             })

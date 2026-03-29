@@ -43,6 +43,10 @@ class Address extends Model
         'is_default',
     ];
 
+    protected $casts = [
+        'is_default' => 'boolean',
+    ];
+
     public function state()
     {
         return $this->belongsTo(State::class);

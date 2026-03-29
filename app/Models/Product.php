@@ -81,4 +81,9 @@ class Product extends Model
             'variants' => 'array',
         ];
     }
+
+    public function favorite_products()
+    {
+        return $this->belongsToMany(User::class, 'product_user_favorites');
+    }
 }

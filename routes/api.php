@@ -81,10 +81,12 @@ Route::middleware('auth:sanctum')->group(function () {
 
         $notification = app(Api\NotificationController::class)->count($request);
         $cart = app(Api\CartController::class)->count($request);
+        $fav = user()->favorite_products()->count();
 
         return response()->json([
             'notification' => $notification->original['count'],
-            'cart' => $cart->original['count']
+            'cart' => $cart->original['count'],
+            'favorites' => $fav,
         ]);
     });
 

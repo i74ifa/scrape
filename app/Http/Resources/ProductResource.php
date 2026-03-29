@@ -34,8 +34,16 @@ class ProductResource extends JsonResource
             'platform' => $this->whenLoaded('platform', function () {
                 return new PlatformResource($this->platform);
             }),
+            'is_favorite' => (bool) $this->is_fav,
             'created_at' => $this->when($this->created_at, $this->created_at),
             'updated_at' => $this->when($this->updated_at, $this->updated_at),
+        ];
+    }
+
+    public function with(Request $request): array
+    {
+        return [
+            'fav_ids' => $request->additional['fav_ids'] ?? [],
         ];
     }
 }

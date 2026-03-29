@@ -1,29 +1,29 @@
 <?php
 
-
 namespace App\Modules;
 
 use Illuminate\Support\Facades\Http;
 
 class GoogleMap
 {
-    private static function getStateName($apiResponse)
+    private static function getCityName($apiResponse)
     {
-        if (!isset($apiResponse['results'][0])) {
+        if (empty($apiResponse['results'])) {
             return "Unknown";
         }
 
-        $addressComponents = $apiResponse['results'][0]['address_components'];
+        foreach ($apiResponse['results'] as $result) {
+            foreach ($result['address_components'] as $component) {
+                if (in_array('administrative_area_level_1', $component['types']) || in_array('locality', $component['types'])) {
 
-        foreach ($addressComponents as $component) {
-            if (in_array('locality', $component['types'])) {
-                return trim(str_replace("'", "", $component['long_name']));
-            }
-        }
+                    $originalName = $component['long_name'];
 
-        foreach ($addressComponents as $component) {
-            if (in_array('administrative_area_level_1', $component['types'])) {
-                return trim(($component['long_name']));
+                    $name = str_replace(['محافظة', 'Governorate', 'City', 'District'], '', $originalName);
+
+                    $name = preg_replace('/[^A-Za-z0-9\s]/', '', $name);
+
+                    return trim($name);
+                }
             }
         }
 
@@ -37,12 +37,12 @@ class GoogleMap
         $response = Http::get("https://maps.googleapis.com/maps/api/geocode/json", [
             'latlng' => "$lat,$lng",
             'key' => $key,
-            'language' => 'en'
+            'language' => 'en',
+            'result_type' => 'administrative_area_level_1|locality'
         ]);
 
         if ($response->successful()) {
-            $cityName = self::getStateName($response->json());
-            return $cityName;
+            return self::getCityName($response->json());
         }
 
         return "";

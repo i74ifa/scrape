@@ -85,12 +85,11 @@ class CartBundle extends Model
         $this->subtotal = $this->carts->sum('subtotal');
         $this->tax = $this->carts->sum('tax');
         $this->shipping = $this->carts->sum('shipping');
-        $this->local_shipping = $this->address?->state?->delivery_cost ?? 0;
+        $this->local_shipping = $this->address?->state?->delivery_cost ?? 10;
         $this->discount = $this->carts->sum('discount');
         $this->total = $this->carts->sum('total') + $this->local_shipping;
 
         if ($this->carts->count() == 0 || $this->subtotal == 0) {
-            $this->carts()->delete();
             $this->delete();
         }
 
