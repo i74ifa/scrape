@@ -46,10 +46,10 @@ class FcmBody
                     'payload' => [
                         'aps' => [
                             'category' => 'FLUTTER_NOTIFICATION_CLICK',
+                            'sound'    => $this->sound,
+                            'badge'    => $this->badge,
                         ],
                     ],
-                    'sound' => $this->sound,
-                    'badge' => $this->badge,
                 ],
             ]
         ];
