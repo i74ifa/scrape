@@ -83,6 +83,7 @@ class User extends Authenticatable implements FilamentUser
         'locale',
         'driver_type',
         'driver_id',
+        'notification_badges',
     ];
 
     /**

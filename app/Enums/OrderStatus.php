@@ -55,4 +55,19 @@ enum OrderStatus: string
             self::RETURNED => __('messages.returned', ['platform' => $platform->name]),
         };
     }
+
+    public static function getTimelines($statues, $platform)
+    {
+        // Build a lookup map: status_value => created_at from history
+        $historyMap = collect($statues)->keyBy('status')->map(fn($s) => $s['created_at']);
+
+        // Return ALL enum statuses in order, merging with history
+        return collect(self::cases())->map(function ($case) use ($historyMap, $platform) {
+            return [
+                'status'     => $case->value,
+                'message'    => $case->message($platform),
+                'created_at' => $historyMap->get($case->value), // null if not in history
+            ];
+        });
+    }
 }

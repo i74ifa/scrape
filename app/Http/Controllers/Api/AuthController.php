@@ -197,6 +197,7 @@ class AuthController extends Controller
         $user->phone_verified_at = now();
         $user->save();
 
+        $user->increment('notification_badges');
         try {
             $fcm = new Fcm();
             if ($isNew) {
@@ -205,6 +206,8 @@ class AuthController extends Controller
                     'title' => 'ياهلا ومرحبا',
                     'description' => 'حسابك عندنا، منتظرين اول طلب 🫰',
                     'url' => '',
+                    'sound' => 'default',
+                    'badge' => $user->notification_badges,
                 ]));
             }
         } catch (\Exception $th) {

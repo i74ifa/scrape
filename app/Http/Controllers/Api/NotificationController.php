@@ -31,6 +31,7 @@ class NotificationController extends Controller
     {
         $notification = $request->user()->notifications()->findOrFail($id);
         $notification->update(['read' => true]);
+        $request->user()->decrement('notification_badges');
 
         return response()->json(['message' => 'Notification marked as read']);
     }
@@ -41,13 +42,14 @@ class NotificationController extends Controller
     public function markAllAsRead(Request $request)
     {
         $request->user()->notifications()->unread()->update(['read' => true]);
+        $request->user()->decrement('notification_badges');
 
         return response()->json(['message' => 'All notifications marked as read']);
     }
 
     public function count(Request $request)
     {
-        $count = $request->user()->notifications()->unread()->count();
+        $count = $request->user()->notification_badges;
 
         return response()->json(['count' => $count]);
     }
