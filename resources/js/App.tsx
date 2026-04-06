@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Card } from "./components/Card";
 import { Button } from "./components/Button";
 import Layout from "./layout";
+import axios from "axios";
 
 // SVG Logo Component
 
@@ -144,13 +145,15 @@ const App: React.FC = () => {
         null,
     );
     const [isSearching, setIsSearching] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [trackingData, setTrackingData] = useState<any>(null);
 
     useEffect(() => {
         const params = new URLSearchParams(window.location.search);
         const id = params.get("trackingId");
         if (id) {
             setActiveTrackingId(id);
-            setView("tracking");
+            handleTrackAction(id);
         }
 
         const handlePopState = () => {
@@ -158,7 +161,7 @@ const App: React.FC = () => {
             const trackingId = p.get("trackingId");
             if (trackingId) {
                 setActiveTrackingId(trackingId);
-                setView("tracking");
+                handleTrackAction(trackingId);
             } else {
                 setView("home");
                 setActiveTrackingId(null);
@@ -173,18 +176,23 @@ const App: React.FC = () => {
         if (!id.trim()) return;
         setIsSearching(true);
 
-        setTimeout(() => {
-            setIsSearching(false);
-            setActiveTrackingId(id);
-            setView("tracking");
 
-            try {
+        axios.get(`/api/tracking/${id}`)
+            .then((response) => {
+                setTrackingData(response.data);
+                setActiveTrackingId(id);
                 const newSearch = `?trackingId=${encodeURIComponent(id)}`;
                 window.history.pushState({ trackingId: id }, "", newSearch);
-            } catch (e) {
-                console.warn("History pushState failed:", e);
-            }
-        }, 800);
+            })
+            .catch((error) => {
+                console.log(error);
+                setErrorMessage(error.response.data.message);
+            })
+            .finally(() => {
+                setIsSearching(false);
+                setErrorMessage(null);
+                setView("tracking");
+            });
     };
 
     const goHome = () => {
@@ -271,7 +279,7 @@ const App: React.FC = () => {
                                     <div className="font-bold">
                                         أمازون - سماعات سوني
                                     </div>
-                                    <div className="text-xs text-gray-500 font-mono">
+                                    <div className="text-xs text-gray-500">
                                         تحديث: منذ 10 دقائق
                                     </div>
                                 </div>
@@ -296,12 +304,12 @@ const App: React.FC = () => {
                     >
                         <input
                             type="text"
-                            placeholder="أدخل رقم التتبع هنا..."
+                            placeholder="أدخل رقم التتبع هنا يبدا ب ORD"
                             value={trackingNumber}
                             onChange={(e) => setTrackingNumber(e.target.value)}
                             className="flex-1 bg-background/80 border-2 border-border-subtle rounded-full px-6 py-4 text-text-main focus:border-brand-primary outline-none transition-colors"
                         />
-                        <Button type="submit" className="md:w-48 h-[60px]">
+                        <Button type="submit" className="md:w-48 h-15">
                             {isSearching ? (
                                 <div className="flex items-center justify-center gap-2">
                                     <div className="w-4 h-4 border-2 border-text-main/30 border-t-text-main rounded-full animate-spin"></div>
@@ -312,6 +320,9 @@ const App: React.FC = () => {
                             )}
                         </Button>
                     </form>
+                    {errorMessage && (
+                        <div className="text-red-500 mt-4">{errorMessage}</div>
+                    )}
                 </Card>
             </section>
 
@@ -476,8 +487,8 @@ const App: React.FC = () => {
                         <h1 className="text-2xl md:text-4xl font-bold">
                             تفاصيل الشحنة
                         </h1>
-                        <p className="text-text-dimmed font-mono mt-1">
-                            رقم التتبع: {data.id}
+                        <p className="text-text-dimmed mt-1">
+                            رقم التتبع: {trackingData.id}
                         </p>
                     </div>
                 </div>
@@ -506,19 +517,13 @@ const App: React.FC = () => {
                                     </div>
                                     <div className="text-right">
                                         <h2 className="text-2xl font-bold">
-                                            {data.statusAr}
+                                            {trackingData.current_status}
                                         </h2>
-                                        <p className="text-text-dimmed">
-                                            تاريخ الوصول المتوقع:{" "}
-                                            <span className="text-white font-bold">
-                                                {data.estimatedDelivery}
-                                            </span>
-                                        </p>
                                     </div>
                                 </div>
                                 <div className="flex flex-col items-end">
                                     <span className="bg-brand-primary/20 text-brand-primary px-6 py-2 rounded-full font-bold text-lg">
-                                        {data.percentage}%
+                                        {trackingData.percentage}%
                                     </span>
                                     <span className="text-[10px] text-text-dimmed mt-2 tracking-widest uppercase text-right">
                                         جاري التتبع
@@ -528,7 +533,9 @@ const App: React.FC = () => {
                             <div className="relative h-4 bg-background rounded-full overflow-hidden mb-12">
                                 <div
                                     className="h-full bg-brand-primary rounded-full transition-all duration-1000 shadow-[0_0_20px_rgba(59,130,246,0.3)]"
-                                    style={{ width: `${data.percentage}%` }}
+                                    style={{
+                                        width: `${trackingData.percentage}%`,
+                                    }}
                                 ></div>
                             </div>
                             <div className="grid md:grid-cols-2 gap-8 border-t border-border-subtle pt-8 text-right">
@@ -537,7 +544,7 @@ const App: React.FC = () => {
                                         من
                                     </label>
                                     <p className="font-bold text-lg">
-                                        {data.origin}
+                                        {trackingData.current_status}
                                     </p>
                                 </div>
                                 <div>
@@ -545,7 +552,7 @@ const App: React.FC = () => {
                                         إلى
                                     </label>
                                     <p className="font-bold text-lg">
-                                        {data.destination}
+                                        {trackingData.next_status_message}
                                     </p>
                                 </div>
                             </div>
@@ -556,70 +563,64 @@ const App: React.FC = () => {
                                 سجل التتبع
                             </h3>
                             <div className="space-y-0 relative before:absolute before:right-[21px] before:top-4 before:bottom-4 before:w-[2px] before:bg-border-subtle">
-                                {data.timeline.map((item, idx) => {
-                                    const IconComponent =
-                                        TimelineIcons[
-                                            item.type as keyof typeof TimelineIcons
-                                        ] || (() => null);
-                                    const isLastCompleted =
-                                        item.completed &&
-                                        (!data.timeline[idx + 1] ||
-                                            !data.timeline[idx + 1].completed);
+                                {trackingData.status_history.map(
+                                    (item, idx) => {
+                                        const IconComponent =
+                                            TimelineIcons[
+                                                item.icon as keyof typeof TimelineIcons
+                                            ] || (() => null);
 
-                                    return (
-                                        <div
-                                            key={idx}
-                                            className={`relative pr-16 pb-12 last:pb-0 text-right transition-opacity duration-300 ${item.completed ? "opacity-60" : "opacity-100"}`}
-                                        >
+                                        return (
                                             <div
-                                                className={`absolute right-0 top-1 w-11 h-11 rounded-2xl border-4 border-surface z-10 flex items-center justify-center transition-all duration-500 ${
-                                                    item.completed
-                                                        ? "bg-brand-secondary text-text-dimmed"
-                                                        : isLastCompleted ||
-                                                            (!item.completed &&
-                                                                data.timeline[
-                                                                    idx - 1
-                                                                ]?.completed)
-                                                          ? "bg-brand-primary text-white shadow-lg shadow-brand-primary/40 scale-110"
-                                                          : "bg-background text-text-dimmed border-border-subtle"
-                                                }`}
+                                                key={idx}
+                                                className={`relative pr-16 pb-12 last:pb-0 text-right transition-opacity duration-300 ${item.completed ? "opacity-60" : "opacity-100"}`}
                                             >
-                                                <IconComponent />
-                                            </div>
-
-                                            <div className="group">
                                                 <div
-                                                    className={`mb-1 font-bold text-lg transition-colors duration-300 ${
-                                                        !item.completed &&
-                                                        data.timeline[idx - 1]
-                                                            ?.completed
-                                                            ? "text-blue-400"
-                                                            : ""
+                                                    className={`absolute right-0 top-1 w-11 h-11 rounded-2xl border-4 border-surface z-10 flex items-center justify-center transition-all duration-500 ${
+                                                        item.completed
+                                                            ? "bg-brand-secondary text-text-dimmed"
+                                                            : item.current ===
+                                                                trackingData
+                                                                    .order
+                                                                    .status
+                                                              ? "bg-brand-primary text-white shadow-lg shadow-brand-primary/40 scale-110"
+                                                              : "bg-background text-text-dimmed border-border-subtle"
                                                     }`}
                                                 >
-                                                    {item.title}
+                                                    <IconComponent />
                                                 </div>
-                                                <div className="text-text-dimmed text-sm">
-                                                    {item.time}
-                                                </div>
-                                            </div>
 
-                                            {!item.completed &&
-                                                data.timeline[idx - 1]
-                                                    ?.completed && (
+                                                <div className="group">
+                                                    <div
+                                                        className={`mb-1 font-bold text-lg transition-colors duration-300 ${
+                                                            item.status ===
+                                                            trackingData.next_status
+                                                                ? "text-blue-400"
+                                                                : ""
+                                                        }`}
+                                                    >
+                                                        {item.message}
+                                                    </div>
+                                                    <div className="text-text-dimmed text-sm">
+                                                        {item.created_at}
+                                                    </div>
+                                                </div>
+
+                                                {(trackingData.next_status === item.status) && trackingData.order.status !== item.status && (
                                                     <div className="absolute left-0 top-2 flex items-center gap-2">
                                                         <span className="relative flex h-3 w-3">
                                                             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-primary opacity-75"></span>
                                                             <span className="relative inline-flex rounded-full h-3 w-3 bg-brand-primary"></span>
                                                         </span>
                                                         <span className="text-brand-primary text-xs font-bold uppercase tracking-wider">
-                                                            الحالة الحالية
+                                                            جاري العمل عليها
                                                         </span>
                                                     </div>
                                                 )}
-                                        </div>
-                                    );
-                                })}
+                                            </div>
+                                        );
+                                    },
+                                )}
                             </div>
                         </Card>
                     </div>
@@ -636,7 +637,7 @@ const App: React.FC = () => {
                                 </p>
                                 <Button
                                     variant="secondary"
-                                    className="w-full bg-white text-blue-600 hover:bg-gray-100 border-none transition-transform group-hover:scale-[1.02]"
+                                    className="w-full bg-white text-blue-600 hover:bg-gray-100 border-none transition-transform group-hover:scale-[1.02] dark:bg-white dark:text-black dark:hover:bg-gray-100"
                                 >
                                     تحدث مع الدعم
                                 </Button>
@@ -665,21 +666,33 @@ const App: React.FC = () => {
                             </h3>
                             <div className="space-y-4">
                                 <div className="flex justify-between items-center text-sm p-3 bg-background/60 rounded-2xl">
-                                    <span className="font-bold">Amazon.sa</span>
+                                    <span className="font-bold">
+                                        {trackingData.order.platform.name}
+                                    </span>
                                     <span className="text-text-dimmed">
                                         المتجر
                                     </span>
                                 </div>
-                                <div className="flex justify-between items-center text-sm p-3 bg-background/60 rounded-2xl">
-                                    <span className="font-bold">1.2 كجم</span>
+                                {/* <div className="flex justify-between items-center text-sm p-3 bg-background/60 rounded-2xl">
                                     <span className="text-text-dimmed">
                                         الوزن
                                     </span>
-                                </div>
+                                    <span className="font-bold">1.2 كجم</span>
+                                </div> */}
                                 <div className="flex justify-between items-center text-sm p-3 bg-background/60 rounded-2xl">
-                                    <span className="font-bold">2</span>
                                     <span className="text-text-dimmed">
                                         عدد القطع
+                                    </span>
+                                    <span className="font-bold">
+                                        {trackingData.order.total_quantity}
+                                    </span>
+                                </div>
+                                <div className="flex justify-between items-center text-sm p-3 bg-background/60 rounded-2xl">
+                                    <span className="text-text-dimmed">
+                                        السعر الإجمالي
+                                    </span>
+                                    <span className="font-bold">
+                                        {trackingData.order.grand_total}
                                     </span>
                                 </div>
                             </div>

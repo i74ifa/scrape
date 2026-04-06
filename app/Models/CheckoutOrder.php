@@ -60,6 +60,7 @@ class CheckoutOrder extends Model
         'payment_method',
         'payment_reference',
         'status',
+        'total_quantity',
     ];
 
     protected $hidden = [];

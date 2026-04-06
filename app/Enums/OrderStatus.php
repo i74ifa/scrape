@@ -40,6 +40,22 @@ enum OrderStatus: string
         ];
     }
 
+    public function icon()
+    {
+        return match ($this) {
+            self::PENDING => 'pending',
+            self::APPROVED => 'received',
+            self::PURCHASING => 'processing',
+            self::PURCHASED => 'purchased',
+            self::READY_TO_SHIP => 'ready_to_ship',
+            self::CUSTOMS_CLEARANCE => 'customs_clearance',
+            self::SHIPPED => 'shipped',
+            self::DELIVERED => 'shipped',
+            self::CANCELLED => 'cancelled',
+            self::RETURNED => 'returned',
+        };
+    }       
+
     public function message($platform): string
     {
         return match ($this) {
@@ -56,18 +72,67 @@ enum OrderStatus: string
         };
     }
 
+    public function title()
+    {
+        return match ($this) {
+            self::PENDING => __('titles.pending'),
+            self::APPROVED => __('titles.approved'),
+            self::PURCHASING => __('titles.purchasing'),
+            self::SHIPPED => __('titles.shipped'),
+            self::PURCHASED => __('titles.purchased'),
+            self::READY_TO_SHIP => __('titles.ready_to_ship'),
+            self::CUSTOMS_CLEARANCE => __('titles.customs_clearance'),
+            self::DELIVERED => __('titles.delivered'),
+            self::CANCELLED => __('titles.cancelled'),
+            self::RETURNED => __('titles.returned'),
+        };
+    }
+
     public static function getTimelines($statues, $platform)
     {
-        // Build a lookup map: status_value => created_at from history
         $historyMap = collect($statues)->keyBy('status')->map(fn($s) => $s['created_at']);
 
-        // Return ALL enum statuses in order, merging with history
         return collect(self::cases())->map(function ($case) use ($historyMap, $platform) {
             return [
                 'status'     => $case->value,
-                'message'    => $case->message($platform),
-                'created_at' => $historyMap->get($case->value), // null if not in history
+                'message'    => $case->title(),
+                'completed'  => $historyMap->has($case->value),
+                'current'    => $case->next(),
+                'created_at' => $historyMap->get($case->value),
+                'icon'       => $case->icon(),
             ];
         });
+    }
+
+    public function next()
+    {
+        return match ($this) {
+            self::PENDING => self::APPROVED,
+            self::APPROVED => self::PURCHASING,
+            self::PURCHASING => self::PURCHASED,
+            self::PURCHASED => self::READY_TO_SHIP,
+            self::READY_TO_SHIP => self::CUSTOMS_CLEARANCE,
+            self::CUSTOMS_CLEARANCE => self::SHIPPED,
+            self::SHIPPED => self::DELIVERED,
+            self::DELIVERED => null,
+            self::CANCELLED => null,
+            self::RETURNED => null,
+        };
+    }
+
+    public function percentage()
+    {
+        return match ($this) {
+            self::PENDING => 10,
+            self::APPROVED => 20,
+            self::PURCHASING => 30,
+            self::PURCHASED => 40,
+            self::READY_TO_SHIP => 50,
+            self::CUSTOMS_CLEARANCE => 60,
+            self::SHIPPED => 70,
+            self::DELIVERED => 80,
+            self::CANCELLED => 90,
+            self::RETURNED => 100,
+        };
     }
 }

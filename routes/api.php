@@ -13,6 +13,8 @@ Route::get('/user', function (Request $request) {
 
 Route::put('/user/update-token', [UserController::class, 'updateDeviceToken'])->middleware('auth:sanctum');
 
+Route::get('tracking/{trackingNumber}', [Api\TrackingOrderController::class, 'index']);
+
 Route::put('addresses/{address}/default', [Api\AddressController::class, 'setDefault']);
 Route::apiResource('addresses', Api\AddressController::class)->middleware('auth:sanctum');
 Route::put('products/{product}/favorite', [Api\ProductController::class, 'toggleFavorite'])->middleware('auth:sanctum');

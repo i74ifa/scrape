@@ -61,7 +61,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     >
                         المتاجر المدعومة
                     </a>
-                    <Button variant="outline">تسجيل الدخول</Button>
                 </div>
                 <div className="md:hidden">
                     <button className="text-text-main p-2">

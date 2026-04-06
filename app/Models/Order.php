@@ -60,7 +60,8 @@ class Order extends Model
         'user_id',
         'platform_id',
         'checkout_order_id',
-        'status_history'
+        'status_history',
+        'total_quantity',
     ];
 
     protected $casts = [
