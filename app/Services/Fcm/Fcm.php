@@ -27,7 +27,7 @@ class Fcm
         $err = $response->failed() ? $response->body() : null;
 
         if ($err) {
-            Log::info($err);
+            Log::error($err);
         }
     }
 }

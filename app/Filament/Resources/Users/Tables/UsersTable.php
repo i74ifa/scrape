@@ -68,6 +68,7 @@ class UsersTable
                             ->nullable(),
                     ])
                     ->action(function ($record, array $data) {
+                        $record->increment('notification_badges');
                         try {
                             $record->notify(new SendPromotionNotification(
                                 title: $data['title'],

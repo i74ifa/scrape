@@ -51,6 +51,11 @@ class OrdersTable
                         $record->update($data);
 
                         try {
+                            $record->checkout_order->user->increment('notification_badges');
+                        } catch (\Exception $th) {
+                            Log::info($th->getMessage());
+                        }
+                        try {
                             $user = $record->checkout_order->user;
                             $user->notify(new ChangeOrderStatusNotify(
                                 order: $record,

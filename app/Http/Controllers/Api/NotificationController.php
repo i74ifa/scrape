@@ -42,7 +42,7 @@ class NotificationController extends Controller
     public function markAllAsRead(Request $request)
     {
         $request->user()->notifications()->unread()->update(['read' => true]);
-        $request->user()->decrement('notification_badges');
+        $request->user()->update(['notification_badges' => 0]);
 
         return response()->json(['message' => 'All notifications marked as read']);
     }

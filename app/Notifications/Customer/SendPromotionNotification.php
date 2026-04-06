@@ -37,6 +37,7 @@ class SendPromotionNotification extends Notification
             'description' => $this->body,
             'url'         => $this->url ?? '',
             'token'       => $notifiable->device_token,
+            'badge' => $notifiable->notification_badges,
         ]);
     }
 

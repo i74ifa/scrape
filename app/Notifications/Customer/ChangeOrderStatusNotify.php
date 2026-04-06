@@ -49,6 +49,7 @@ class ChangeOrderStatusNotify extends Notification
             ) ?? '',
             'url' => $this->url ?? '',
             'token' => $notifiable->device_token,
+            'badge' => $notifiable->notification_badges,
         ]);
     }
 

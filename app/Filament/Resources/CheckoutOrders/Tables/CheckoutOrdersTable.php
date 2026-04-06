@@ -53,6 +53,7 @@ class CheckoutOrdersTable
                             ]);
                         }
 
+                        $record->user->increment('notification_badges');
                         // notify user
                         try {
                             $user = $record->user;
