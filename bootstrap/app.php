@@ -16,6 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
             'app.customization' => \App\Http\Middleware\AppCustomizationMiddleware::class,
+            'inertia.panel' => \App\Http\Middleware\HandleInertiaRequests::class,
         ]);
         $middleware->api('app.customization');
     })
@@ -25,6 +26,9 @@ return Application::configure(basePath: dirname(__DIR__))
                 return response()->json([
                     'message' => 'Unauthenticated.'
                 ], 401);
+            }
+            if ($request->is('panel*')) {
+                return redirect()->guest(route('panel.login'));
             }
         });
     })->create();

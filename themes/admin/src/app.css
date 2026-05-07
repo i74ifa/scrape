@@ -1,0 +1,55 @@
+@import 'tailwindcss';
+@import "@heroui/styles";
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+@source '../**/*.jsx';
+
+@theme {
+    --font-sans: 'IBM Plex Sans Arabic', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+
+    --animate-float1: float1 20s ease-in-out infinite;
+    --animate-float2: float2 25s ease-in-out infinite;
+    --animate-float3: float3 22s ease-in-out infinite;
+    --animate-float4: float4 28s ease-in-out infinite;
+}
+
+@keyframes float1 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(60px, 40px) scale(1.1); }
+    50% { transform: translate(20px, 80px) scale(0.95); }
+    75% { transform: translate(-30px, 50px) scale(1.05); }
+}
+
+@keyframes float2 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(-50px, 60px) scale(1.08); }
+    50% { transform: translate(-80px, 20px) scale(1.12); }
+    75% { transform: translate(-20px, -30px) scale(0.96); }
+}
+
+@keyframes float3 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(40px, -50px) scale(1.06); }
+    50% { transform: translate(70px, -20px) scale(0.92); }
+    75% { transform: translate(30px, 30px) scale(1.1); }
+}
+
+@keyframes float4 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(-40px, -40px) scale(1.1); }
+    50% { transform: translate(30px, -60px) scale(1.05); }
+    75% { transform: translate(50px, 20px) scale(0.95); }
+}
+
+/* Fix rounded corners for table cells in RTL */
+[dir="rtl"] td:first-child {
+    border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+}
+
+[dir="rtl"] td:last-child {
+    border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+}
