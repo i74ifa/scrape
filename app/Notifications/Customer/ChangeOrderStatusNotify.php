@@ -20,7 +20,7 @@ class ChangeOrderStatusNotify extends Notification
     public function __construct(protected $order, protected $title = null, protected $description = null, protected $url = null)
     {
         $this->title = $title ?? __('Order Status Changed');
-        $this->description = $description ?? __('Order Status Changed');
+        $this->description = $description;
         $this->url = $url ?? route('orders.show', $order->id, false);
     }
 
