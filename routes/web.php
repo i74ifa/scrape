@@ -45,8 +45,14 @@ Route::middleware(['web', 'inertia.panel'])
 
             Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
             Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+
             Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+            Route::get('/orders/{order}/products', [OrderController::class, 'products'])->name('orders.products');
+            Route::post('/orders/{order}/next-status', [OrderController::class, 'nextStatus'])->name('orders.next-status');
+
             Route::get('/checkout-orders', [CheckoutOrderController::class, 'index'])->name('checkout-orders.index');
+            Route::get('/checkout-orders/{checkoutOrder}/products', [CheckoutOrderController::class, 'products'])->name('checkout-orders.products');
+            Route::post('/checkout-orders/{checkoutOrder}/next-status', [CheckoutOrderController::class, 'nextStatus'])->name('checkout-orders.next-status');
         });
     });
 

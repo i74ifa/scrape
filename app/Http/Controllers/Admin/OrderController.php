@@ -5,7 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Enums\OrderStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Notifications\Customer\ChangeOrderStatusNotify;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class OrderController extends Controller
@@ -46,8 +50,79 @@ class OrderController extends Controller
             'statuses' => collect(OrderStatus::cases())->map(fn ($s) => [
                 'value' => $s->value,
                 'label' => __($s->value),
+                'next' => $s->next()?->value,
             ])->values(),
             'filters' => $request->only(['search', 'status', 'platform_id']),
         ]);
+    }
+
+    public function products(Order $order): JsonResponse
+    {
+        $order->load([
+            'items.product:id,name,image,price',
+            'platform:id,name,currency_symbol',
+        ]);
+
+        return response()->json([
+            'order' => [
+                'id' => $order->id,
+                'code' => $order->code,
+                'currency_symbol' => $order->platform?->currency_symbol,
+                'items' => $order->items->map(fn ($item) => [
+                    'id' => $item->id,
+                    'quantity' => $item->quantity,
+                    'price' => $item->price,
+                    'total' => $item->total,
+                    'product' => $item->product ? [
+                        'id' => $item->product->id,
+                        'name' => $item->product->name,
+                        'image' => $item->product->image,
+                        'price' => $item->product->price,
+                    ] : null,
+                ]),
+            ],
+        ]);
+    }
+
+    public function nextStatus(Order $order): RedirectResponse
+    {
+        $next = $order->status->next();
+
+        if ($next === null) {
+            return back()->with('error', __('No further status transition is available.'));
+        }
+
+        $history = $order->status_history ?? [];
+        $history[] = [
+            'status' => $next->value,
+            'created_at' => now()->toDateTimeString(),
+        ];
+
+        $order->update([
+            'status' => $next,
+            'status_history' => $history,
+        ]);
+
+        try {
+            $order->checkout_order?->user?->increment('notification_badges');
+        } catch (\Throwable $e) {
+            Log::info($e->getMessage());
+        }
+
+        try {
+            $user = $order->checkout_order?->user;
+            if ($user) {
+                $user->notify(new ChangeOrderStatusNotify(
+                    order: $order,
+                    title: __('Order Status Changed'),
+                    description: $next->message($order->platform),
+                    url: route('panel.orders.index'),
+                ));
+            }
+        } catch (\Throwable $e) {
+            Log::info($e->getMessage());
+        }
+
+        return back()->with('success', __('Status updated to :status', ['status' => __($next->value)]));
     }
 }

@@ -36,4 +36,15 @@ enum CheckoutOrderStatus: string
             self::FAILED => __('Failed'),
         };
     }
+
+    public function next(): ?self
+    {
+        return match ($this) {
+            self::PENDING_PAYMENT => self::PAID,
+            self::PAID => null,
+            self::PARTIALLY_REFUNDED => self::REFUNDED,
+            self::REFUNDED => null,
+            self::FAILED => null,
+        };
+    }
 }
