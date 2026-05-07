@@ -11,6 +11,7 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
+Route::delete('/user', [UserController::class, 'destroy'])->middleware('auth:sanctum');
 Route::put('/user/update-token', [UserController::class, 'updateDeviceToken'])->middleware('auth:sanctum');
 
 Route::get('tracking/{trackingNumber}', [Api\TrackingOrderController::class, 'index']);
