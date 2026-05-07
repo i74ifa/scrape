@@ -113,4 +113,14 @@ class UserController extends Controller
             ->cursorPaginate(15);
         return ProductResource::collection($products);
     }
+
+    public function destroy(Request $request)
+    {
+        $user = $request->user();
+        $user->delete();
+
+        return response()->json([
+            'message' => trans('User deleted successfully'),
+        ]);
+    }
 }
