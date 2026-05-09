@@ -117,6 +117,7 @@ class UserController extends Controller
     public function destroy(Request $request)
     {
         $user = $request->user();
+        $user->tokens()->delete();
         $user->delete();
 
         return response()->json([

@@ -146,6 +146,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                                     الشروط والأحكام
                                 </a>
                             </li>
+                            <li>
+                                <a
+                                    href="/delete-account"
+                                    className="hover:text-brand-primary"
+                                >
+                                    حذف الحساب
+                                </a>
+                            </li>
                         </ul>
                     </div>
                     <div className="space-y-4">

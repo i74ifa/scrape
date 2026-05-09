@@ -21,6 +21,11 @@ Route::apiResource('addresses', Api\AddressController::class)->middleware('auth:
 Route::put('products/{product}/favorite', [Api\ProductController::class, 'toggleFavorite'])->middleware('auth:sanctum');
 Route::apiResource('products', Api\ProductController::class)->except(['update']);
 
+Route::prefix('account-delete')->group(function () {
+    Route::post('/send-otp', [Api\AccountDeletionController::class, 'sendOtp']);
+    Route::post('/confirm', [Api\AccountDeletionController::class, 'confirm']);
+});
+
 Route::group(['prefix' => 'auth'], function () {
     Route::post('/', [Api\AuthController::class, 'sendOtp'])->middleware('throttle:1,1');
     Route::post('/verify', [Api\AuthController::class, 'verifyOtp']);
