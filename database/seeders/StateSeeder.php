@@ -14,7 +14,7 @@ class StateSeeder extends Seeder
     {
         $states = json_decode(file_get_contents(base_path('storage/app/YEM.json')), true);
 
-        State::delete();
+        State::remove();
         foreach ($states['states'] as $state) {
             State::create([
                 //  remove the "Governorate" from the name
