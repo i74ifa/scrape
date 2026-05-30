@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->integer('total_quantity')->default(0)->after('total_price');
+            $table->integer('total_quantity')->default(0)->after('grand_total');
         });
 
         Schema::table('checkout_orders', function (Blueprint $table) {
-            $table->integer('total_quantity')->default(0)->after('total_price');
+            $table->integer('total_quantity')->default(0)->after('grand_total');
         });
     }
 
