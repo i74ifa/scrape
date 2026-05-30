@@ -13,6 +13,7 @@ use App\Enums\PaymentStatus;
 use Illuminate\Validation\Rules\Enum;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CheckoutOrderResource;
+use App\Models\Address;
 use App\Models\CartBundle;
 use App\Modules\Payment\Payment;
 use Illuminate\Support\Facades\DB;
@@ -88,9 +89,12 @@ class OrderController extends Controller
                 'image' => $request->file('image'),
             ]);
 
+            $address = Address::find($cartBundle->address_id);
+
             $checkoutOrder = CheckoutOrder::create([
                 'user_id' => auth()->id(),
                 'address_id' => $cartBundle->address_id,
+                'address' => $address ? $address->only(['address_one', 'phone', 'latitude', 'longitude']) : null,
                 'sub_total' => $cartBundle->subtotal,
                 'tax' => $cartBundle->tax,
                 'shipping' => $cartBundle->shipping,
