@@ -14,7 +14,14 @@ return new class extends Migration
         Schema::table('checkout_orders', function (Blueprint $table) {
             $table->json('address')->nullable()->after('address_id');
             $table->foreignId('address_id')->nullable()->change();
-            $table->foreign('address_id')->references('id')->on('addresses')->nullOnDelete();
+            Schema::table('checkout_orders', function (Blueprint $table) {
+                $table->dropForeign(['address_id']);
+                $table->foreignId('address_id')->nullable()->change();
+                $table->foreign('address_id')
+                    ->references('id')
+                    ->on('addresses')
+                    ->nullOnDelete();
+            });
         });
     }
 
