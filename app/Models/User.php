@@ -127,7 +127,7 @@ class User extends Authenticatable implements FilamentUser
 
     public static function generateOtpToken(): string
     {
-        if (app()->environment('production') || app()->environment('staging')) {
+        if (app()->environment('production')) {
             return random_int(1000, 9999);
         }
 
