@@ -31,16 +31,16 @@ class AuthController extends Controller
         $regex = RegexCode::getCountryRegexUsingCode($countryCode);
         $identifier = sprintf('%s%s', $countryCode, $phone);
 
-        // $user = User::where('phone', $phone)
-        //     ->where('country_code', $countryCode)
-        //     ->first();
+        $user = User::where('phone', $phone)
+            ->where('country_code', $countryCode)
+            ->first();
 
-        // if ($user) {
-        //     return response()->json([
-        //         'message' => trans('User already exists'),
-        //         'is_new' => false,
-        //     ], 200);
-        // }
+        if ($user) {
+            return response()->json([
+                'message' => trans('User already exists'),
+                'is_new' => false,
+            ], 200);
+        }
 
         if ($regex === null) {
             return response()->json([
