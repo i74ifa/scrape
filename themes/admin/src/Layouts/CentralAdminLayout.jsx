@@ -123,7 +123,7 @@ export default function CentralAdminLayout({
                         </div>
                         <p className="font-bold text-xl tracking-tight leading-none hidden sm:block text-black dark:text-white">
                             <a target="_blank" href={domain}>
-                                MenuIQ <span className="text-xs font-normal opacity-60">Central</span>
+                                Talabye <span className="text-xs font-normal opacity-60">Central</span>
                             </a>
                         </p>
                     </div>
