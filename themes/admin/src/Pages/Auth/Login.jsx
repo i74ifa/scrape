@@ -97,7 +97,7 @@ export default function Login() {
                             <UtensilsCrossed className="text-white dark:text-black w-9 h-9" />
                         </div>
                         <h1 className="text-3xl font-black tracking-tight text-black dark:text-white">
-                            MenuIQ
+                            Talabye
                         </h1>
                         <p className="text-zinc-500 dark:text-zinc-400 font-medium mt-2">
                             تسجيل الدخول إلى لوحة التحكم

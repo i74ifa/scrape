@@ -5,7 +5,8 @@
     "scripts": {
         "build": "vite build",
         "dev": "vite",
-        "zip": "7zz a -tzip build.zip public/build"
+        "zip": "7zz a -tzip build.zip public/build",
+        "build:all": "concurrently \"npm run build\" \"cd themes/admin && npm run build\""
     },
     "devDependencies": {
         "@tailwindcss/typography": "^0.5.19",

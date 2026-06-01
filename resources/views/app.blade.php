@@ -15,7 +15,7 @@
 
         <!-- Styles / Scripts -->
     @viteReactRefresh
-    @vite(['resources/js/main.tsx'])
+    {{ \Illuminate\Support\Facades\Vite::useBuildDirectory('build/theme')->withEntryPoints(['resources/js/main.tsx']) }}
     <style>
       body {
         font-family: "IBM Plex Sans Arabic", sans-serif;
