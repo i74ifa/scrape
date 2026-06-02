@@ -81,7 +81,6 @@ class CartController extends Controller
                 'platform_id' => $platform->id,
             ], [
                 'subtotal' => 0,
-                'local_shipping' => 0,
                 'tax' => 0,
                 'shipping' => 0,
                 'total' => 0,

@@ -22,7 +22,6 @@ class CartResource extends JsonResource
             'tax' => money($this->tax),
             'shipping' => money($this->shipping),
             'total' => money($this->total),
-            'local_shipping' => money($this->local_shipping),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'items' => $this->whenLoaded('items', fn() => CartItemResource::collection($this->items)),

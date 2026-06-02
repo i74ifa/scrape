@@ -50,7 +50,6 @@ class Cart extends Model
         'shipping',
         'total',
         'cart_bundle_id',
-        'local_shipping',
         'discount'
     ];
 
