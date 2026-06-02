@@ -15,6 +15,7 @@ use App\Http\Resources\ProductResource;
 use App\Models\CartBundle;
 use App\Models\CartItem;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class CartController extends Controller
@@ -113,6 +114,7 @@ class CartController extends Controller
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
+            Log::error($e);
             return response()->json($e, 400);
         }
 
