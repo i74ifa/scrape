@@ -7,6 +7,7 @@ use App\Modules\Massaging\Providers\M365Dialog;
 use App\Modules\Massaging\Providers\WaGo;
 use App\Services\Currency;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use SocialiteProviders\Google\Provider as GoogleProvider;
 use SocialiteProviders\Telegram\Provider as TelegramProvider;
@@ -45,6 +46,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        URL::forceHttps($this->app->environment('production'));
     }
 }
