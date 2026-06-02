@@ -113,7 +113,6 @@ class CartController extends Controller
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
-            dd($e);
             return response()->json($e, 400);
         }
 

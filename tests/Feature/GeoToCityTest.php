@@ -15,7 +15,6 @@ class GeoToCityTest extends TestCase
     public function test_example(): void
     {
         $city = $this->getCityFromCoords(13.966970, 44.169159);
-        dd($city);
     }
 
     public static function getCityFromCoords($lat, $lng)
