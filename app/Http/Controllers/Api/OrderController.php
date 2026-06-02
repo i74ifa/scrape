@@ -94,7 +94,7 @@ class OrderController extends Controller
             $checkoutOrder = CheckoutOrder::create([
                 'user_id' => auth()->id(),
                 'address_id' => $cartBundle->address_id,
-                'address' => $address ? $address->only(['address_one', 'phone', 'latitude', 'longitude']) : null,
+                'address_raw' => $address ? $address->only(['address_one', 'phone', 'latitude', 'longitude']) : null,
                 'sub_total' => $cartBundle->subtotal,
                 'tax' => $cartBundle->tax,
                 'shipping' => $cartBundle->shipping,
@@ -110,8 +110,9 @@ class OrderController extends Controller
 
             foreach ($carts as $cart) {
                 $order = $checkoutOrder->orders()->create([
-                    'sub_total' => $cart->subtotal,
-                    'grand_total' => $cart->total,
+                    'cart_id' => $cart->id,
+                    'total' => $cart->total,
+                    'subtotal' => $cart->subtotal,
                     'tax' => $cart->tax,
                     'shipping' => $cart->shipping,
                     'platform_id' => $cart->platform_id,

@@ -25,7 +25,7 @@ class CheckoutOrderResource extends JsonResource
             'discount' => money($this->discount),
             'status' => $this->status->label(),
             'orders' => $this->whenLoaded('orders', fn () => OrderResource::collection($this->orders)),
-            'address' => $this->whenLoaded('address', fn () => AddressResource::make($this->address)),
+            'address' => $this->whenLoaded('address', fn () => AddressResource::make($this->address)) ?? $this->address_raw,
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
         ];
     }

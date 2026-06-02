@@ -61,7 +61,7 @@ class CheckoutOrder extends Model
         'payment_reference',
         'status',
         'total_quantity',
-        'address',
+        'address_raw',
     ];
 
     protected $hidden = [];
@@ -70,7 +70,7 @@ class CheckoutOrder extends Model
         'payment_method' => Enums\PaymentMethod::class,
         'status' => Enums\CheckoutOrderStatus::class,
         'payment_reference' => 'array',
-        'address' => 'array',
+        'address_raw' => 'array',
     ];
 
     public function user()
