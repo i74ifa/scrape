@@ -48,12 +48,22 @@ class AuthController extends Controller
             ], 422);
         }
 
-        $key = 'send-otp:' . $request->ip();
+        $attemptKey = 'send-otp-attempts:' . $request->ip();
+        $sentKey = 'send-otp-sent:' . $identifier;
 
-        if (RateLimiter::tooManyAttempts($key, 2)) {
-            $seconds = RateLimiter::availableIn($key);
+        // An OTP was already sent to this number within the last minute → strict 1/min.
+        if (RateLimiter::tooManyAttempts($sentKey, 1)) {
+            $seconds = RateLimiter::availableIn($sentKey);
             return response()->json(['message' => "يرجى الانتظار $seconds ثانية"], 429);
         }
+
+        // Otherwise allow up to 5 attempts/min (invalid phone, retries, etc.).
+        if (RateLimiter::tooManyAttempts($attemptKey, 5)) {
+            $seconds = RateLimiter::availableIn($attemptKey);
+            return response()->json(['message' => "يرجى الانتظار $seconds ثانية"], 429);
+        }
+
+        RateLimiter::hit($attemptKey, 60);
 
         if (! preg_match($regex, '+' . $identifier)) {
             return response()->json([
@@ -75,6 +85,9 @@ class AuthController extends Controller
         try {
             $randomSeconds = rand(5, 10);
             SendOtpJob::dispatch($phone, $token, $countryCode)->delay(now()->addSeconds($randomSeconds));
+
+            // Only now that an OTP actually went out, enforce the strict 1/min limit.
+            RateLimiter::hit($sentKey, 60);
         } catch (\Exception $th) {
             return response()->json([
                 'message' => 'Failed to send OTP',
@@ -187,6 +200,7 @@ class AuthController extends Controller
                 'phone' => $phone,
                 'country_code' => $countryCode,
                 'password' => null,
+                'currency' => 'YER',
             ]);
         }
 
@@ -204,7 +218,7 @@ class AuthController extends Controller
                 $fcm->send(new FcmBody([
                     'token' => $request->device_token,
                     'title' => 'ياهلا ومرحبا',
-                    'description' => 'حسابك عندنا، منتظرين اول طلب 🫰',
+                    'description' => 'حسابك صار عندنا، منتظرين اول طلب 🫰',
                     'url' => '',
                     'sound' => 'default',
                     'badge' => $user->notification_badges,

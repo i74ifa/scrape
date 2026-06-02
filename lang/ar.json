@@ -49,5 +49,10 @@
     "Product favorited successfully": "تم إضافة المنتج إلى المفضلة بنجاح",
     "Product unfavorited successfully": "تم إزالة المنتج من المفضلة بنجاح",
     "Order Tracking Number Not Found": "رقم تتبع الطلب غير صحيح",
-    "User deleted successfully": "تم حذف المستخدم بنجاح"
+    "User deleted successfully": "تم حذف المستخدم بنجاح",
+    "Address not found": "العنوان غير موجود",
+    "Address deleted successfully": "تم حذف العنوان بنجاح",
+    "Address updated successfully": "تم تحديث العنوان بنجاح",
+    "Address created successfully": "تم إنشاء العنوان بنجاح",
+    "Product not found": "المنتج غير موجود"
 }

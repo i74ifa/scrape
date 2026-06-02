@@ -13,7 +13,15 @@ final readonly class Payment
     {
         return match ($gateway) {
             'banks_transfer' => new BanksTransfer(),
-            default => throw new Exception()
+            default => throw new Exception(__('messages.unsupported_gateway', ['gateway' => $gateway])),
+        };
+    }
+
+    public static function rules(string $gateway): array
+    {
+        return match ($gateway) {
+            'banks_transfer' => (new BanksTransfer())->rules(),
+            default => throw new Exception(__('messages.unsupported_gateway', ['gateway' => $gateway])),
         };
     }
 }

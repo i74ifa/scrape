@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Services\Currency;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -18,11 +17,7 @@ class ProductResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'price' => Currency::convert(
-                amount: $this->price,
-                currencyFrom: $this->currency,
-                format: true
-            ),
+            'price' => money($this->price),
             'image' => $this->image,
             'weight' => (float) $this->weight,
             'description' => $this->description,

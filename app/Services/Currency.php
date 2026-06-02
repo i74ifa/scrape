@@ -9,7 +9,8 @@ use App\Models\CurrencyExchangeRate;
 class Currency
 {
 
-    public static $currency = 'SAR';
+    public static $currency = 'YER';
+    public static $defaultCurrency = 'SAR';
 
     private static $currencySymbols = [
         'USD' => '$',
@@ -41,39 +42,45 @@ class Currency
     ];
 
     /**
-     * Converts the price of a scraper product to the specified currency.
+     * Converts an amount from one currency to another.
      *
-     * Only supports converting to 'IQD' or 'USD'.
+     * Returns a Money value object so the result can be chained, e.g.
+     * Currency::convert($amount, 'USD')->format(). The object serializes to its
+     * raw numeric amount in JSON and casts to a formatted string when used as a
+     * string, so existing callers keep working.
      *
-     * @param ScraperProduct $product
-     * @param string $currency
-     * @return float
-     * @throws \Exception
+     * @param float|int $amount
+     * @param string|null $currencyFrom  Defaults to the stored/default currency (SAR).
+     * @param string|null $currencyTo  Defaults to the active (user) currency.
+     * @param bool $format  When true, returns the formatted string directly
+     *                       (kept for backward compatibility; prefer ->format()).
+     * @return Money|string
      */
-    public static function convert($amount, $currencyFrom, $currencyTo = null, $format = false)
+    public static function convert($amount, $currencyFrom = null, $currencyTo = null, $format = false)
     {
+        if ($currencyFrom === null) {
+            $currencyFrom = self::$defaultCurrency;
+        }
+
         if ($currencyTo === null) {
             $currencyTo = self::$currency;
         }
 
         if ($currencyFrom === $currencyTo) {
-            return $amount;
+            $converted = (float) $amount;
+        } else {
+            $fromRate = self::getExchangeRate($currencyFrom);
+            $toRate = self::getExchangeRate($currencyTo);
+
+            // Convert to SAR pivot, then from SAR to the target currency.
+            $converted = ($amount * $fromRate) / $toRate;
         }
-
-        $fromRate = self::getExchangeRate($currencyFrom);
-        $toRate = self::getExchangeRate($currencyTo);
-
-        // Convert to SAR pivot
-        $amountInSar = $amount * $fromRate;
-
-        // Convert from SAR to target
-        $amount = $amountInSar / $toRate;
 
         if ($format) {
-            return self::format($amount, $currencyTo);
+            return self::format($converted, $currencyTo);
         }
 
-        return $amount;
+        return new Money($converted, $currencyTo);
     }
 
     public static function getExchangeRate($currency = 'YER')

@@ -11,4 +11,7 @@ return [
     'delivered' => 'طلبك من :platform وصلك',
     'cancelled' => 'الغينا طلبك من :platform',
     'returned' => 'رجعنا طلبك من :platform',
+    'failed' => 'فشلنا في شراء طلبك من :platform',
+    'unsupported_gateway' => 'بوابة الدفع :gateway غير مدعومة',
+    'unsupported_payment_gateway' => 'بوابة الدفع :gateway غير مدعومة',
 ];

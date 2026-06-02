@@ -42,18 +42,13 @@ class OrderController extends Controller
     public function checkout(Request $request)
     {
         try {
-            $rules = [
-                // 'cart_ids' => 'required|array',
-                // 'cart_ids.*' => 'exists:carts,id',
+            $request->validate([
                 'payment_method' => ['required', new Enum(PaymentMethod::class)],
-                // 'payment_reference' => 'required',
-            ];
+            ]);
 
-            $paymentMethod = $request->payment_method;
-            $payment = Payment::handle($paymentMethod);
-            $rules = array_merge($payment->rules(), $rules);
+            $payment = Payment::handle($request->payment_method);
 
-            $validated = $request->validate($rules);
+            $validated = $request->validate($payment->rules());
         } catch (ValidationException $e) {
             return response()->json([
                 'message' => $e->getMessage(),
@@ -66,18 +61,24 @@ class OrderController extends Controller
 
             $cartBundle = CartBundle::getActiveCartBundle();
 
-            if (!$cartBundle->address_id) {
+            $address = Address::find($cartBundle->address_id);
+            if (!$address) {
+                $address = user()->addresses()->where('is_default', true)->first();
+            }
+            // use default if not found
+
+
+            if (!$address) {
                 return response()->json([
-                    'message' => 'Address not found',
+                    'message' => __('Address not found'),
                 ], 404);
             }
 
-            // $carts = Cart::where('user_id', auth()->id())->whereIn('id', $validated['cart_ids'])->get();
-            $carts = Cart::where('user_id', auth()->id())->get();
+            $carts = $cartBundle->carts()->with('items')->get();
 
-            if (!$carts) {
+            if ($carts->isEmpty()) {
                 return response()->json([
-                    'message' => 'Cart not found',
+                    'message' => __('Cart not found'),
                 ], 404);
             }
 
@@ -89,7 +90,6 @@ class OrderController extends Controller
                 'image' => $request->file('image'),
             ]);
 
-            $address = Address::find($cartBundle->address_id);
 
             $checkoutOrder = CheckoutOrder::create([
                 'user_id' => auth()->id(),
@@ -101,7 +101,7 @@ class OrderController extends Controller
                 'discount' => $cartBundle->discount,
                 'local_shipping' => $cartBundle->local_shipping,
                 'grand_total' => $cartBundle->total,
-                'payment_method' => $paymentMethod,
+                'payment_method' => $request->payment_method,
                 'payment_reference' => json_encode($paymentData),
                 'code' => CheckoutOrder::generateCode(),
                 'status' => CheckoutOrderStatus::PENDING_PAYMENT,
@@ -110,9 +110,8 @@ class OrderController extends Controller
 
             foreach ($carts as $cart) {
                 $order = $checkoutOrder->orders()->create([
-                    'cart_id' => $cart->id,
-                    'total' => $cart->total,
-                    'subtotal' => $cart->subtotal,
+                    'sub_total' => $cart->subtotal,
+                    'grand_total' => $cart->total,
                     'tax' => $cart->tax,
                     'shipping' => $cart->shipping,
                     'platform_id' => $cart->platform_id,
@@ -130,6 +129,8 @@ class OrderController extends Controller
 
                 $cart->delete();
             }
+
+            $cartBundle->delete();
 
             DB::commit();
         } catch (\Exception $e) {

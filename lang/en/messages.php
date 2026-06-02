@@ -11,4 +11,7 @@ return [
     'delivered' => 'Your order from :platform has arrived',
     'cancelled' => 'We cancelled your order from :platform',
     'returned' => 'We returned your order from :platform',
+    'failed' => 'We failed to purchase your order from :platform',
+    'unsupported_gateway' => 'Unsupported payment gateway :gateway',
+    'unsupported_payment_gateway' => 'Unsupported payment gateway :gateway',
 ];

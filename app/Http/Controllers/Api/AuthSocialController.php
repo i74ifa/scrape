@@ -35,7 +35,6 @@ class AuthSocialController extends Controller
             $token = $newUser->createToken('google-login')->plainTextToken;
         }
 
-
         $signedUrl = URL::temporarySignedRoute(
             'login.success',
             now()->addMinutes(2),

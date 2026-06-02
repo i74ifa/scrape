@@ -36,7 +36,7 @@ class CartController extends Controller
 
     private function createOrUpdateScrapedProduct(string $url, $productDto, Platform $platform): Product
     {
-        $convertedPrice = Currency::convert($productDto->price, $productDto->currency, 'SAR');
+        $convertedPrice = Currency::convert($productDto->price, $productDto->currency, 'SAR')->value();
         return Product::updateOrCreate([
             'url' => $url,
             'name' => $productDto->name,
@@ -80,12 +80,14 @@ class CartController extends Controller
                 'platform_id' => $platform->id,
             ], [
                 'subtotal' => 0,
+                'local_shipping' => 0,
                 'tax' => 0,
                 'shipping' => 0,
                 'total' => 0,
                 'user_id' => $userId,
                 'discount' => 0,
             ]);
+
             if ($withId) {
                 $product = Product::find($validatedData['product_id']);
             } else {
@@ -111,6 +113,7 @@ class CartController extends Controller
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
+            dd($e);
             return response()->json($e, 400);
         }
 
@@ -167,36 +170,12 @@ class CartController extends Controller
         }
 
         return response()->json([
-            'subtotal' => Currency::convert(
-                amount: $bundle->subtotal,
-                currencyFrom: 'SAR',
-                format: true
-            ),
-            'tax' => Currency::convert(
-                amount: $bundle->tax,
-                currencyFrom: 'SAR',
-                format: true
-            ),
-            'shipping' => Currency::convert(
-                amount: $bundle->shipping,
-                currencyFrom: 'SAR',
-                format: true
-            ),
-            'discount' => Currency::convert(
-                amount: $bundle->discount,
-                currencyFrom: 'SAR',
-                format: true
-            ),
-            'local_shipping' => Currency::convert(
-                amount: $bundle->local_shipping,
-                currencyFrom: 'SAR',
-                format: true
-            ),
-            'total' => Currency::convert(
-                amount: $bundle->total,
-                currencyFrom: 'SAR',
-                format: true
-            ),
+            'subtotal' => money($bundle->subtotal),
+            'tax' => money($bundle->tax),
+            'shipping' => money($bundle->shipping),
+            'discount' => money($bundle->discount),
+            'local_shipping' => money($bundle->local_shipping),
+            'total' => money($bundle->total),
             'address_id' => $bundle->address_id,
         ]);
     }
