@@ -71,6 +71,12 @@ return [
         'client_secret' => env('TELEGRAM_TOKEN'),
         'redirect' => env('TELEGRAM_REDIRECT_URI'),
     ],
+    'apple' => [
+        'client_id' => env('APPLE_CLIENT_ID'),
+        'client_secret' => env('APPLE_CLIENT_SECRET'),
+        'private_key' => env('APPLE_PRIVATE_KEY'),
+        'redirect' => env('APPLE_REDIRECT_URI'),
+    ],
 
     /*
     |--------------------------------------------------------------------------

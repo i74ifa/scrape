@@ -50,6 +50,62 @@ class AuthSocialController extends Controller
         return redirect()->away($url);
     }
 
+    public function redirectToApple()
+    {
+        return Socialite::driver('apple')->stateless()->redirect();
+    }
+
+    public function handleAppleCallback()
+    {
+        $user = Socialite::driver('apple')->stateless()->user();
+
+        // Apple only returns the name on the first authorization, and the
+        // email may be a private relay address, so match on the stable
+        // Apple subject id first and fall back to the email.
+        $existingUser = User::where('driver_id', $user->id)
+            ->when($user->email, function ($query) use ($user) {
+                $query->orWhere('email', $user->email);
+            })
+            ->first();
+
+        if ($existingUser) {
+            $token = $existingUser->createToken('apple-login')->plainTextToken;
+
+            if (empty($existingUser->email) && ! empty($user->email)) {
+                $existingUser->email = $user->email;
+            }
+
+            if (empty($existingUser->name) && ! empty($user->name)) {
+                $existingUser->name = $user->name;
+            }
+
+            $existingUser->save();
+        } else {
+            $newUser = User::create([
+                'name' => $user->name,
+                'email' => $user->email,
+                'driver_type' => 'apple',
+                'driver_id' => $user->id,
+            ]);
+
+            $token = $newUser->createToken('apple-login')->plainTextToken;
+        }
+
+        $signedUrl = URL::temporarySignedRoute(
+            'login.success',
+            now()->addMinutes(2),
+            [
+                'token' => $token,
+                'email' => $user->email,
+                'name' => $user->name,
+            ]
+        );
+
+        // redirect to talabye://login?token=...&email=...&name=...
+        $url = "talabye://login?token={$token}&email={$user->email}&name={$user->name}";
+        return redirect()->away($url);
+    }
+
     public function redirectToTelegram()
     {
         return view('login-as-telegram');
