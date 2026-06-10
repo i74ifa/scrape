@@ -68,6 +68,7 @@ class AuthSocialController extends Controller
     {
         $data = $request->validate([
             'identity_token' => 'required|string',
+            'device_token' => 'nullable|string',
             'name' => 'nullable|string',
             'email' => 'nullable|email',
         ]);
@@ -102,6 +103,8 @@ class AuthSocialController extends Controller
                 $user->name = $name;
             }
 
+            $user->device_token = $data['device_token'] ?: $user->device_token ?: null;
+
             $user->save();
         } else {
             $user = User::create([
@@ -109,6 +112,7 @@ class AuthSocialController extends Controller
                 'email' => $email,
                 'driver_type' => 'apple',
                 'driver_id' => $appleUser->id,
+                'device_token' => $data['device_token'] ?: null,
             ]);
         }
 
