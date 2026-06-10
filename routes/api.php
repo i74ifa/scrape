@@ -5,6 +5,7 @@ use \App\Http\Controllers\Api;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\BankAccountController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\NotificationController;
 
 
 Route::get('/user', function (Request $request) {
@@ -93,7 +94,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('app-summary', function (Request $request) {
         // use cart counts and notifications counts
 
-        $notification = app(Api\NotificationController::class)->count($request);
+        $notification = app(NotificationController::class)->count($request);
         $cart = app(Api\CartController::class)->count($request);
         $fav = user()->favorite_products()->count();
 
