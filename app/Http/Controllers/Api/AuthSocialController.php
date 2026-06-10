@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\URL;
 
 use Laravel\Socialite\Socialite;
 use SocialiteProviders\Apple\Provider as AppleProvider;
+use Google\Client as GoogleClient;
 
 class AuthSocialController extends Controller
 {
@@ -50,6 +51,89 @@ class AuthSocialController extends Controller
         // redirect to talabye://login?token=...&email=...&name=...
         $url = "talabye://login?token={$token}&email={$user->email}&name={$user->name}";
         return redirect()->away($url);
+    }
+
+    /**
+     * Native "Sign in with Google" for the mobile app.
+     *
+     * The Flutter app authenticates with Google natively (no webview) using the
+     * google_sign_in package and posts the resulting id token here. Google's
+     * equivalent of Apple's `identity_token` is the `id_token` JWT. We verify
+     * that JWT against Google's public keys and issue our own token.
+     *
+     * Expected JSON body:
+     *   id_token     : string   (required) GoogleSignInAuthentication.idToken
+     *   device_token : string   (optional) FCM/APNs push token
+     *
+     * Note: the id_token's `aud` claim must match GOOGLE_CLIENT_ID. For native
+     * sign-in this is the *web/server* OAuth client id passed as serverClientId
+     * in the Flutter google_sign_in config, not the iOS/Android client id.
+     */
+    public function handleGoogleNative(Request $request)
+    {
+        $data = $request->validate([
+            'id_token' => 'required|string',
+            'device_token' => 'nullable|string',
+        ]);
+
+        // Verifies signature, issuer, audience and expiry against Google's
+        // public keys, then returns the decoded JWT claims.
+        $client = new GoogleClient(['client_id' => config('services.google.client_id')]);
+        $payload = $client->verifyIdToken($data['id_token']);
+
+        if (! $payload) {
+            return response()->json(['message' => 'Invalid Google id token.'], 401);
+        }
+
+        // The stable Google user identifier is the `sub` claim.
+        $googleId = $payload['sub'];
+        $email = $payload['email'] ?? null;
+        $name = $payload['name'] ?? null;
+
+        // Match on the stable Google subject id first, fall back to email.
+        $user = User::where('driver_id', $googleId)
+            ->when($email, function ($query) use ($email) {
+                $query->orWhere('email', $email);
+            })
+            ->first();
+
+        if ($user) {
+            if (empty($user->driver_id)) {
+                $user->driver_id = $googleId;
+                $user->driver_type = 'google';
+            }
+
+            if (empty($user->email) && ! empty($email)) {
+                $user->email = $email;
+            }
+
+            if (empty($user->name) && ! empty($name)) {
+                $user->name = $name;
+            }
+
+            $user->device_token = $data['device_token'] ?: $user->device_token ?: null;
+
+            $user->save();
+        } else {
+            $user = User::create([
+                'name' => $name,
+                'email' => $email,
+                'driver_type' => 'google',
+                'driver_id' => $googleId,
+                'device_token' => $data['device_token'] ?: null,
+            ]);
+        }
+
+        $token = $user->createToken('google-login')->plainTextToken;
+
+        return response()->json([
+            'token' => $token,
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+            ],
+        ]);
     }
 
     /**
