@@ -36,8 +36,8 @@ Route::group(['prefix' => 'auth'], function () {
     Route::get('/telegram', [Api\AuthSocialController::class, 'redirectToTelegram']);
     Route::get('/telegram/callback', [Api\AuthSocialController::class, 'handleTelegramCallback']);
 
-    Route::get('/apple', [Api\AuthSocialController::class, 'redirectToApple']);
-    Route::match(['get', 'post'], '/apple/callback', [Api\AuthSocialController::class, 'handleAppleCallback']);
+    // Native Sign in with Apple (Flutter sign_in_with_apple) — no webview.
+    Route::post('/apple/native', [Api\AuthSocialController::class, 'handleAppleNative']);
 });
 
 

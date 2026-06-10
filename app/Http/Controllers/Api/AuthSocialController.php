@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
 
 use Laravel\Socialite\Socialite;
+use SocialiteProviders\Apple\Provider as AppleProvider;
 
 class AuthSocialController extends Controller
 {
@@ -50,60 +52,76 @@ class AuthSocialController extends Controller
         return redirect()->away($url);
     }
 
-    public function redirectToApple()
+    /**
+     * Native "Sign in with Apple" for the mobile app.
+     *
+     * The Flutter app authenticates with Apple natively (no webview) using the
+     * sign_in_with_apple package and posts the resulting identity token here.
+     * We verify that JWT against Apple's public keys and issue our own token.
+     *
+     * Expected JSON body:
+     *   identity_token : string   (required) Apple credential.identityToken
+     *   name           : string   (optional) only present on first sign-in
+     *   email          : string   (optional) only present on first sign-in
+     */
+    public function handleAppleNative(Request $request)
     {
-        return Socialite::driver('apple')->stateless()->redirect();
-    }
+        $data = $request->validate([
+            'identity_token' => 'required|string',
+            'name' => 'nullable|string',
+            'email' => 'nullable|email',
+        ]);
 
-    public function handleAppleCallback()
-    {
-        $user = Socialite::driver('apple')->stateless()->user();
+        // Verifies signature, issuer and expiry against Apple's public keys,
+        // then returns a Socialite user whose id is the stable Apple subject.
+        $appleUser = Socialite::driver('apple')->userByIdentityToken($data['identity_token']);
 
-        // Apple only returns the name on the first authorization, and the
-        // email may be a private relay address, so match on the stable
-        // Apple subject id first and fall back to the email.
-        $existingUser = User::where('driver_id', $user->id)
-            ->when($user->email, function ($query) use ($user) {
-                $query->orWhere('email', $user->email);
+        // Apple only returns name/email on the very first authorization, so the
+        // app forwards them in the body as a fallback to the token claims.
+        $email = $appleUser->email ?: ($data['email'] ?? null);
+        $name = $appleUser->name ?: ($data['name'] ?? null);
+
+        // Match on the stable Apple subject id first, fall back to email.
+        $user = User::where('driver_id', $appleUser->id)
+            ->when($email, function ($query) use ($email) {
+                $query->orWhere('email', $email);
             })
             ->first();
 
-        if ($existingUser) {
-            $token = $existingUser->createToken('apple-login')->plainTextToken;
-
-            if (empty($existingUser->email) && ! empty($user->email)) {
-                $existingUser->email = $user->email;
+        if ($user) {
+            if (empty($user->driver_id)) {
+                $user->driver_id = $appleUser->id;
+                $user->driver_type = 'apple';
             }
 
-            if (empty($existingUser->name) && ! empty($user->name)) {
-                $existingUser->name = $user->name;
+            if (empty($user->email) && ! empty($email)) {
+                $user->email = $email;
             }
 
-            $existingUser->save();
+            if (empty($user->name) && ! empty($name)) {
+                $user->name = $name;
+            }
+
+            $user->save();
         } else {
-            $newUser = User::create([
-                'name' => $user->name,
-                'email' => $user->email,
+            $user = User::create([
+                'name' => $name,
+                'email' => $email,
                 'driver_type' => 'apple',
-                'driver_id' => $user->id,
+                'driver_id' => $appleUser->id,
             ]);
-
-            $token = $newUser->createToken('apple-login')->plainTextToken;
         }
 
-        $signedUrl = URL::temporarySignedRoute(
-            'login.success',
-            now()->addMinutes(2),
-            [
-                'token' => $token,
-                'email' => $user->email,
-                'name' => $user->name,
-            ]
-        );
+        $token = $user->createToken('apple-login')->plainTextToken;
 
-        // redirect to talabye://login?token=...&email=...&name=...
-        $url = "talabye://login?token={$token}&email={$user->email}&name={$user->name}";
-        return redirect()->away($url);
+        return response()->json([
+            'token' => $token,
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+            ],
+        ]);
     }
 
     public function redirectToTelegram()
