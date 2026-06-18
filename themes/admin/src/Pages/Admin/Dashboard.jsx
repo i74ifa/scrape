@@ -98,21 +98,21 @@ export default function Dashboard({ stats = {}, activities = [] }) {
 
                         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                             <Link
-                                href="/panel/products"
+                                href="/admin/products"
                                 className="bg-zinc-50 dark:bg-zinc-800/50 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-2xl p-4 flex flex-col items-center text-center transition-colors"
                             >
                                 <Package className="w-8 h-8 text-blue-500 mb-2" />
                                 <p className="font-bold text-sm">المنتجات</p>
                             </Link>
                             <Link
-                                href="/panel/orders"
+                                href="/admin/orders"
                                 className="bg-zinc-50 dark:bg-zinc-800/50 hover:bg-orange-50 dark:hover:bg-orange-900/20 rounded-2xl p-4 flex flex-col items-center text-center transition-colors"
                             >
                                 <ShoppingCart className="w-8 h-8 text-orange-500 mb-2" />
                                 <p className="font-bold text-sm">الطلبات</p>
                             </Link>
                             <Link
-                                href="/panel/checkout-orders"
+                                href="/admin/checkout-orders"
                                 className="bg-zinc-50 dark:bg-zinc-800/50 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 rounded-2xl p-4 flex flex-col items-center text-center transition-colors"
                             >
                                 <DollarSign className="w-8 h-8 text-emerald-500 mb-2" />

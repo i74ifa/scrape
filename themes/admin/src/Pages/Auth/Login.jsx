@@ -30,7 +30,7 @@ export default function Login() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        post("/panel/login");
+        post("/admin/login");
     };
 
     const handlePasskeyLogin = async () => {

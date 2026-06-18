@@ -110,12 +110,13 @@ class OrderController extends Controller
 
             foreach ($carts as $cart) {
                 $order = $checkoutOrder->orders()->create([
-                    'cart_id' => $cart->id,
-                    'total' => $cart->total,
-                    'subtotal' => $cart->subtotal,
+                    'grand_total' => $cart->total,
+                    'sub_total' => $cart->subtotal,
                     'tax' => $cart->tax,
                     'shipping' => $cart->shipping,
+                    'discount' => $cart->discount,
                     'platform_id' => $cart->platform_id,
+                    'total_quantity' => $cart->items->sum('quantity'),
                     'code' => Order::generateCode(),
                 ]);
 

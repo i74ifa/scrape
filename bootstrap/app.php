@@ -33,8 +33,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $wantsJson = fn (Request $request): bool => $request->is('api/*') || $request->expectsJson();
 
         $exceptions->render(function (AuthenticationException $e, Request $request) use ($wantsJson) {
-            if ($request->is('panel*') && ! $request->expectsJson()) {
-                return redirect()->guest(route('panel.login'));
+            if ($request->is('admin*') && ! $request->expectsJson()) {
+                return redirect()->guest(route('admin.login'));
             }
 
             if ($wantsJson($request)) {

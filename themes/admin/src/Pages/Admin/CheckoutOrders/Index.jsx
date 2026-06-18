@@ -277,7 +277,7 @@ export default function Index({ checkoutOrders, statuses = [], filters = {} }) {
         productsModal.open();
         try {
             const res = await fetch(
-                route("panel.checkout-orders.products", checkout.id),
+                route("admin.checkout-orders.products", checkout.id),
                 {
                     headers: { Accept: "application/json" },
                     credentials: "same-origin",
@@ -298,7 +298,7 @@ export default function Index({ checkoutOrders, statuses = [], filters = {} }) {
 
         setAdvancingId(checkout.id);
         router.post(
-            route("panel.checkout-orders.next-status", checkout.id),
+            route("admin.checkout-orders.next-status", checkout.id),
             {},
             {
                 preserveScroll: true,

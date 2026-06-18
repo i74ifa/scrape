@@ -87,44 +87,44 @@ export default function AdminLayout({
         {
             name: "لوحة التحكم",
             icon: LayoutDashboard,
-            href: "/panel",
+            href: "/admin",
             children: [
-                { name: "نظرة عامة", icon: LayoutDashboard, href: "/panel" },
-                { name: "التقارير", icon: BarChart3, href: "/panel/reports" },
+                { name: "نظرة عامة", icon: LayoutDashboard, href: "/admin" },
+                { name: "التقارير", icon: BarChart3, href: "/admin/reports" },
             ],
         },
         {
             name: "المتجر",
             icon: Store,
-            href: "/panel/products",
+            href: "/admin/products",
             children: [
-                { name: "المنتجات", icon: Package, href: "/panel/products" },
-                { name: "المنصات", icon: Store, href: "/panel/platforms" },
+                { name: "المنتجات", icon: Package, href: "/admin/products" },
+                { name: "المنصات", icon: Store, href: "/admin/platforms" },
             ],
         },
         {
             name: "الطلبات",
             icon: ShoppingCart,
-            href: "/panel/orders",
+            href: "/admin/orders",
             children: [
-                { name: "الطلبات", icon: ShoppingCart, href: "/panel/orders" },
-                { name: "طلبات الدفع", icon: Receipt, href: "/panel/checkout-orders" },
+                { name: "الطلبات", icon: ShoppingCart, href: "/admin/orders" },
+                { name: "طلبات الدفع", icon: Receipt, href: "/admin/checkout-orders" },
             ],
         },
         {
             name: "الإعدادات",
             icon: Settings,
-            href: "/panel/settings",
+            href: "/admin/settings",
             children: [
-                { name: "المستخدمون", icon: Users, href: "/panel/users" },
-                { name: "الإعدادات", icon: Settings, href: "/panel/settings" },
+                { name: "المستخدمون", icon: Users, href: "/admin/users" },
+                { name: "الإعدادات", icon: Settings, href: "/admin/settings" },
             ],
         },
     ];
 
     const currentPath = typeof window !== "undefined" ? window.location.pathname : "";
     const isActive = (href) => {
-        if (href === "/panel") return currentPath === "/panel";
+        if (href === "/admin") return currentPath === "/admin";
         return currentPath.startsWith(href);
     };
 
@@ -163,7 +163,7 @@ export default function AdminLayout({
                             <Store className="text-white dark:text-black w-6 h-6" />
                         </div>
                         <p className="font-bold text-xl tracking-tight leading-none hidden sm:block text-black dark:text-white">
-                            <Link href="/panel">Talabye</Link>
+                            <Link href="/admin">Talabye</Link>
                         </p>
                     </div>
 

@@ -116,7 +116,7 @@ class OrderController extends Controller
                     order: $order,
                     title: __('Order Status Changed'),
                     description: $next->message($order->platform),
-                    url: route('panel.orders.index'),
+                    url: route('admin.orders.index'),
                 ));
             }
         } catch (\Throwable $e) {

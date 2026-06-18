@@ -288,7 +288,7 @@ export default function Index({ orders, statuses = [], filters = {} }) {
         setModalLoading(true);
         productsModal.open();
         try {
-            const res = await fetch(route("panel.orders.products", order.id), {
+            const res = await fetch(route("admin.orders.products", order.id), {
                 headers: { Accept: "application/json" },
                 credentials: "same-origin",
             });
@@ -307,7 +307,7 @@ export default function Index({ orders, statuses = [], filters = {} }) {
 
         setAdvancingId(order.id);
         router.post(
-            route("panel.orders.next-status", order.id),
+            route("admin.orders.next-status", order.id),
             {},
             {
                 preserveScroll: true,

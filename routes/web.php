@@ -26,13 +26,12 @@ Route::get('/login-successfully', function (Request $request) {
 
 
 /*
- * Inertia admin panel.
- * Filament owns /admin; this Inertia panel lives at /panel.
+ * Inertia admin panel, served at /admin.
  * The `inertia.panel` middleware injects shared props and the panel root view.
  */
 Route::middleware(['web', 'inertia.panel'])
-    ->prefix('panel')
-    ->name('panel.')
+    ->prefix('admin')
+    ->name('admin.')
     ->group(function () {
 
         Route::middleware('guest')->group(function () {

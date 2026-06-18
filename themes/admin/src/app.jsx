@@ -6,11 +6,11 @@ import { createInertiaApp } from "@inertiajs/react";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-import { Ziggy } from './ziggy';
 import { Toast } from "@heroui/react";
 import "./lib/i18n";
 
-window.route = Ziggy.routes;
+// The `@routes` Blade directive (panel.blade.php) injects a global `route()`
+// function and `window.Ziggy`, so no manual wiring is needed here.
 const appName =
     window.document.getElementsByTagName("title")[0]?.innerText || "Laravel";
 
