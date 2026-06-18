@@ -126,14 +126,26 @@ class ImageClassifier
     }
 
     /**
-     * Download a URL to a temp file. Returns the absolute path, or null on
-     * failure. tfjs sniffs the image format from the bytes, so no extension
-     * is needed.
+     * Image formats tfjs-node can decode natively (tf.node.decodeImage).
+     * Anything else (WebP, AVIF, …) must be transcoded first.
+     */
+    private const TFJS_SUPPORTED = [IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_GIF, IMAGETYPE_BMP];
+
+    /**
+     * Download a URL to a temp file the daemon can read. Returns the absolute
+     * path, or null on failure.
+     *
+     * Storefronts (Amazon, etc.) serve WebP by default, which tfjs-node cannot
+     * decode, so non-supported formats are transcoded to JPEG via GD. Formats
+     * tfjs already understands are written through untouched.
      */
     private function downloadToTemp(string $url): ?string
     {
         try {
-            $response = Http::timeout((int) config('services.classifier.timeout', 120))->get($url);
+            $response = Http::timeout((int) config('services.classifier.timeout', 120))
+                // A browser-ish UA avoids CDNs that 403 bare clients.
+                ->withHeaders(['User-Agent' => 'Mozilla/5.0 (compatible; TalabyeBot/1.0)'])
+                ->get($url);
         } catch (\Throwable) {
             return null;
         }
@@ -142,13 +154,49 @@ class ImageClassifier
             return null;
         }
 
+        $bytes = $response->body();
+        $info = @getimagesizefromstring($bytes);
+
+        if ($info === false) {
+            return null; // not an image at all
+        }
+
         $path = tempnam(sys_get_temp_dir(), 'classify_');
 
-        if ($path === false || file_put_contents($path, $response->body()) === false) {
+        if ($path === false) {
             return null;
         }
 
-        return $path;
+        // Already a format tfjs can decode: write the bytes as-is.
+        if (in_array($info[2], self::TFJS_SUPPORTED, true)) {
+            return file_put_contents($path, $bytes) !== false ? $path : null;
+        }
+
+        // Transcode (e.g. WebP -> JPEG) so the daemon can decode it.
+        return $this->transcodeToJpeg($bytes, $path);
+    }
+
+    /**
+     * Decode arbitrary GD-readable bytes and re-encode them as JPEG at $path.
+     * Returns the path, or null if GD can't handle the format.
+     */
+    private function transcodeToJpeg(string $bytes, string $path): ?string
+    {
+        if (! function_exists('imagecreatefromstring')) {
+            return null;
+        }
+
+        $image = @imagecreatefromstring($bytes);
+
+        if ($image === false) {
+            return null;
+        }
+
+        try {
+            return @imagejpeg($image, $path, 90) ? $path : null;
+        } finally {
+            imagedestroy($image);
+        }
     }
 
     /**

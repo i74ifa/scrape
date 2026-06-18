@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\User;
 use App\Services\ImageClassifier;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Http;
 use Tests\TestCase;
 
 /**
@@ -104,6 +105,42 @@ class ClassifyProductWeightTest extends TestCase
             'platform_id' => $this->platform->id,
             'weight'      => Product::DEFAULT_WEIGHT_GRAMS,
         ]);
+    }
+
+    public function test_webp_images_are_transcoded_to_jpeg_before_classification(): void
+    {
+        // Storefronts (Amazon, …) serve WebP, which tfjs-node cannot decode.
+        // Build a tiny WebP and serve it as the product image.
+        $gd = imagecreatetruecolor(16, 16);
+        ob_start();
+        imagewebp($gd);
+        $webp = ob_get_clean();
+        imagedestroy($gd);
+
+        $this->assertSame(IMAGETYPE_WEBP, getimagesizefromstring($webp)[2], 'fixture should be WebP');
+
+        Http::fake(['*' => Http::response($webp, 200, ['Content-Type' => 'image/webp'])]);
+
+        // Mock only the daemon call (classify); the real download + transcode
+        // run, so we can inspect the format of the file actually handed over.
+        $deliveredType = null;
+        $classifier = $this->partialMock(ImageClassifier::class, function ($mock) use (&$deliveredType) {
+            $mock->shouldReceive('classify')->once()->andReturnUsing(function (array $files) use (&$deliveredType) {
+                // Inspect while the temp file still exists (classifyUrl unlinks it after).
+                $deliveredType = getimagesizefromstring(file_get_contents($files[0]))[2];
+
+                return [[
+                    'file' => $files[0],
+                    'predictions' => [['className' => 'laptops', 'probability' => 0.99]],
+                    'error' => null,
+                ]];
+            });
+        });
+
+        $label = $classifier->topLabel('https://m.media-amazon.com/images/I/anything._FMwebp_.jpg');
+
+        $this->assertSame('laptops', $label);
+        $this->assertSame(IMAGETYPE_JPEG, $deliveredType, 'WebP must be transcoded to JPEG before classifying');
     }
 
     public function test_classifier_maps_each_known_label_to_its_configured_weight(): void
