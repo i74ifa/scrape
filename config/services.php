@@ -100,4 +100,39 @@ return [
         ]
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Image Classifier (Teachable Machine)
+    |--------------------------------------------------------------------------
+    |
+    | The persistent Node daemon (model/server.js) that keeps tfjs-node + the
+    | model loaded. Start it with: cd model && npm run serve
+    |
+    */
+
+    'classifier' => [
+        'url' => env('MODEL_CLASSIFIER_URL', 'http://127.0.0.1:8765'),
+        'connect_timeout' => env('MODEL_CLASSIFIER_CONNECT_TIMEOUT', 1),
+        'timeout' => env('MODEL_CLASSIFIER_TIMEOUT', 120),
+
+        // Estimated shipping weight (grams) per predicted category. The keys
+        // MUST match the model's labels exactly (see model/metadata.json).
+        // Tune these to your real average parcel weights.
+        'weights' => [
+            'bed'            => 20000,
+            'winter-clothes' => 900,
+            'Camera'         => 800,
+            'monitors'       => 5000,
+            'underwear'      => 120,
+            'summer-clothes' => 350,
+            'phones'         => 350,
+            'shoes'          => 900,
+            't-shirt'        => 250,
+            'dresses'        => 450,
+            'laptops'        => 2200,
+            'mug'            => 450,
+            'mouse'          => 150,
+        ],
+    ],
+
 ];

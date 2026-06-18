@@ -1,0 +1,16 @@
+{
+  "name": "tm-image-classifier",
+  "version": "1.0.0",
+  "description": "CLI for a Teachable Machine image model — classifies image files from disk.",
+  "type": "module",
+  "bin": {
+    "classify": "./cli.js"
+  },
+  "scripts": {
+    "classify": "node cli.js",
+    "serve": "node server.js"
+  },
+  "dependencies": {
+    "@tensorflow/tfjs-node": "^4.22.0"
+  }
+}

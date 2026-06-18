@@ -353,6 +353,18 @@
 
 
     function getSelectedVariant() {
+        // validate
+        let validate = document.querySelector('.SIZE_ITEM_HOOK.goods-size__sizes.choose-size');
+        if (validate) {
+            tlabooValidate(
+                validate.querySelector('.size-active'),
+                'حدد متغيرات المنتج قبل الإضافة إلى السلة',
+                {
+                    title: 'لا متغيرات محددة',
+                }
+            );
+        }
+
         const doc = document.querySelector(selectors.selectedVariant.selector);
 
         // Find color elements

@@ -113,6 +113,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::get('pages/{slug}', [Api\PageController::class, 'show']);
 
+Route::post('classify', Api\ImageClassifierController::class);
+
 
 Route::fallback(function () {
     return response()->json([

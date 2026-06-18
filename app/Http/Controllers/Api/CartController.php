@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\Platform;
 use App\Services\Weight;
 use App\Services\Currency;
+use App\Services\ImageClassifier;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Resources\CartResource;
@@ -20,6 +21,10 @@ use Illuminate\Support\Facades\Validator;
 
 class CartController extends Controller
 {
+    public function __construct(private readonly ImageClassifier $classifier)
+    {
+    }
+
     public function index()
     {
         $cart = Cart::where('user_id', user('id'))->with('items.product:id,name,image,price', 'platform')->get();
@@ -37,6 +42,16 @@ class CartController extends Controller
 
     private function createOrUpdateScrapedProduct(string $url, $productDto, Platform $platform): Product
     {
+        // Predict the product category from its image, then derive the shipping
+        // weight from that category. Both fall back gracefully when the image is
+        // missing/unreachable or the classifier daemon is down.
+        $label = ! empty($productDto->image)
+            ? $this->classifier->topLabel($productDto->image)
+            : null;
+
+        $category = $label ?? $productDto->category;
+        $weight = $this->classifier->weightForLabel($label) ?? Product::DEFAULT_WEIGHT_GRAMS;
+
         $convertedPrice = Currency::convert($productDto->price, $productDto->currency, 'SAR')->value();
         return Product::updateOrCreate([
             'url' => $url,
@@ -50,8 +65,8 @@ class CartController extends Controller
             'currency' => 'USD', // all prices are converted to USD before saving TODO: remove the behavior :)
             'sale_price' => $convertedPrice,
             'platform_id' => $platform->id,
-            'category_id' => $productDto->category,
-            'weight' => Weight::parse($productDto->weight ?? Product::DEFAULT_WEIGHT_GRAMS)?->toGrams(),
+            'category' => $category,
+            'weight' => Weight::parse($weight)?->toGrams(),
             'user_id' => user('id'),
         ]);
     }

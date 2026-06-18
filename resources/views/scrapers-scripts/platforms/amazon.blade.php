@@ -3,57 +3,13 @@
     // ==UserScript==
     // @name        New script amazon.com
     // @namespace   Violentmonkey Scripts
-    // @match *://*.amazon.sa/*
+    // @match *://*.amazon.com/*
     // @run-at      document-body
     // @grant       none
     // @version     1.0
     // @author      -
     // @description 12/14/2025, 9:13:36 PM
     // ==/UserScript==
-
-
-    class CustomWatcher {
-        constructor(selector, {
-            onExists = () => {},
-            onRemoved = () => {}
-        } = {}) {
-            this.selector = selector;
-            this.onExists = onExists;
-            this.onRemoved = onRemoved;
-
-            this.observer = new MutationObserver(this.check.bind(this));
-            this.start();
-        }
-
-        start() {
-            this.check(); // initial check
-
-            this.observer.observe(document.body, {
-                childList: true,
-                subtree: true
-            });
-        }
-
-        check() {
-            const el = document.querySelector(this.selector);
-
-            if (el) {
-                if (!this.exists) {
-                    this.exists = true;
-                    this.onExists(el);
-                }
-            } else {
-                if (this.exists) {
-                    this.exists = false;
-                    this.onRemoved();
-                }
-            }
-        }
-
-        stop() {
-            this.observer.disconnect();
-        }
-    }
 
     const watchers = [
         "#title, #bond-title, #productDescription_feature_div, #productTitleGroupAnchor"
@@ -73,21 +29,21 @@
     window.tlabooAppendCode = {
         addToCart: {
             before: () => {
-                new Watcher('#icdp-iFrame', {
-                    onExists: async (e) => {
-                        try {
-                            const doc = e.contentDocument || e.contentWindow.document;
+            new Watcher('#icdp-iFrame', {
+                onExists: async (e) => {
+                    try {
+                        const doc = e.contentDocument || e.contentWindow.document;
 
-                            await waitForCustom(doc, 'h1', 5000);
-                            doc.querySelector('h1').click();
-                        } catch (error) {
-                            alert(error.message);
-                        }
-                    },
-                    onRemoved: (e) => {
-                        //
+                        await waitForCustom(doc, 'h1', 5000);
+                        doc.querySelector('h1').click();
+                    } catch (error) {
+                        alert(error.message);
                     }
-                })
+                },
+                onRemoved: (e) => {
+                    //
+                }
+            })
             },
             onScrape: async (data) => {
                 return data;
@@ -95,30 +51,7 @@
         },
         initial: {
             before: () => {},
-            after: () => {
-                new CustomWatcher('#nav-search-keywords', {
-                    onExists: (e) => {
-                        const input = document.getElementById("nav-search-keywords");
-                        let timeoutId;
-
-                        input.addEventListener("input", function(e) {
-                            clearTimeout(timeoutId);
-
-                            timeoutId = setTimeout(() => {
-                                // is function window.storeUserSearch
-                                if (typeof window.storeUserSearch === 'function') {
-                                    window.storeUserSearch(input.value);
-                                }
-                                // call API / search logic here
-                            }, 1000);
-                        });
-                    },
-                    onRemoved: (e) => {
-                        //
-                    }
-                })
-
-            }
+            after: () => {}
         }
     }
 </script>
@@ -185,10 +118,46 @@
     };
 
     /* run */
-    // tlaboo_changeZipCode().catch(console.error);
+    tlaboo_changeZipCode().catch(console.error);
 
     const tlaboo_html = `{!! $html !!}`;
 
+
+    try {
+        let lastPrice = '';
+        const priceSelector = '#twister-plus-price-data-price, #apex_mobile_feature_div .a-price-whole, #attach-base-product-price';
+
+        tlabooMountIqdBadge(priceSelector);
+
+        tlabooWatchVariants(['#twister-plus-mobile-inline-twister', '.a-size-base', '#inline-twister-row-size_name'], async () => {
+            // Lock add-to-cart while the new variant's price is in flight —
+            // submitting now would attach stale price/variant data.
+            tlabooSetCartLoading(true, { style: 'text' });
+
+            try {
+                const deadline = Date.now() + 8000;
+
+                // 1. Poll until the price differs from the last captured value
+                //    — that's when Amazon's variant request has landed.
+                while (Date.now() < deadline) {
+                    const el = document.querySelector(priceSelector);
+                    const current = (el?.value ?? el?.textContent ?? '').trim();
+                    if (el && current && current !== lastPrice) break;
+                    await tlaboo_sleep(50);
+                }
+
+                // 2. Then wait for the price element to stop mutating
+                //    (Amazon often writes a placeholder before the real number).
+                const el = await tlabooWaitStable(priceSelector, { quietMs: 400, timeoutMs: deadline - Date.now() });
+                lastPrice = (el?.value ?? el?.textContent ?? '').trim();
+                console.log('new price:', lastPrice);
+            } finally {
+                tlabooSetCartLoading(false);
+            }
+        });
+    } catch (error) {
+        console.info(error);
+    }
 
     try {
         tlabooRemoveDoms([
@@ -220,7 +189,6 @@
             '#heart',
             '.nav-a',
             '#buyBoxAccordion #snsAccordionRowMobileMiddle',
-            '#nav-subnav-container'
         ])
     } catch (error) {
         console.info(error);
@@ -304,13 +272,13 @@
         },
 
         price: {
-            selector: "#attach-base-product-price, #twister-plus-price-data-price, #haul-buybox-price-tab .aok-offscreen, #haul-buybox-price-tab span",
+            selector: "#attach-base-product-price, #twister-plus-price-data-price, #haul-buybox-price-tab .aok-offscreen, #haul-buybox-price-tab span, #apex_mobile_feature_div .a-price-whole",
             type: "text",
             data: "",
         },
 
         originalPrice: {
-            selector: "#attach-base-product-price, #twister-plus-price-data-price, #haul-buybox-price-tab .aok-offscreen, #haul-buybox-price-tab span",
+            selector: "#attach-base-product-price, #twister-plus-price-data-price, #haul-buybox-price-tab .aok-offscreen, #haul-buybox-price-tab span, #apex_mobile_feature_div .a-price-whole",
             type: "text",
             data: "",
         },
@@ -419,11 +387,26 @@
 
 
     function scrapeData() {
+        const priceSelectors = [
+            '#attach-base-product-price',
+            '#haul-buybox-price-tab .aok-offscreen',
+            '#haul-buybox-price-tab span',
+            '#apex_mobile_feature_div:has(.a-price-whole) .priceToPay span:nth-child(2)',
+            '#apex_mobile_feature_div .a-price:has(.a-offscreen) span:nth-child(1)',
+        ];
 
-        let price = document.querySelector(selectors.price.selector)?.textContent;
+        let price = '';
+
+        if (document.querySelector('#twister-plus-price-data-price')) {
+            price = document.querySelector('#twister-plus-price-data-price').value;
+        }
 
         if (price === "") {
-            price = document.querySelector(selectors.price.selector)?.value;
+            priceSelectors.forEach(selector => {
+                console.log(selector);
+                price = document.querySelector(selector)?.textContent;
+                if (price !== "") return;
+            });
         }
 
         selectors.name.data = document.querySelector(selectors.name.selector).textContent;
