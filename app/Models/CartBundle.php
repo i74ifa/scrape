@@ -56,7 +56,7 @@ class CartBundle extends Model
     {
         $defaultAddress = user()->addresses()->where('is_default', true)->first();
 
-        $localShippingCost = 0;
+        $localShippingCost = 1000;
         if ($defaultAddress) {
             $localShippingCost = $defaultAddress?->state?->delivery_cost ?? 0;
         }
