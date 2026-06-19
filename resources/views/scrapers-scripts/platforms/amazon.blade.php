@@ -118,7 +118,7 @@
     };
 
     /* run */
-    tlaboo_changeZipCode().catch(console.error);
+    // tlaboo_changeZipCode().catch(console.error);
 
     const tlaboo_html = `{!! $html !!}`;
 
