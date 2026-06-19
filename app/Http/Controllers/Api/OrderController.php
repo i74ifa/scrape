@@ -132,7 +132,12 @@ class OrderController extends Controller
                 $cart->delete();
             }
 
-            $cartBundle->delete();
+            // Clear every cart bundle for this user (not just the active one) so any
+            // stray/duplicate bundle from a past race can't resurface after checkout.
+            CartBundle::where('user_id', auth()->id())->each(function (CartBundle $bundle) {
+                $bundle->carts()->delete();
+                $bundle->delete();
+            });
 
             DB::commit();
         } catch (\Exception $e) {
