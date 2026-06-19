@@ -18,7 +18,7 @@
     @routes
     @viteReactRefresh
     {{ \Illuminate\Support\Facades\Vite::useBuildDirectory('build/admin')->withEntryPoints(['src/app.jsx']) }}
-    <x-inertia::head />
+    @inertiaHead
 </head>
 
 <body class="font-sans antialiased text-slate-900 bg-slate-50 dark:bg-slate-950 dark:text-slate-100">
