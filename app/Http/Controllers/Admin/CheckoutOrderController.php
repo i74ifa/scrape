@@ -57,9 +57,9 @@ class CheckoutOrderController extends Controller
     public function products(CheckoutOrder $checkoutOrder): JsonResponse
     {
         $checkoutOrder->load([
-            'orders:id,checkout_order_id,code,platform_id',
-            'orders.platform:id,name,currency_symbol',
-            'orders.items.product:id,name,image,price',
+            'orders:id,checkout_order_id,code,status,platform_id',
+            'orders.platform:id,name,logo,currency_symbol',
+            'orders.items.product:id,name,image,price,url',
         ]);
 
         return response()->json([
@@ -69,7 +69,14 @@ class CheckoutOrderController extends Controller
                 'orders' => $checkoutOrder->orders->map(fn ($order) => [
                     'id' => $order->id,
                     'code' => $order->code,
+                    'status' => $order->status->value,
+                    'status_next' => $order->status->next()?->value,
                     'currency_symbol' => $order->platform?->currency_symbol,
+                    'platform' => $order->platform ? [
+                        'id' => $order->platform->id,
+                        'name' => $order->platform->name,
+                        'logo' => $order->platform->logo,
+                    ] : null,
                     'items' => $order->items->map(fn ($item) => [
                         'id' => $item->id,
                         'quantity' => $item->quantity,
@@ -80,6 +87,7 @@ class CheckoutOrderController extends Controller
                             'name' => $item->product->name,
                             'image' => $item->product->image,
                             'price' => $item->product->price,
+                            'url' => $item->product->url,
                         ] : null,
                     ]),
                 ]),
