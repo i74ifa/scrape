@@ -72,6 +72,22 @@ enum OrderStatus: string
         };
     }
 
+    public function alertTitle(): string
+    {
+        return match ($this) {
+            self::PENDING => __('notify_titles.pending'),
+            self::APPROVED => __('notify_titles.approved'),
+            self::PURCHASING => __('notify_titles.purchasing'),
+            self::PURCHASED => __('notify_titles.purchased'),
+            self::READY_TO_SHIP => __('notify_titles.ready_to_ship'),
+            self::CUSTOMS_CLEARANCE => __('notify_titles.customs_clearance'),
+            self::SHIPPED => __('notify_titles.shipped'),
+            self::DELIVERED => __('notify_titles.delivered'),
+            self::CANCELLED => __('notify_titles.cancelled'),
+            self::RETURNED => __('notify_titles.returned'),
+        };
+    }
+
     public function title()
     {
         return match ($this) {

@@ -114,7 +114,7 @@ class OrderController extends Controller
             if ($user) {
                 $user->notify(new ChangeOrderStatusNotify(
                     order: $order,
-                    title: __('Order Status Changed'),
+                    title: $next->alertTitle(),
                     description: $next->message($order->platform),
                     url: '/orders/' . $order->id
                 ));
