@@ -121,6 +121,7 @@ export default function AdminLayout({
             href: "/admin/catalog/categories",
             children: [
                 { name: "منتجات الكتالوج", icon: Package, href: "/admin/catalog/products" },
+                { name: "طلبات الكتالوج", icon: Receipt, href: "/admin/catalog/orders" },
                 { name: "التصنيفات", icon: FolderTree, href: "/admin/catalog/categories" },
                 { name: "العلامات التجارية", icon: Award, href: "/admin/catalog/brands" },
                 { name: "الخصائص", icon: Tags, href: "/admin/catalog/attributes" },

@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\Catalog\AttributeController as CatalogAttributeController;
 use App\Http\Controllers\Admin\Catalog\BrandController as CatalogBrandController;
 use App\Http\Controllers\Admin\Catalog\CategoryController as CatalogCategoryController;
+use App\Http\Controllers\Admin\Catalog\OrderController as CatalogOrderController;
 use App\Http\Controllers\Admin\Catalog\ProductController as CatalogProductController;
 use App\Http\Controllers\Admin\CheckoutOrderController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -94,6 +95,11 @@ Route::middleware(['web', 'inertia.panel'])
                 Route::get('products/{product}/edit', [CatalogProductController::class, 'edit'])->name('products.edit');
                 Route::put('products/{product}', [CatalogProductController::class, 'update'])->name('products.update');
                 Route::delete('products/{product}', [CatalogProductController::class, 'destroy'])->name('products.destroy');
+
+                // Orders
+                Route::get('orders', [CatalogOrderController::class, 'index'])->name('orders.index');
+                Route::get('orders/{order}', [CatalogOrderController::class, 'show'])->name('orders.show');
+                Route::post('orders/{order}/status', [CatalogOrderController::class, 'updateStatus'])->name('orders.status');
             });
         });
     });

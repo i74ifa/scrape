@@ -116,6 +116,41 @@ Route::get('pages/{slug}', [Api\PageController::class, 'show']);
 Route::post('classify', Api\ImageClassifierController::class);
 
 
+/*
+ * Catalog: public read-only storefront browsing of the merchant catalog
+ * (categories, brands, products + variants). Writes live in the admin panel.
+ */
+Route::prefix('catalog')->name('catalog.')->group(function () {
+    Route::get('categories', [Api\Catalog\CategoryController::class, 'index'])->name('categories.index');
+    Route::get('categories/{category}', [Api\Catalog\CategoryController::class, 'show'])->name('categories.show');
+
+    Route::get('brands', [Api\Catalog\BrandController::class, 'index'])->name('brands.index');
+    Route::get('brands/{brand}', [Api\Catalog\BrandController::class, 'show'])->name('brands.show');
+
+    Route::get('products', [Api\Catalog\ProductController::class, 'index'])->name('products.index');
+    Route::get('products/{product:slug}', [Api\Catalog\ProductController::class, 'show'])->name('products.show');
+});
+
+/*
+ * Catalog cart + orders — authenticated customer actions.
+ */
+Route::middleware('auth:sanctum')->prefix('catalog')->name('catalog.')->group(function () {
+    Route::prefix('cart')->name('cart.')->group(function () {
+        Route::get('', [Api\Catalog\CartController::class, 'index'])->name('index');
+        Route::get('count', [Api\Catalog\CartController::class, 'count'])->name('count');
+        Route::post('', [Api\Catalog\CartController::class, 'store'])->name('store');
+        Route::post('clear', [Api\Catalog\CartController::class, 'clear'])->name('clear');
+        Route::put('items/{item}', [Api\Catalog\CartController::class, 'updateQuantity'])->name('items.update');
+        Route::delete('items/{item}', [Api\Catalog\CartController::class, 'destroy'])->name('items.destroy');
+    });
+
+    Route::prefix('orders')->name('orders.')->group(function () {
+        Route::get('', [Api\Catalog\OrderController::class, 'index'])->name('index');
+        Route::post('checkout', [Api\Catalog\OrderController::class, 'checkout'])->name('checkout');
+        Route::get('{order}', [Api\Catalog\OrderController::class, 'show'])->name('show');
+    });
+});
+
 Route::fallback(function () {
     return response()->json([
         'message' => 'Route not found',
