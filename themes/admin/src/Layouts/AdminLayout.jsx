@@ -16,6 +16,10 @@ import {
     BarChart3,
     Menu as MenuIcon,
     X,
+    Boxes,
+    FolderTree,
+    Award,
+    Tags,
 } from "lucide-react";
 import {
     Dropdown,
@@ -109,6 +113,17 @@ export default function AdminLayout({
             children: [
                 { name: "الطلبات", icon: ShoppingCart, href: "/admin/orders" },
                 { name: "طلبات الدفع", icon: Receipt, href: "/admin/checkout-orders" },
+            ],
+        },
+        {
+            name: "الكتالوج",
+            icon: Boxes,
+            href: "/admin/catalog/categories",
+            children: [
+                { name: "منتجات الكتالوج", icon: Package, href: "/admin/catalog/products" },
+                { name: "التصنيفات", icon: FolderTree, href: "/admin/catalog/categories" },
+                { name: "العلامات التجارية", icon: Award, href: "/admin/catalog/brands" },
+                { name: "الخصائص", icon: Tags, href: "/admin/catalog/attributes" },
             ],
         },
         {

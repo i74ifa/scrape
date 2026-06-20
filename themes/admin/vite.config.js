@@ -23,6 +23,12 @@ export default defineConfig({
         },
     },
     resolve: {
+        // Force a single React instance. Transitive deps like
+        // @react-stately/data (pulled in by react-aria-components / HeroUI for
+        // useAsyncList) can otherwise bind to a second React copy, which makes
+        // their hooks read a null dispatcher ("Cannot read properties of null
+        // (reading 'useReducer')").
+        dedupe: ["react", "react-dom"],
         alias: {
             "@": "/src",
             'vendor/tightenco/ziggy': path.resolve('vendor/tightenco/ziggy/dist'),
