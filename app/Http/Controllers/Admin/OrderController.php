@@ -116,7 +116,7 @@ class OrderController extends Controller
                     order: $order,
                     title: $next->alertTitle(),
                     description: $next->message($order->platform),
-                    url: '/orders/' . $order->id
+                    url: '/orders/' . $order->checkout_order?->id
                 ));
             }
         } catch (\Throwable $e) {
