@@ -172,37 +172,35 @@ class AppSectionController extends Controller
             ]
         ];
 
-        $bannerGrid = [
-            "name" => "BannerGrid",
+
+        $productSwipe = [
+            "name" => "ProductSwipe",
             "content" => [
                 "data" => [
                     [
-                        "url" => "/platforms/2",
-                        "cols" => 6,
-                        "image" => [
-                            "dark" => "https://talabye.com/images/demo-dark.jpg",
-                            "light" => "https://talabye.com/images/demo-light.jpg"
-                        ]
+                        "title" =>  "افضل المنتجات",
+                        "url" => "/api/catalog/products?type=best",
                     ],
-                    // [
-                    //     "url" => "/platforms/3",
-                    //     "cols" => 6,
-                    //     "image" => [
-                    //         "dark" => "https://talabye.com/images/demo-dark.jpg",
-                    //         "light" => "https://talabye.com/images/demo-light.jpg"
-                    //     ]
-                    // ],
                 ],
-                "title" => "",
-                "config" => [
-                    "autoplay" => false,
-                    "page_cols" => 1
-                ]
+            ]
+        ];
+
+        $productGrid = [
+            "name" => "ProductGrid",
+            "content" => [
+                "data" => [
+                    [
+                        "title" =>  "افضل المنتجات",
+                        "url" => "/api/catalog/products?type=best",
+                    ],
+                ],
             ]
         ];
 
         $sections[] = $bannerSwipe;
         // $sections[] = $bannerGrid;
+        $sections[] = $productSwipe;
+        $sections[] = $productGrid;
 
         return response()->json([
             'data' => $sections
