@@ -27,6 +27,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'inertia.panel' => \App\Http\Middleware\HandleInertiaRequests::class,
         ]);
         $middleware->api('app.customization');
+
+        $middleware->redirectGuestsTo(fn (Request $request) => route('admin.login'));
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         // Treat all /api/* requests as JSON, even without an Accept header.
