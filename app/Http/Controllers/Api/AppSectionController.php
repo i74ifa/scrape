@@ -97,9 +97,22 @@ class AppSectionController extends Controller
             ]
         ];
 
+        $ProductSwipe = [
+            "name" => "ProductSwipe",
+            "content" => [
+                "data" => [
+                    [
+                        "title" =>  "افضل المنتجات",
+                        "url" => "/catalog/products?type=best",
+                    ],
+                ],
+            ]
+        ];
+
         // $sections[] = $bannerSwipe;
         // $sections[] = $bannerGrid;
         $sections[] = $customBanner;
+        $sections[] = $ProductSwipe;
 
         return response()->json([
             'data' => $sections
