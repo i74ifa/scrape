@@ -103,7 +103,7 @@ class AppSectionController extends Controller
                 "data" => [
                     [
                         "title" =>  "افضل المنتجات",
-                        "url" => "/catalog/products?type=best",
+                        "url" => "/api/catalog/products?type=best",
                     ],
                 ],
             ]
@@ -115,7 +115,7 @@ class AppSectionController extends Controller
                 "data" => [
                     [
                         "title" =>  "افضل المنتجات",
-                        "url" => "/catalog/products?type=best",
+                        "url" => "/api/catalog/products?type=best",
                     ],
                 ],
             ]
