@@ -97,8 +97,20 @@ class AppSectionController extends Controller
             ]
         ];
 
-        $ProductSwipe = [
+        $productSwipe = [
             "name" => "ProductSwipe",
+            "content" => [
+                "data" => [
+                    [
+                        "title" =>  "افضل المنتجات",
+                        "url" => "/catalog/products?type=best",
+                    ],
+                ],
+            ]
+        ];
+
+        $productGrid = [
+            "name" => "ProductGrid",
             "content" => [
                 "data" => [
                     [
@@ -112,7 +124,8 @@ class AppSectionController extends Controller
         // $sections[] = $bannerSwipe;
         // $sections[] = $bannerGrid;
         $sections[] = $customBanner;
-        $sections[] = $ProductSwipe;
+        $sections[] = $productSwipe;
+        $sections[] = $productGrid;
 
         return response()->json([
             'data' => $sections
