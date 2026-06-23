@@ -6,12 +6,16 @@ namespace App\Enums;
  * Lifecycle of a catalog order. A lean, local-fulfillment chain (distinct from
  * the scraped CheckoutOrderStatus / OrderStatus state machines):
  *
- *   pending → confirmed → shipped → delivered
+ *   pending_payment → pending → confirmed → shipped → delivered
  *
- * `cancelled` is a terminal off-ramp reachable from any non-terminal state.
+ * `pending_payment` is the entry point for orders paid by bank transfer: the
+ * receipt is captured at checkout but the order awaits admin verification before
+ * it enters the fulfillment chain. `cancelled` is a terminal off-ramp reachable
+ * from any non-terminal state.
  */
 enum CatalogOrderStatus: string
 {
+    case PENDING_PAYMENT = 'pending_payment';
     case PENDING = 'pending';
     case CONFIRMED = 'confirmed';
     case SHIPPED = 'shipped';
@@ -22,6 +26,7 @@ enum CatalogOrderStatus: string
     public function label(): string
     {
         return match ($this) {
+            self::PENDING_PAYMENT => 'بانتظار الدفع',
             self::PENDING => 'قيد الانتظار',
             self::CONFIRMED => 'مؤكّد',
             self::SHIPPED => 'تم الشحن',
@@ -34,7 +39,8 @@ enum CatalogOrderStatus: string
     public function color(): string
     {
         return match ($this) {
-            self::PENDING => 'warning',
+            self::PENDING_PAYMENT => 'warning',
+            self::PENDING => 'default',
             self::CONFIRMED => 'primary',
             self::SHIPPED => 'secondary',
             self::DELIVERED => 'success',
@@ -46,6 +52,7 @@ enum CatalogOrderStatus: string
     public function next(): ?self
     {
         return match ($this) {
+            self::PENDING_PAYMENT => self::PENDING,
             self::PENDING => self::CONFIRMED,
             self::CONFIRMED => self::SHIPPED,
             self::SHIPPED => self::DELIVERED,

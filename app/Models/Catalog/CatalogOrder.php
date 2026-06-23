@@ -3,6 +3,7 @@
 namespace App\Models\Catalog;
 
 use App\Enums\CatalogOrderStatus;
+use App\Enums\PaymentMethod;
 use App\Models\Address;
 use App\Models\Order;
 use App\Models\User;
@@ -21,11 +22,14 @@ class CatalogOrder extends Model
     protected $fillable = [
         'user_id', 'code', 'address_id', 'address_raw', 'status',
         'subtotal', 'total', 'total_quantity', 'note',
+        'payment_method', 'payment_reference',
     ];
 
     protected $casts = [
         'address_raw' => 'array',
         'status' => CatalogOrderStatus::class,
+        'payment_method' => PaymentMethod::class,
+        'payment_reference' => 'array',
         'subtotal' => 'decimal:2',
         'total' => 'decimal:2',
         'total_quantity' => 'integer',

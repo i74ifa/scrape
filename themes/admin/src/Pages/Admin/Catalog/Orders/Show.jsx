@@ -10,6 +10,11 @@ import {
     StickyNote,
     ArrowLeftCircle,
     XCircle,
+    Banknote,
+    CheckCircle2,
+    Building2,
+    Hash,
+    ExternalLink,
 } from "lucide-react";
 
 export default function Show({ order }) {
@@ -26,6 +31,9 @@ export default function Show({ order }) {
             },
         );
     };
+
+    const payment = order.payment_reference;
+    const hasPayment = order.payment_method || payment;
 
     return (
         <AdminLayout title={`الطلب ${order.code}`}>
@@ -51,9 +59,10 @@ export default function Show({ order }) {
                         </Chip>
                     </div>
 
-                    {/* Status actions */}
+                    {/* Status actions — hidden while awaiting payment; the
+                        Payment card exposes confirm/reject buttons instead. */}
                     <div className="flex items-center gap-2">
-                        {order.next_status && (
+                        {order.next_status && !order.is_pending_payment && (
                             <Button
                                 color="primary"
                                 className="rounded-full font-bold"
@@ -64,7 +73,7 @@ export default function Show({ order }) {
                                 نقل إلى: {order.next_status_label}
                             </Button>
                         )}
-                        {order.can_cancel && (
+                        {order.can_cancel && !order.is_pending_payment && (
                             <Button
                                 variant="flat"
                                 className="rounded-full font-bold text-rose-500"
@@ -126,7 +135,7 @@ export default function Show({ order }) {
                         </Card>
                     </div>
 
-                    {/* Customer + address + note */}
+                    {/* Customer + payment + address + note */}
                     <div className="flex flex-col gap-6">
                         <Card className="bg-white/80 dark:bg-zinc-900/80 rounded-[2rem] shadow-none">
                             <CardContent className="p-6 space-y-3">
@@ -144,6 +153,86 @@ export default function Show({ order }) {
                                 )}
                             </CardContent>
                         </Card>
+
+                        {hasPayment && (
+                            <Card className="bg-white/80 dark:bg-zinc-900/80 rounded-[2rem] shadow-none">
+                                <CardContent className="p-6 space-y-4">
+                                    <div className="flex items-center justify-between gap-2">
+                                        <h3 className="font-black text-base flex items-center gap-2">
+                                            <Banknote className="w-4 h-4 text-zinc-400" /> الدفع
+                                        </h3>
+                                        {order.payment_method_label && (
+                                            <Chip size="sm" variant="flat">
+                                                {order.payment_method_label}
+                                            </Chip>
+                                        )}
+                                    </div>
+
+                                    {payment?.bank_name && (
+                                        <div className="text-sm flex items-center gap-2">
+                                            <Building2 className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
+                                            <span className="text-zinc-500">البنك:</span>
+                                            <span className="font-semibold">{payment.bank_name}</span>
+                                        </div>
+                                    )}
+                                    {payment?.bank_id && (
+                                        <div className="text-sm flex items-center gap-2">
+                                            <Hash className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
+                                            <span className="text-zinc-500">رقم العملية:</span>
+                                            <span className="font-mono font-semibold" dir="ltr">{payment.bank_id}</span>
+                                        </div>
+                                    )}
+                                    {payment?.iban && (
+                                        <div className="text-sm flex items-center gap-2">
+                                            <Hash className="w-3.5 h-3.5 text-zinc-400 shrink-0" />
+                                            <span className="text-zinc-500">آيبان:</span>
+                                            <span className="font-mono font-semibold break-all" dir="ltr">{payment.iban}</span>
+                                        </div>
+                                    )}
+
+                                    {payment?.image_url && (
+                                        <a
+                                            href={payment.image_url}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            className="group block relative rounded-2xl overflow-hidden bg-zinc-100 dark:bg-zinc-800"
+                                        >
+                                            <img
+                                                src={payment.image_url}
+                                                alt="إيصال التحويل"
+                                                className="w-full h-44 object-cover"
+                                            />
+                                            <span className="absolute bottom-2 left-2 inline-flex items-center gap-1 text-[11px] font-bold bg-black/60 text-white rounded-full px-2 py-1">
+                                                <ExternalLink className="w-3 h-3" /> عرض
+                                            </span>
+                                        </a>
+                                    )}
+
+                                    {order.is_pending_payment && (
+                                        <div className="flex items-center gap-2 pt-1">
+                                            <Button
+                                                color="primary"
+                                                className="rounded-full font-bold"
+                                                isLoading={processing}
+                                                startContent={!processing && <CheckCircle2 className="w-4 h-4" />}
+                                                onPress={() => setStatus(order.next_status)}
+                                            >
+                                                تأكيد الدفع
+                                            </Button>
+                                            <Button
+                                                variant="flat"
+                                                className="rounded-full font-bold text-rose-500"
+                                                isDisabled={processing}
+                                                startContent={!processing && <XCircle className="w-4 h-4" />}
+                                                onPress={() => setStatus("cancelled")}
+                                            >
+                                                رفض الدفع
+                                            </Button>
+                                        </div>
+                                    )}
+                                </CardContent>
+                            </Card>
+                        )}
 
                         {order.address && (
                             <Card className="bg-white/80 dark:bg-zinc-900/80 rounded-[2rem] shadow-none">

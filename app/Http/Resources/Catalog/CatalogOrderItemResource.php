@@ -22,6 +22,7 @@ class CatalogOrderItemResource extends JsonResource
 
         return [
             'id' => $this->id,
+            'slug' => $this->product->slug,
             'product_id' => $this->catalog_product_id,
             'variant_id' => $this->product_variant_id,
             'name' => $this->name,

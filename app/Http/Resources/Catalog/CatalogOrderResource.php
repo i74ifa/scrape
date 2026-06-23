@@ -22,6 +22,9 @@ class CatalogOrderResource extends JsonResource
             'total' => money($this->total),
             'total_quantity' => $this->total_quantity,
             'note' => $this->note,
+            'payment_method' => $this->when($this->payment_method, fn () => $this->payment_method->value),
+            'payment_method_label' => $this->when($this->payment_method, fn () => $this->payment_method->label()),
+            'payment_reference' => $this->payment_reference,
             // Shipping address snapshot (survives address edits/deletes).
             'address' => $this->address_raw,
             'items' => CatalogOrderItemResource::collection($this->whenLoaded('items')),

@@ -42,6 +42,30 @@ SQLite in-memory, `QUEUE_CONNECTION=sync`, array caches. Suite is thin and mostl
 Feature tests — many paths have no test coverage, so rely on `php -l` and manual
 verification for controller/form-request changes.
 
+### Every new feature MUST ship with a test
+
+When implementing any feature, bug fix, or behavior change, **write a test for it
+before considering the work done.** Default to a Feature test that exercises the
+new behavior through the HTTP / service boundary the user actually hits.
+
+- New controller endpoint / route → Feature test that asserts status, payload,
+  and side effects (DB rows, jobs dispatched, etc.).
+- New service / value object / helper → a focused test under `tests/Unit/` (or a
+  Feature test that calls through it). Pure logic (parsing, money math, currency
+  conversion) belongs in `tests/Unit/`.
+- New admin CRUD resource → Feature test covering store + update + validation
+  failures, mirroring the existing `tests/Feature/CartTest.php` style.
+- New scraper / platform script → at minimum a `Scraper::toFloat()`-style unit
+  test for the price parsing path; currency-mismatch must assert the throw of
+  `CurrencyNotSameInScraperException`.
+- Bug fix → add a regression test that fails before the fix and passes after.
+
+Place tests alongside the existing ones (`tests/Feature/`, `tests/Unit/`), name
+the class after the thing under test (e.g. `CurrencyConversionTest`,
+`CatalogProductStoreTest`), and run `php artisan test --filter=NewTestName` to
+confirm it passes before finishing. If a feature is genuinely untestable (pure
+UI markup), say so explicitly and verify manually instead.
+
 ## Package manager gotcha
 
 Root has **both** `bun.lock` and `pnpm-lock.yaml` committed. `composer setup`

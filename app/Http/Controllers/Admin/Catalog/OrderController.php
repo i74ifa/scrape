@@ -6,6 +6,7 @@ use App\Enums\CatalogOrderStatus;
 use App\Http\Controllers\Controller;
 use App\Models\Catalog\CatalogOrder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
@@ -33,6 +34,10 @@ class OrderController extends Controller
             $query->where('status', $request->string('status'));
         }
 
+        if ($request->filled('payment_method')) {
+            $query->where('payment_method', $request->string('payment_method'));
+        }
+
         $orders = $query->latest()->paginate(20)->withQueryString()
             ->through(fn (CatalogOrder $o) => [
                 'id' => $o->id,
@@ -40,6 +45,8 @@ class OrderController extends Controller
                 'status' => $o->status->value,
                 'status_label' => $o->status->label(),
                 'status_color' => $o->status->color(),
+                'payment_method' => $o->payment_method?->value,
+                'payment_method_label' => $o->payment_method?->label(),
                 'total' => money($o->total),
                 'total_quantity' => $o->total_quantity,
                 'items_count' => $o->items_count,
@@ -50,14 +57,22 @@ class OrderController extends Controller
 
         return Inertia::render('Admin/Catalog/Orders/Index', [
             'orders' => $orders,
-            'filters' => $request->only('search', 'status'),
+            'filters' => $request->only('search', 'status', 'payment_method'),
             'statuses' => CatalogOrderStatus::toArray(),
+            'payment_methods' => \App\Enums\PaymentMethod::all(),
         ]);
     }
 
     public function show(CatalogOrder $order)
     {
         $order->load('user:id,name,phone,email', 'items.product:id,name', 'address');
+
+        // Resolve the bank-transfer receipt path to a public URL so the admin
+        // can preview/verify it. payment_reference is cast to array on the model.
+        $paymentReference = $order->payment_reference;
+        if (is_array($paymentReference) && ! empty($paymentReference['image'])) {
+            $paymentReference['image_url'] = Storage::url($paymentReference['image']);
+        }
 
         return Inertia::render('Admin/Catalog/Orders/Show', [
             'order' => [
@@ -69,6 +84,10 @@ class OrderController extends Controller
                 'next_status' => $order->status->next()?->value,
                 'next_status_label' => $order->status->next()?->label(),
                 'can_cancel' => $order->status->canCancel(),
+                'payment_method' => $order->payment_method?->value,
+                'payment_method_label' => $order->payment_method?->label(),
+                'payment_reference' => $paymentReference,
+                'is_pending_payment' => $order->status === CatalogOrderStatus::PENDING_PAYMENT,
                 'subtotal' => money($order->subtotal),
                 'total' => money($order->total),
                 'total_quantity' => $order->total_quantity,
