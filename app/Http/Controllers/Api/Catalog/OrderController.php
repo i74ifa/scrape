@@ -118,6 +118,7 @@ class OrderController extends Controller
                         'catalog_product_id' => $item->catalog_product_id,
                         'product_variant_id' => $item->product_variant_id,
                         'name' => $item->product->name,
+                        'slug' => $item->product->slug,
                         'variant_label' => $item->variantLabel(),
                         'unit_price' => $item->unitPrice(),
                         'quantity' => $item->quantity,

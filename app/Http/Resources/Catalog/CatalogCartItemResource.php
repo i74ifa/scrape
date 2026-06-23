@@ -24,6 +24,7 @@ class CatalogCartItemResource extends JsonResource
             'product_id' => $this->catalog_product_id,
             'variant_id' => $this->product_variant_id,
             'name' => $product?->name,
+            'slug' => $product?->slug,
             'variant_label' => $this->variantLabel(),
             'image' => $image,
             'quantity' => $this->quantity,
