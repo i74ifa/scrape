@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AppSectionController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\Catalog\AttributeController as CatalogAttributeController;
 use App\Http\Controllers\Admin\Catalog\BrandController as CatalogBrandController;
@@ -100,6 +101,20 @@ Route::middleware(['web', 'inertia.panel'])
                 Route::get('orders', [CatalogOrderController::class, 'index'])->name('orders.index');
                 Route::get('orders/{order}', [CatalogOrderController::class, 'show'])->name('orders.show');
                 Route::post('orders/{order}/status', [CatalogOrderController::class, 'updateStatus'])->name('orders.status');
+            });
+
+            /*
+             * App sections: data-driven layout of the mobile app screens
+             * (home / products / custom slugs). Managed via the iPhone
+             * simulation page. Custom routes (images/reorder) come first.
+             */
+            Route::prefix('app-sections')->name('app-sections.')->group(function () {
+                Route::get('/', [AppSectionController::class, 'index'])->name('index');
+                Route::post('images', [AppSectionController::class, 'uploadImage'])->name('images.upload');
+                Route::post('reorder', [AppSectionController::class, 'reorder'])->name('reorder');
+                Route::post('/', [AppSectionController::class, 'store'])->name('store');
+                Route::put('{appSection}', [AppSectionController::class, 'update'])->name('update');
+                Route::delete('{appSection}', [AppSectionController::class, 'destroy'])->name('destroy');
             });
         });
     });

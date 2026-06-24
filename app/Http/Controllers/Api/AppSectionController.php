@@ -3,207 +3,47 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\AppSection;
 
 class AppSectionController extends Controller
 {
-    public function productsPage()
+    /**
+     * Resolve the ordered, active sections for a page slug into the
+     * `{ data: [{ name, content }, ...] }` shape the Flutter components
+     * renderer consumes. Layout is now data-driven (managed from the admin
+     * panel) rather than hardcoded.
+     */
+    protected function page(string $slug)
     {
-        $sections = [];
-
-        $bannerSwipe = [
-            "name" => "BannerSwipe",
-            "content" => [
-                "data" => [
-                    [
-                        "url" => "/platforms/5",
-                        "image" => [
-                            "dark" => "https://talabye.com/images/hero-banner-dark.jpg",
-                            "light" => "https://talabye.com/images/hero-banner.jpg"
-                        ]
-
-                    ],
-                    [
-                        "url" => "/platforms/5",
-                        "image" => [
-                            "dark" => "https://talabye.com/images/hero-banner-dark.jpg",
-                            "light" => "https://talabye.com/images/hero-banner.jpg"
-                        ]
-                    ],
-                    [
-                        "url" => "/platforms/1",
-                        "image" => [
-                            "dark" => "https://talabye.com/images/hero-banner-dark.jpg",
-                            "light" => "https://talabye.com/images/hero-banner.jpg"
-                        ]
-                    ]
-                ],
-                "title" => "",
-                "config" => [
-                    "autoplay" => false,
-                    "page_cols" => 1,
-                    "height" => 110,
-                ]
-            ]
-        ];
-
-        $bannerGrid = [
-            "name" => "BannerGrid",
-            "content" => [
-                "data" => [
-                    [
-                        "url" => "/platforms/5",
-                        "cols" => 6,
-                        "image" => [
-                            "dark" => "https://talabye.com/images/demo-dark.jpg",
-                            "light" => "https://talabye.com/images/demo-light.jpg"
-                        ]
-                    ],
-                    // [
-                    //     "url" => "/platforms/5",
-                    //     "cols" => 6,
-                    //     "image" => [
-                    //         "dark" => "https://talabye.com/images/demo-dark.jpg",
-                    //         "light" => "https://talabye.com/images/demo-light.jpg"
-                    //     ]
-                    // ],
-                ],
-                "title" => "",
-                "config" => [
-                    "autoplay" => false,
-                    "page_cols" => 1,
-                ]
-            ]
-        ];
-
-        $customBanner = [
-            'name' => 'CustomBanner',
-            'content' => [
-                'title' => 'تخفيضات شي إن',
-                'description' => 'خصومات تصل إلى 70% على جميع المنتجات',
-                'button' => [
-                    'title' => 'تسوق الآن',
-                    'url' => '/platforms/5'
-                ],
-                'icon' => [
-                    'dark' => 'https://talabye.com/images/icons/shein.png',
-                    'light' => 'https://talabye.com/images/icons/shein.png'
-                ],
-                'colors' => [
-                    'background' => '#76D2DB',
-                    'text' => '#ffffff',
-                    'button' => '#ffffff',
-                    'button_text' => '#000000'
-                ]
-            ]
-        ];
-
-        $productSwipe = [
-            "name" => "ProductSwipe",
-            "content" => [
-                "data" => [
-                    [
-                        "title" =>  "افضل المنتجات",
-                        "url" => "/api/catalog/products?type=best",
-                    ],
-                ],
-            ]
-        ];
-
-        $productGrid = [
-            "name" => "ProductGrid",
-            "content" => [
-                "data" => [
-                    [
-                        "title" =>  "افضل المنتجات",
-                        "url" => "/api/catalog/products?type=best",
-                    ],
-                ],
-            ]
-        ];
-
-        // $sections[] = $bannerSwipe;
-        // $sections[] = $bannerGrid;
-        $sections[] = $customBanner;
-        $sections[] = $productSwipe;
-        $sections[] = $productGrid;
+        $sections = AppSection::forPage($slug)
+            ->where('is_active', true)
+            ->ordered()
+            ->get(['name', 'content'])
+            ->map(fn (AppSection $section) => [
+                'name' => $section->name,
+                'content' => $section->content,
+            ]);
 
         return response()->json([
-            'data' => $sections
+            'data' => $sections,
         ]);
     }
 
     public function homePage()
     {
-        $sections = [];
+        return $this->page('home');
+    }
 
-        $bannerSwipe = [
-            "name" => "BannerSwipe",
-            "content" => [
-                "data" => [
-                    [
-                        "url" => "/platforms/5",
-                        "image" => [
-                            "dark" => "https://talabye.com/images/hero-banner-dark.jpg",
-                            "light" => "https://talabye.com/images/hero-banner.jpg"
-                        ]
+    public function productsPage()
+    {
+        return $this->page('products');
+    }
 
-                    ],
-                    [
-                        "url" => "/platforms/2",
-                        "image" => [
-                            "dark" => "https://talabye.com/images/hero-banner-dark.jpg",
-                            "light" => "https://talabye.com/images/hero-banner.jpg"
-                        ]
-                    ],
-                    [
-                        "url" => "/platforms/3",
-                        "image" => [
-                            "dark" => "https://talabye.com/images/hero-banner-dark.jpg",
-                            "light" => "https://talabye.com/images/hero-banner.jpg"
-                        ]
-                    ]
-                ],
-                "title" => "",
-                "config" => [
-                    "autoplay" => false,
-                    "page_cols" => 1,
-                    "height" => 110,
-                ]
-            ]
-        ];
-
-
-        $productSwipe = [
-            "name" => "ProductSwipe",
-            "content" => [
-                "data" => [
-                    [
-                        "title" =>  "افضل المنتجات",
-                        "url" => "/api/catalog/products?type=best",
-                    ],
-                ],
-            ]
-        ];
-
-        $productGrid = [
-            "name" => "ProductGrid",
-            "content" => [
-                "data" => [
-                    [
-                        "title" =>  "افضل المنتجات",
-                        "url" => "/api/catalog/products?type=best",
-                    ],
-                ],
-            ]
-        ];
-
-        $sections[] = $bannerSwipe;
-        // $sections[] = $bannerGrid;
-        $sections[] = $productSwipe;
-        $sections[] = $productGrid;
-
-        return response()->json([
-            'data' => $sections
-        ]);
+    /**
+     * Generic resolver for any custom page slug created in the admin panel.
+     */
+    public function show(string $slug)
+    {
+        return $this->page($slug);
     }
 }

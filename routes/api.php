@@ -90,6 +90,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('sections')->group(function () {
         Route::get('home', [Api\AppSectionController::class, 'homePage']);
         Route::get('products', [Api\AppSectionController::class, 'productsPage']);
+        // Generic resolver for any custom page slug — keep last so the literal
+        // home/products routes match first.
+        Route::get('{slug}', [Api\AppSectionController::class, 'show']);
     });
 
     Route::get('app-summary', function (Request $request) {

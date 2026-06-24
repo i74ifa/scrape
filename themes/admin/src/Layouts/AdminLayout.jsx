@@ -20,6 +20,7 @@ import {
     FolderTree,
     Award,
     Tags,
+    LayoutTemplate,
 } from "lucide-react";
 import {
     Dropdown,
@@ -104,6 +105,7 @@ export default function AdminLayout({
             children: [
                 { name: "المنتجات", icon: Package, href: "/admin/products" },
                 { name: "المنصات", icon: Store, href: "/admin/platforms" },
+                { name: "أقسام التطبيق", icon: LayoutTemplate, href: "/admin/app-sections" },
             ],
         },
         {

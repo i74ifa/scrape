@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             BankAccountSeeder::class,
             PageSeeder::class,
             StateSeeder::class,
+            AppSectionSeeder::class,
         ]);
 
         Artisan::call('currency:exchange-rate');
