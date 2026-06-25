@@ -54,6 +54,11 @@ class Platform extends Model
         return $this->scraping()->getCode();
     }
 
+    public function scopeActive()
+    {
+        return $this->whereIsActive(1);
+    }
+
     public function scraping($data = [])
     {
         return new ScraperModule($data, $this);

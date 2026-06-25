@@ -19,7 +19,7 @@ class PlatformController extends Controller
 {
     public function index()
     {
-        return PlatformResource::collection(Platform::all());
+        return PlatformResource::collection(Platform::active()->get());
     }
 
     public function getCode(Platform $platform)
