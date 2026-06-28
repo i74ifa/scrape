@@ -11,15 +11,13 @@ use App\Http\Controllers\Admin\CheckoutOrderController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
-
 
 Route::get('auth/telegram', function () {
     return view('login-as-telegram');
 });
-
 
 Route::get('/login-successfully', function (Request $request) {
 
@@ -29,7 +27,6 @@ Route::get('/login-successfully', function (Request $request) {
 
     return view('login-successfully');
 })->name('login.success');
-
 
 /*
  * Inertia admin panel, served at /admin.
@@ -59,6 +56,13 @@ Route::middleware(['web', 'inertia.panel'])
             Route::get('/checkout-orders/{checkoutOrder}', [CheckoutOrderController::class, 'show'])->name('checkout-orders.show');
             Route::get('/checkout-orders/{checkoutOrder}/products', [CheckoutOrderController::class, 'products'])->name('checkout-orders.products');
             Route::post('/checkout-orders/{checkoutOrder}/next-status', [CheckoutOrderController::class, 'nextStatus'])->name('checkout-orders.next-status');
+
+            /*
+             * Users: list customers and push a custom FCM notification to a
+             * single user's device token.
+             */
+            Route::get('/users', [UserController::class, 'index'])->name('users.index');
+            Route::post('/users/{user}/send-fcm', [UserController::class, 'sendFcm'])->name('users.send-fcm');
 
             /*
              * Catalog: merchant-authored products (categories, brands,
