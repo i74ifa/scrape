@@ -23,7 +23,7 @@ class UpdateAppSectionRequest extends FormRequest
         return [
             'name' => [
                 'required',
-                Rule::in(['BannerSwipe', 'BannerGrid', 'CustomBanner', 'ProductSwipe', 'ProductGrid']),
+                Rule::in(['BannerSwipe', 'BannerGrid', 'CustomBanner', 'ProductSwipe', 'ProductGrid', 'RFW']),
             ],
             'content' => ['required', 'array'],
             'is_active' => ['sometimes', 'boolean'],

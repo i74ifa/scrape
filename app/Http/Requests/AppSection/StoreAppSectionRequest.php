@@ -22,7 +22,7 @@ class StoreAppSectionRequest extends FormRequest
             'page' => ['required', 'string', 'max:120', 'regex:/^[a-z0-9\-]+$/'],
             'name' => [
                 'required',
-                Rule::in(['BannerSwipe', 'BannerGrid', 'CustomBanner', 'ProductSwipe', 'ProductGrid']),
+                Rule::in(['BannerSwipe', 'BannerGrid', 'CustomBanner', 'ProductSwipe', 'ProductGrid', 'RFW']),
             ],
             'content' => ['required', 'array'],
         ];

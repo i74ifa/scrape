@@ -3,6 +3,7 @@ import { router } from "@inertiajs/react";
 import axios from "axios";
 import AdminLayout from "@/Layouts/AdminLayout";
 import ColorPickerInput from "@/Components/ColorPickerInput";
+import DartCodeEditor from "@/Components/DartCodeEditor";
 import {
     Card,
     CardContent,
@@ -28,6 +29,7 @@ import {
     Rows3,
     Grid2x2,
     Smartphone,
+    Code2,
 } from "lucide-react";
 
 /* ------------------------------------------------------------------ */
@@ -72,6 +74,13 @@ const TYPES = {
         badge: "bg-rose-100 dark:bg-rose-900/30",
         iconColor: "text-rose-600 dark:text-rose-400",
     },
+    RFW: {
+        label: "ودجت فلاتر (RFW)",
+        desc: "كود Dart مخصص يُعرض في التطبيق",
+        icon: Code2,
+        badge: "bg-slate-100 dark:bg-slate-800/60",
+        iconColor: "text-slate-600 dark:text-slate-300",
+    },
 };
 
 // Default content payloads — mirror the shape the Flutter renderer expects.
@@ -105,6 +114,8 @@ const defaultContent = (type) => {
         case "ProductSwipe":
         case "ProductGrid":
             return { data: [{ title: "", url: "" }] };
+        case "RFW":
+            return { code: "" };
         default:
             return {};
     }
@@ -425,6 +436,28 @@ function SectionPreview({ section, mode, skin }) {
                     ))}
                 </div>
             );
+
+        case "RFW": {
+            const code = (c.code || "").trim();
+            return (
+                <div className="px-3 py-2">
+                    <div className="rounded-2xl overflow-hidden bg-[#1d1f21] text-[10px]">
+                        <div className="flex items-center gap-1.5 px-3 py-1.5 border-b border-white/10">
+                            <Code2 className="w-3 h-3 text-slate-300" />
+                            <span className="text-slate-300 font-bold">
+                                ودجت فلاتر
+                            </span>
+                        </div>
+                        <pre
+                            dir="ltr"
+                            className="px-3 py-2 max-h-40 overflow-auto text-slate-200 font-mono whitespace-pre-wrap break-words leading-relaxed"
+                        >
+                            {code || "// لا يوجد كود بعد"}
+                        </pre>
+                    </div>
+                </div>
+            );
+        }
 
         default:
             return (
@@ -848,6 +881,26 @@ function EditorModal({ open, type, initial, page, editingId, onClose }) {
                                             ))}
                                         </div>
                                     </>
+                                )}
+
+                                {/* RFW — Remote Flutter Widget (Dart code) */}
+                                {type === "RFW" && (
+                                    <div className="space-y-2">
+                                        <Label className="text-xs font-bold text-zinc-500">
+                                            كود الـ Dart
+                                        </Label>
+                                        <DartCodeEditor
+                                            value={content.code}
+                                            onChange={(v) =>
+                                                patch((n) => (n.code = v))
+                                            }
+                                            placeholder="// اكتب كود الودجت هنا"
+                                        />
+                                        <p className="text-[11px] text-zinc-400">
+                                            يُرسل هذا الكود كما هو إلى التطبيق
+                                            ليُعرض كودجت مخصص.
+                                        </p>
+                                    </div>
                                 )}
                             </div>
                         </Modal.Body>

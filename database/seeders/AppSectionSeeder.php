@@ -17,7 +17,7 @@ class AppSectionSeeder extends Seeder
         $layouts = [
             'home' => [
                 [
-                    'name' => 'BannerSwipe',
+                'name' => 'BannerSwipe',
                     'content' => [
                         'data' => [
                             ['url' => '/platforms/5', 'image' => ['dark' => 'https://talabye.com/images/hero-banner-dark.jpg', 'light' => 'https://talabye.com/images/hero-banner.jpg']],
