@@ -530,7 +530,9 @@ function EditorModal({ open, type, initial, page, editingId, onClose }) {
         >
             <Modal.Backdrop>
                 <Modal.Container>
-                    <Modal.Dialog className="max-w-lg w-full">
+                    <Modal.Dialog
+                        className={`w-full ${type === "RFW" ? "max-w-3xl" : "max-w-lg"}`}
+                    >
                         <Modal.CloseTrigger className="rtl:right-auto rtl:left-3 ltr:left-auto ltr:right-3" />
                         <Modal.Header className="font-black text-xl flex items-center gap-3">
                             <div
@@ -560,7 +562,7 @@ function EditorModal({ open, type, initial, page, editingId, onClose }) {
                                 )}
 
                                 {/* Repeatable banner / product items */}
-                                {type !== "CustomBanner" && (
+                                {type !== "CustomBanner" && type !== "RFW" && (
                                     <div className="space-y-3">
                                         {items.map((it, i) => (
                                             <div

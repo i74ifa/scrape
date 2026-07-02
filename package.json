@@ -4,7 +4,9 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
+        "build:admin": "cd themes/admin && npm run build",
         "dev": "vite",
+        "dev:admin": "cd themes/admin && npm run dev",
         "zip": "7zz a -tzip build.zip public/build",
         "build:all": "concurrently \"npm run build\" \"cd themes/admin && npm run build\""
     },

@@ -1,5 +1,10 @@
-import Editor from "react-simple-code-editor";
+import EditorModule from "react-simple-code-editor";
 import Prism from "prismjs";
+
+// `react-simple-code-editor` is CJS (`exports.default = Editor`); depending on
+// the bundler's interop the default import may arrive as `{ default: Editor }`.
+// Unwrap so `<Editor>` is always the component, not an object (React err #130).
+const Editor = EditorModule?.default ?? EditorModule;
 import "prismjs/components/prism-clike";
 import "prismjs/components/prism-dart";
 import "prismjs/themes/prism-tomorrow.css";
