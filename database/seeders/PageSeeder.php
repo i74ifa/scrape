@@ -37,6 +37,7 @@ class PageSeeder extends Seeder
         $parser = new Parsedown();
         foreach ($pages as $page) {
             if (Page::where('slug', $page['slug'])->exists()) {
+                Page::where('slug', $page['slug'])->delete();
                 continue;
             }
             $page['content'] = $parser->text($page['content']);
