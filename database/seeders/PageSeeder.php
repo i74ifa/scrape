@@ -38,7 +38,7 @@ class PageSeeder extends Seeder
         foreach ($pages as $page) {
             if (Page::where('slug', $page['slug'])->exists()) {
                 Page::where('slug', $page['slug'])->delete();
-                continue;
+                // continue;
             }
             $page['content'] = $parser->text($page['content']);
 
