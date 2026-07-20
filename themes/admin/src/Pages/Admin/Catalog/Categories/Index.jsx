@@ -433,6 +433,9 @@ export default function Index({ categories, filters = {} }) {
                                             className="rtl:text-right"
                                             isRowHeader
                                         >
+                                            #
+                                        </TableColumn>
+                                        <TableColumn className="rtl:text-right">
                                             الاسم
                                         </TableColumn>
                                         <TableColumn className="rtl:text-right">
@@ -461,6 +464,11 @@ export default function Index({ categories, filters = {} }) {
                                                 id={item.id}
                                                 className="hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors"
                                             >
+                                                <TableCell>
+                                                    <span className="text-xs text-zinc-400 font-mono">
+                                                        {item.id}
+                                                    </span>
+                                                </TableCell>
                                                 <TableCell>
                                                     <p className="font-semibold text-sm">
                                                         {item.name}
