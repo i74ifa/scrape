@@ -30,6 +30,8 @@ import {
     Grid2x2,
     Smartphone,
     Code2,
+    Eye,
+    EyeOff,
 } from "lucide-react";
 
 /* ------------------------------------------------------------------ */
@@ -942,6 +944,7 @@ export default function Index({ sections = [], pages = [], filters = {} }) {
     const [picking, setPicking] = useState(false);
     const [editor, setEditor] = useState(null); // {type, initial, editingId}
     const [deleteTarget, setDeleteTarget] = useState(null);
+    const [isActiveTarget, setIsActiveTarget] = useState(null);
 
     // New-page slug input
     const [newPageOpen, setNewPageOpen] = useState(false);
@@ -997,6 +1000,24 @@ export default function Index({ sections = [], pages = [], filters = {} }) {
                 preserveScroll: true,
                 onSuccess: () => toast.success("تم حذف القسم"),
                 onFinish: () => setDeleteTarget(null),
+            },
+        );
+    };
+
+    const confirmIsActive = () => {
+        if (!isActiveTarget) return;
+        const wasActive = isActiveTarget.is_active;
+        router.post(
+            route("admin.app-sections.toggle-active", isActiveTarget.id),
+            {},
+            {
+                preserveScroll: true,
+                only: ["sections"],
+                onSuccess: () =>
+                    toast.success(
+                        wasActive ? "تم إخفاء القسم" : "تم إظهار القسم",
+                    ),
+                onFinish: () => setIsActiveTarget(null),
             },
         );
     };
@@ -1221,6 +1242,23 @@ export default function Index({ sections = [], pages = [], filters = {} }) {
                                                 <Button
                                                     size="sm"
                                                     variant="ghost"
+                                                    className="text-gray-600"
+                                                    startContent={
+                                                        s.is_active ? (
+                                                            <EyeOff className="w-3.5 h-3.5" />
+                                                        ) : (
+                                                            <Eye className="w-3.5 h-3.5" />
+                                                        )
+                                                    }
+                                                    onPress={() =>
+                                                        setIsActiveTarget(s)
+                                                    }
+                                                >
+                                                    { s.is_active ? 'اخفاء' : 'اظهار' }
+                                                </Button>
+                                                <Button
+                                                    size="sm"
+                                                    variant="ghost"
                                                     className="text-rose-500"
                                                     startContent={
                                                         <Trash2 className="w-3.5 h-3.5" />
@@ -1350,6 +1388,55 @@ export default function Index({ sections = [], pages = [], filters = {} }) {
                                 </Button>
                                 <Button color="primary" onPress={createPage}>
                                     متابعة
+                                </Button>
+                            </Modal.Footer>
+                        </Modal.Dialog>
+                    </Modal.Container>
+                </Modal.Backdrop>
+            </Modal>
+
+            {/* Show / hide confirmation */}
+            <Modal
+                isOpen={!!isActiveTarget}
+                onOpenChange={(o) => !o && setIsActiveTarget(null)}
+                placement="center"
+                backdrop="blur"
+            >
+                <Modal.Backdrop>
+                    <Modal.Container>
+                        <Modal.Dialog>
+                            <Modal.Header className="font-black text-xl flex items-center gap-3">
+                                <div className="w-9 h-9 rounded-2xl bg-amber-100 dark:bg-amber-900/30 flex items-center justify-center">
+                                    {isActiveTarget?.is_active ? (
+                                        <EyeOff className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                                    ) : (
+                                        <Eye className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                                    )}
+                                </div>
+                                {isActiveTarget?.is_active
+                                    ? "إخفاء القسم"
+                                    : "إظهار القسم"}
+                            </Modal.Header>
+                            <Modal.Body>
+                                <p className="text-sm text-zinc-500 p-2">
+                                    {isActiveTarget?.is_active
+                                        ? "لن يظهر هذا القسم في التطبيق بعد الإخفاء، ويمكنك إظهاره مرة أخرى في أي وقت."
+                                        : "سيظهر هذا القسم في التطبيق مباشرة بعد التأكيد."}
+                                </p>
+                            </Modal.Body>
+                            <Modal.Footer>
+                                <Button
+                                    variant="flat"
+                                    onPress={() => setIsActiveTarget(null)}
+                                >
+                                    إلغاء
+                                </Button>
+                                <Button
+                                    color="primary"
+                                    className="rounded-full font-bold px-6"
+                                    onPress={confirmIsActive}
+                                >
+                                    تأكيد
                                 </Button>
                             </Modal.Footer>
                         </Modal.Dialog>

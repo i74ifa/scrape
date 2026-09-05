@@ -73,6 +73,20 @@ class AppSectionController extends Controller
         return back()->with('success', 'تم تحديث القسم بنجاح');
     }
 
+    /**
+     * Flip a section's visibility in the app. Kept off `update()` because that
+     * endpoint requires the full name/content payload.
+     */
+    public function toggleActive(AppSection $appSection)
+    {
+        $appSection->update(['is_active' => ! $appSection->is_active]);
+
+        return back()->with(
+            'success',
+            $appSection->is_active ? 'تم إظهار القسم' : 'تم إخفاء القسم'
+        );
+    }
+
     public function destroy(AppSection $appSection)
     {
         $this->deleteUploadedImages($appSection->content ?? []);

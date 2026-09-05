@@ -117,6 +117,7 @@ Route::middleware(['web', 'inertia.panel'])
                 Route::post('images', [AppSectionController::class, 'uploadImage'])->name('images.upload');
                 Route::post('reorder', [AppSectionController::class, 'reorder'])->name('reorder');
                 Route::post('/', [AppSectionController::class, 'store'])->name('store');
+                Route::post('{appSection}/toggle-active', [AppSectionController::class, 'toggleActive'])->name('toggle-active');
                 Route::put('{appSection}', [AppSectionController::class, 'update'])->name('update');
                 Route::delete('{appSection}', [AppSectionController::class, 'destroy'])->name('destroy');
             });

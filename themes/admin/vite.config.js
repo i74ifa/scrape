@@ -11,7 +11,7 @@ export default defineConfig({
             refresh: true,
             buildDirectory: "build/admin",
             publicDirectory: "../../public",
-            hotFile: "public/hot-admin",
+            // hotFile: "public/hot-admin",
         }),
         react(),
         tailwindcss(),
